@@ -40,22 +40,17 @@ class InvestmentsPage extends StatelessWidget {
     final apartmentInvestments = Provider.of<List<Investment>>(
         context); //TODO: change to this month's investments
     if (apartment != null && apartmentInvestments != null) {
-      // final children =
-      //     investments.map((investment) => Text(investment.title)).toList();
-      //return ListView(children: children);
       return SafeArea(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Container(
-                  // height: (mediaQuery.size.height -
-                  //         appBarPrefsize.height -
-                  //         mediaQuery.padding.top) *
-                  //     0.5,
-                  height: 250,
-                  child: Chart(currentMonthInvestments(
-                      apartmentInvestments))), //TODO handle null investment list.
+                height: 250,
+                child: Chart(
+                  currentMonthInvestments(apartmentInvestments),
+                ),
+              ), //TODO handle null investment list.
               Container(
                 height: (mediaQuery.size.height -
                         appBarPrefsize.height -
