@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "534759855534",
+    "firebase_url": "https://dira-nedira-e40aa.firebaseio.com",
+    "project_id": "dira-nedira-e40aa",
+    "storage_bucket": "dira-nedira-e40aa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:534759855534:android:aeadbdf7255df5272f643f",
+        "android_client_info": {
+          "package_name": "com.example.dira_nedira"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "534759855534-i5vdgb1l6o8onp0rg6lih75a9i9nbboa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dira_nedira",
+            "certificate_hash": "29d213c0ae96878619c0bea07f7f93acb407a837"
+          }
+        },
+        {
+          "client_id": "534759855534-ag008q33efaf8hiaqc7mgi5m4fdqd5o1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjQ1cjp6ttN6Gsh6Js9K7dzdSmuwLH3PU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "534759855534-ag008q33efaf8hiaqc7mgi5m4fdqd5o1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
