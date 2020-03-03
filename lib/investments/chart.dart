@@ -48,11 +48,10 @@ class Chart extends StatelessWidget {
       elevation: 6,
       margin: EdgeInsets.all(20),
       child: Padding(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(5),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Center(child: Text('Total Apartment Spendings:')),
-            Center(child: Text(totalSpending.toString())),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: userList.map((data) {
@@ -61,6 +60,28 @@ class Chart extends StatelessWidget {
                   child: _buildUserInfo(data),
                 );
               }).toList(),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 3),
+              decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              width: 200,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    'Total Apartment Spendings',
+                    style: TextStyle(color: Colors.lightBlue),
+                  ),
+                  Text(
+                    totalSpending.toString() + '₪',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -108,11 +129,11 @@ class Chart extends StatelessWidget {
       text = 'Should get ';
     } else {
       color = Colors.red;
-      text = 'Should add ';
+      text = 'Should give ';
     }
     return Text(
       text + getOrAdd.abs().toString(),
-      style: TextStyle(color: color),
+      style: TextStyle(color: color, fontSize: 14, fontWeight: FontWeight.bold),
     );
   }
 

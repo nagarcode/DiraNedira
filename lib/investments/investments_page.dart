@@ -41,25 +41,19 @@ class InvestmentsPage extends StatelessWidget {
         context); //TODO: change to this month's investments
     if (apartment != null && apartmentInvestments != null) {
       return SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Container(
-                height: 250,
-                child: Chart(
-                  currentMonthInvestments(apartmentInvestments),
-                ),
-              ), //TODO handle null investment list.
-              Container(
-                height: (mediaQuery.size.height -
-                        appBarPrefsize.height -
-                        mediaQuery.padding.top) *
-                    0.7,
-                child: InvestmentsList(), //TODO:Make scrollable
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Container(
+              height: 250,
+              child: Chart(
+                currentMonthInvestments(apartmentInvestments),
               ),
-            ],
-          ),
+            ), 
+            Expanded(
+              child: InvestmentsList(), //TODO:Make scrollable
+            ),
+          ],
         ),
       );
     } else {

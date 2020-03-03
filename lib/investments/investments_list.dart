@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:dira_nedira/Services/auth.dart';
 import 'package:dira_nedira/common_widgets/avatar.dart';
 import 'package:dira_nedira/common_widgets/platform_alert_dialog.dart';
@@ -29,7 +27,7 @@ class InvestmentsList extends StatelessWidget {
         context); //TODO: change to this month's investments
     if (apartment != null)
       return investments.isEmpty
-          ? Column(
+          ? ListView(
               children: <Widget>[
                 Text(
                   'No transactions added yet!',
