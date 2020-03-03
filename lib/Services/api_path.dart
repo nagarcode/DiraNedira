@@ -1,9 +1,10 @@
 class APIPath {
-  static String investment(String apartmentId, String investmentId) =>
-      'apartments/$apartmentId/investments/$investmentId';
+  static String investment(
+          String apartmentId, String investmentId, String yearMonth) =>
+      'apartments/$apartmentId/investments/investments/$yearMonth/$investmentId';
 
-  static String investments(String apartmentId) =>
-      'apartments/$apartmentId/investments';
+  static String investments(String apartmentId, String yearMonth) =>
+      'apartments/$apartmentId/investments/investments/$yearMonth';
 
   static String apartments() => 'apartments';
 

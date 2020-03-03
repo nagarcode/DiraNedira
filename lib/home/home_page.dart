@@ -4,6 +4,7 @@ import 'package:dira_nedira/home/account/account_page.dart';
 import 'package:dira_nedira/home/account/apartment.dart';
 import 'package:dira_nedira/investments/investment.dart';
 import 'package:dira_nedira/months/months_page.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../investments/investments_page.dart';
 import './cupertino_home_scaffold.dart';
@@ -62,7 +63,8 @@ class _HomePageState extends State<HomePage> {
                 return StreamBuilder<List<Investment>>(
                   stream: apartment == null
                       ? Stream.empty()
-                      : database.investmentsStream(apartment.id),
+                      : database.investmentsStream(apartment.id,
+                          DateFormat.yMMM().format(DateTime.now())),
                   builder: (context, investmentsSnapshot) {
                     final apartmentInvestments = investmentsSnapshot.hasData
                         ? investmentsSnapshot.data

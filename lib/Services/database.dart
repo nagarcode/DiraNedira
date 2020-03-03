@@ -4,10 +4,11 @@ import 'package:dira_nedira/home/account/apartment.dart';
 import '../Services/api_path.dart';
 import 'package:meta/meta.dart';
 import '../investments/investment.dart';
+import 'package:intl/intl.dart';
 
 abstract class Database {
   Future<void> createInvestment(Investment investment, String apartmentId);
-  Stream<List<Investment>> investmentsStream(String apartmentId);
+  Stream<List<Investment>> investmentsStream(String apartmentId, String yearMonth);
   Future<void> deleteInvestment(Investment investment, String apartmentId);
   Future<void> createApartment(Apartment apartment);
   Future<bool> doesApartmentIdExist(String apartmentId);
@@ -20,7 +21,7 @@ abstract class Database {
   Future<Apartment> getApartmentById(String aptId);
   Stream<Apartment> apartmentStream(String apartmentId);
   Stream<List<User>> userStream(String apartmentId);
-  Future<String> getUserPicUrlById(String uid) ;
+  Future<String> getUserPicUrlById(String uid);
 }
 
 String documentIdFromCurrentDate() => DateTime.now().toIso8601String();
@@ -30,25 +31,25 @@ class FirestoreDatabase implements Database {
   final String uid;
   final _service = FirestoreService.instace;
 
-
-
   @override
   Future<void> createInvestment(
           Investment investment, String apartmentId) async =>
       await _service.setData(
-        path: APIPath.investment(apartmentId, investment.id),
+        path: APIPath.investment(apartmentId, investment.id,
+            DateFormat.yMMM().format(investment.date)),
         data: investment.toMap(),
       );
   @override
-  Stream<List<Investment>> investmentsStream(String apartmentId) =>
+  Stream<List<Investment>> investmentsStream(String apartmentId, String yearMonth) =>
       _service.collectionStream(
-          path: APIPath.investments(apartmentId),
+          path: APIPath.investments(apartmentId, yearMonth),
           builder: (data, documentId) => Investment.fromMap(data, documentId));
 
   @override
-  Stream<List<User>> userStream(String apartmentId) => _service.collectionStream(
-      path: APIPath.apartmentUsers(apartmentId),
-      builder: (data, documentId) => User.fromMap(data));
+  Stream<List<User>> userStream(String apartmentId) =>
+      _service.collectionStream(
+          path: APIPath.apartmentUsers(apartmentId),
+          builder: (data, documentId) => User.fromMap(data));
 
   @override
   Stream<String> apartmentIdStream() {
@@ -63,7 +64,8 @@ class FirestoreDatabase implements Database {
   Future<void> deleteInvestment(
           Investment investment, String apartmentId) async =>
       await _service.deleteData(
-          path: APIPath.investment(apartmentId, investment.id));
+          path: APIPath.investment(apartmentId, investment.id,
+              DateFormat.yMMM().format(investment.date)));
 
   @override
   Future<void> createApartment(Apartment apartment) async {
