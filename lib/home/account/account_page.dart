@@ -2,10 +2,9 @@ import 'package:dira_nedira/Services/auth.dart';
 import 'package:dira_nedira/Services/database.dart';
 import 'package:dira_nedira/common_widgets/avatar.dart';
 import 'package:dira_nedira/common_widgets/custom_raised_button.dart';
+import 'package:dira_nedira/common_widgets/no_apartment_widget.dart';
 import 'package:dira_nedira/common_widgets/platform_alert_dialog.dart';
 import 'package:dira_nedira/home/account/apartment.dart';
-import 'package:dira_nedira/home/account/join_apartment_form.dart';
-import 'package:dira_nedira/home/account/new_apartment_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -51,8 +50,10 @@ class AccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final database = Provider.of<Database>(context);
-    final user = Provider.of<User>(
-        context); // we dont call auth.currentuser() because we can get the user SYNCHRONOUSLY here
+    final user = Provider.of<User>(context);
+    // we dont call auth.currentuser() because we can get the user SYNCHRONOUSLY here
+    final mediaQuery = MediaQuery.of(context);
+
     final apartment = Provider.of<Apartment>(context);
     return Scaffold(
       appBar: AppBar(
@@ -80,8 +81,8 @@ class AccountPage extends StatelessWidget {
                 ],
               ),
             )
-          : SafeArea(
-              child: _noApartmentColumn(context, database),
+          : NoApartmentWidget(
+              mediaQuery: mediaQuery,
             ),
     );
   }
@@ -113,46 +114,6 @@ class AccountPage extends StatelessWidget {
           ],
         ),
       ],
-    );
-  }
-
-  Widget _noApartmentColumn(BuildContext context, Database database) {
-    final mediaQuery = MediaQuery.of(context);
-    return Center(
-      child: Container(
-        alignment: Alignment.center,
-        height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.4,
-        child: Card(
-          elevation: 6,
-          margin: EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Center(
-                child: Text(
-                  "You do not have an apartment yet",
-                ),
-              ),
-              CustomRaisedButton(
-                child: Text(
-                  'create apartment',
-                  style: TextStyle(color: Colors.white),
-                ),
-                color: Theme.of(context).primaryColor,
-                onPressed: () => NewApartmentForm.show(context),
-              ),
-              CustomRaisedButton(
-                child: Text(
-                  'Join an existing apartment',
-                  style: TextStyle(color: Colors.white),
-                ),
-                color: Theme.of(context).primaryColor,
-                onPressed: () => JoinApartmentForm.show(context),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 

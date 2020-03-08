@@ -19,15 +19,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   TabItem _currentTab = TabItem.investments;
   final Map<TabItem, GlobalKey<NavigatorState>> navigatorKeys = {
-    TabItem.investments: GlobalKey<NavigatorState>(),
     TabItem.months: GlobalKey<NavigatorState>(),
+    TabItem.investments: GlobalKey<NavigatorState>(),
     TabItem.account: GlobalKey<NavigatorState>(),
   };
 
   Map<TabItem, WidgetBuilder> get widgetBuilders {
     return {
-      TabItem.investments: (_) => InvestmentsPage(),
       TabItem.months: (_) => MonthsPage(),
+      TabItem.investments: (_) => InvestmentsPage(),
       TabItem.account: (_) => AccountPage(),
     };
   }
