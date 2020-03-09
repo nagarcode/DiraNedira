@@ -1,8 +1,8 @@
 import 'package:dira_nedira/Services/auth.dart';
 import 'package:dira_nedira/common_widgets/avatar.dart';
+import 'package:dira_nedira/investments/investment.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import '../investments/investment.dart';
 import 'package:intl/intl.dart';
 
 class Chart extends StatelessWidget {

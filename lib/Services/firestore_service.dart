@@ -79,4 +79,17 @@ class FirestoreService {
     final url = map['photoUrl'];
     return url;
   }
+
+  Future<List<String>> monthsWithTransactions(
+      List<String> months, String path) async {
+    List<String> output;
+    for (String month in months) {
+      final doesMonthHaveTransactions = await Firestore.instance
+          .collection(path + '$month/')
+          .limit(1)
+          .getDocuments();
+      if (doesMonthHaveTransactions.documents.length != 0) output.add(month);
+    }
+    return output;
+  }
 }

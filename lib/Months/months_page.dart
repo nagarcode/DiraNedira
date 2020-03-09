@@ -1,3 +1,4 @@
+import 'package:dira_nedira/Services/database.dart';
 import 'package:dira_nedira/common_widgets/no_apartment_widget.dart';
 import 'package:dira_nedira/home/account/apartment.dart';
 import 'package:flutter/material.dart';
@@ -10,11 +11,28 @@ class MonthsPage extends StatefulWidget {
 }
 
 class _MonthsPageState extends State<MonthsPage> {
+  Future monthsFuture;
+  @override
+  void initState() {
+    super.initState();
+    monthsFuture = _getMonthsWithTransactions();
+  }
+
+  _getMonthsWithTransactions() async {
+    final List<String> months = List<String>();
+    for (int i = 1; i < 12; i++) {
+      months.add(DateFormat.yMMM()
+          .format(DateTime.now().subtract(Duration(days: 31 * (i)))));
+    }
+    final database = Provider.of<Database>(context);
+    return await database.getMonthsWithTransactions(
+        Provider.of<Apartment>(context).id, months);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final apartment = Provider.of<Apartment>(context);
     final PreferredSizeWidget appBar = AppBar(
-      title: Text('Investments'),
+      title: Text('History'),
     );
     return Scaffold(
       appBar: appBar,
@@ -32,8 +50,23 @@ class _MonthsPageState extends State<MonthsPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Expanded(
-              child: monthsList(context), //TODO:Make scrollable
-            ),
+                child: FutureBuilder(
+                    future: monthsFuture,
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
+                          return Text('Connection status: none');
+                        case ConnectionState.active:
+                          return Text('Connection status: active');
+                        case ConnectionState.waiting:
+                          return Text('Connection status: waiting');
+                        case ConnectionState.done:
+                          return monthsList(context, snapshot.data);
+                      }
+                    })
+                //monthsList(context), //TODO:Make scrollable
+                //TODO: limit the free version to 3 months history, paid - one year
+                ),
           ],
         ),
       );
@@ -42,7 +75,8 @@ class _MonthsPageState extends State<MonthsPage> {
     }
   }
 
-  ListView monthsList(BuildContext context) {
+  ListView monthsList(
+      BuildContext context, List<String> monthsWithTransactions) {
     return ListView.builder(
       itemBuilder: (ctx, index) {
         return Card(

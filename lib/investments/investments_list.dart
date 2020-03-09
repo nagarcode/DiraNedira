@@ -1,9 +1,9 @@
 import 'package:dira_nedira/Services/auth.dart';
+import 'package:dira_nedira/Services/database.dart';
 import 'package:dira_nedira/common_widgets/avatar.dart';
 import 'package:dira_nedira/common_widgets/platform_alert_dialog.dart';
 import 'package:dira_nedira/home/account/apartment.dart';
-import '../Services/database.dart';
-import '../investments/investment.dart';
+import 'package:dira_nedira/investments/investment.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';

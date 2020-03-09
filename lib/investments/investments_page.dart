@@ -1,13 +1,9 @@
-import 'package:dira_nedira/common_widgets/custom_raised_button.dart';
 import 'package:dira_nedira/common_widgets/no_apartment_widget.dart';
 import 'package:dira_nedira/home/account/apartment.dart';
-import 'package:dira_nedira/home/account/join_apartment_form.dart';
-import 'package:dira_nedira/home/account/new_apartment_form.dart';
-
-import './chart.dart';
-import '../investments/investments_list.dart';
-import '../investments/new_investment_form.dart';
-import './investment.dart';
+import 'package:dira_nedira/investments/chart.dart';
+import 'package:dira_nedira/investments/investment.dart';
+import 'package:dira_nedira/investments/investments_list.dart';
+import 'package:dira_nedira/investments/new_investment_form.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -42,7 +38,7 @@ class InvestmentsPage extends StatelessWidget {
         context); //TODO: change to this month's investments
     if (apartment != null && apartmentInvestments != null) {
       return SafeArea(
-        child: Column(
+        child: Column(//TODO Add pie chart
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Container(

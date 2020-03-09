@@ -1,6 +1,5 @@
-import './Services/auth.dart';
-
-import './landing_page.dart';
+import 'package:dira_nedira/Services/auth.dart';
+import 'package:dira_nedira/landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';

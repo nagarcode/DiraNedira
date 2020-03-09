@@ -1,6 +1,6 @@
+import 'package:dira_nedira/common_widgets/platform_alert_dialog.dart';
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
-import '../common_widgets/platform_alert_dialog.dart';
 
 class PlatformExceptionAlertDialog extends PlatformAlertDialog {
   PlatformExceptionAlertDialog({

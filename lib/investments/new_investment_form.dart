@@ -1,15 +1,14 @@
 import 'package:dira_nedira/Services/auth.dart';
+import 'package:dira_nedira/Services/database.dart';
+import 'package:dira_nedira/common_widgets/adaptive_flat_button.dart';
 import 'package:dira_nedira/common_widgets/platform_exception_alert_dialog.dart';
 import 'package:dira_nedira/home/account/apartment.dart';
 import 'package:dira_nedira/investments/investment.dart';
 import 'package:flutter/services.dart';
-
-import '../Services/database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import '../common_widgets/adaptive_flat_button.dart';
 
 class NewInvestmentForm extends StatefulWidget {
   const NewInvestmentForm(

@@ -1,14 +1,15 @@
+import 'package:dira_nedira/Services/api_path.dart';
 import 'package:dira_nedira/Services/auth.dart';
 import 'package:dira_nedira/Services/firestore_service.dart';
 import 'package:dira_nedira/home/account/apartment.dart';
-import '../Services/api_path.dart';
+import 'package:dira_nedira/investments/investment.dart';
 import 'package:meta/meta.dart';
-import '../investments/investment.dart';
 import 'package:intl/intl.dart';
 
 abstract class Database {
   Future<void> createInvestment(Investment investment, String apartmentId);
-  Stream<List<Investment>> investmentsStream(String apartmentId, String yearMonth);
+  Stream<List<Investment>> investmentsStream(
+      String apartmentId, String yearMonth);
   Future<void> deleteInvestment(Investment investment, String apartmentId);
   Future<void> createApartment(Apartment apartment);
   Future<bool> doesApartmentIdExist(String apartmentId);
@@ -22,6 +23,8 @@ abstract class Database {
   Stream<Apartment> apartmentStream(String apartmentId);
   Stream<List<User>> userStream(String apartmentId);
   Future<String> getUserPicUrlById(String uid);
+  Future<List<String>> getMonthsWithTransactions(
+      String apartmentId, List<String> months);
 }
 
 String documentIdFromCurrentDate() => DateTime.now().toIso8601String();
@@ -40,7 +43,8 @@ class FirestoreDatabase implements Database {
         data: investment.toMap(),
       );
   @override
-  Stream<List<Investment>> investmentsStream(String apartmentId, String yearMonth) =>
+  Stream<List<Investment>> investmentsStream(
+          String apartmentId, String yearMonth) =>
       _service.collectionStream(
           path: APIPath.investments(apartmentId, yearMonth),
           builder: (data, documentId) => Investment.fromMap(data, documentId));
@@ -123,5 +127,11 @@ class FirestoreDatabase implements Database {
   @override
   Future<String> getUserPicUrlById(String uid) {
     return _service.userPhotoUrl(APIPath.users(), uid);
+  }
+
+  @override
+  Future<List<String>> getMonthsWithTransactions(
+      String apartmentId, List<String> months) {
+    return _service.monthsWithTransactions(months, APIPath.months(apartmentId));
   }
 }

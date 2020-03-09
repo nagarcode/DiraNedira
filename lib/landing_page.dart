@@ -1,11 +1,10 @@
+import 'package:dira_nedira/Services/auth.dart';
+import 'package:dira_nedira/Services/database.dart';
 import 'package:dira_nedira/home/home_page.dart';
-
-import './Services/database.dart';
+import 'package:dira_nedira/sign_in/sign_in_screen.dart';
+import 'package:dira_nedira/splash-screen.dart';
 import 'package:provider/provider.dart';
-import './splash-screen.dart';
-import './Services/auth.dart';
 import 'package:flutter/material.dart';
-import './sign_in/sign_in_screen.dart';
 
 class LandingPage extends StatelessWidget {
   @override
