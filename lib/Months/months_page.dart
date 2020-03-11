@@ -10,7 +10,8 @@ class MonthsPage extends StatefulWidget {
   _MonthsPageState createState() => _MonthsPageState();
 }
 
-class _MonthsPageState extends State<MonthsPage> {
+class _MonthsPageState extends State<MonthsPage>
+    with AutomaticKeepAliveClientMixin<MonthsPage> {
   Future monthsFuture;
   @override
   void initState() {
@@ -61,6 +62,7 @@ class _MonthsPageState extends State<MonthsPage> {
                         case ConnectionState.waiting:
                           return Text('Connection status: waiting');
                         case ConnectionState.done:
+                          print('monthing');
                           return monthsList(context, snapshot.data);
                       }
                     })
@@ -100,4 +102,7 @@ class _MonthsPageState extends State<MonthsPage> {
       itemCount: 12,
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

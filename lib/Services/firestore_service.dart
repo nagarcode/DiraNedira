@@ -16,6 +16,7 @@ class FirestoreService {
     @required String path,
     @required T builder(Map<String, dynamic> data, String documentId),
   }) {
+    print('collection streaming: $path'); //TODO delete
     final reference = Firestore.instance.collection(path);
     final snapshots = reference.snapshots();
     return snapshots.map((snapshot) => snapshot.documents
@@ -90,6 +91,7 @@ class FirestoreService {
           .getDocuments();
       if (doesMonthHaveTransactions.documents.length != 0) output.add(month);
     }
+    print('output:' + output.toString());
     return output;
   }
 }
