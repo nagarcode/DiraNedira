@@ -43,63 +43,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final database = Provider.of<Database>(context);
-    return StreamBuilder<String>(
-      stream: database.apartmentIdStream(),
-      builder: (context, snapshot) {
-        final apartmentId = snapshot.hasData ? snapshot.data : null;
-        return StreamBuilder<Apartment>(
-          stream: database.apartmentStream(apartmentId),
-          builder: (context, apartmentSnapshot) {
-            final apartment = apartmentSnapshot.hasData && apartmentId != null
-                ? apartmentSnapshot.data
-                : null;
-            return StreamBuilder<List<User>>(
-              stream: database.userStream(apartmentId),
-              builder: (context, usersSnapshot) {
-                final usersList = usersSnapshot.hasData && apartmentId != null
-                    ? usersSnapshot.data
-                    : null;
-                return StreamBuilder<List<Investment>>(
-                  stream: apartment == null
-                      ? Stream.empty()
-                      : database.investmentsStream(apartment.id,
-                          DateFormat.yMMM().format(DateTime.now())),
-                  builder: (context, investmentsSnapshot) {
-                    final apartmentInvestments = investmentsSnapshot.hasData
-                        ? investmentsSnapshot.data
-                        : null;
-                    if (apartmentInvestments != null)
-                      apartmentInvestments
-                          .sort((a, b) => b.date.compareTo(a.date));
-                    return Provider<Apartment>.value(
-                      value: apartment,
-                      child: Provider<List<Investment>>.value(
-                        value: apartmentInvestments,
-                        child: Provider<List<User>>.value(
-                          value: usersList,
-                          child: WillPopScope(
-                            onWillPop: () async =>
-                                !await navigatorKeys[_currentTab]
-                                    .currentState
-                                    .maybePop(),
-                            child: CupertinoHomeScaffold(
-                              currentTab: _currentTab,
-                              onSelectTab: _select,
-                              widgetBuilders: widgetBuilders,
-                              navigatorKeys: navigatorKeys,
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
-            );
-          },
-        );
-      },
+    return CupertinoHomeScaffold(
+      currentTab: _currentTab,
+      onSelectTab: _select,
+      widgetBuilders: widgetBuilders,
+      navigatorKeys: navigatorKeys,
     );
   }
 }
