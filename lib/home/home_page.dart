@@ -1,14 +1,8 @@
-import 'package:dira_nedira/Services/auth.dart';
-import 'package:dira_nedira/Services/database.dart';
 import 'package:dira_nedira/home/account/account_page.dart';
-import 'package:dira_nedira/home/account/apartment.dart';
 import 'package:dira_nedira/home/cupertino_home_scaffold.dart';
 import 'package:dira_nedira/home/tab_item.dart';
-import 'package:dira_nedira/investments/investment.dart';
 import 'package:dira_nedira/investments/investments_page.dart';
 import 'package:dira_nedira/months/months_page.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
