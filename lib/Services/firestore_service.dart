@@ -37,7 +37,6 @@ class FirestoreService {
 
   Future<void> deleteData({@required String path}) async {
     final reference = Firestore.instance.document(path);
-    print('delete: $path');
     await reference.delete();
   }
 
@@ -83,7 +82,7 @@ class FirestoreService {
 
   Future<List<String>> monthsWithTransactions(
       List<String> months, String path) async {
-    List<String> output;
+    final List<String> output = List<String>();
     for (String month in months) {
       final doesMonthHaveTransactions = await Firestore.instance
           .collection(path + '$month/')
@@ -91,7 +90,6 @@ class FirestoreService {
           .getDocuments();
       if (doesMonthHaveTransactions.documents.length != 0) output.add(month);
     }
-    print('output:' + output.toString());
     return output;
   }
 }

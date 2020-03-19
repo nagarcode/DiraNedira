@@ -73,6 +73,7 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
             id: id,
             ownerUid: uid);
         await widget.database.createInvestment(investment, widget.apartmentId);
+        //TODO add the amount to a new total-month-sum field. (and also handle deletes)
         Navigator.of(context).pop();
       } on PlatformException catch (e) {
         PlatformExceptionAlertDialog(

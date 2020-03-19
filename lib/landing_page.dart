@@ -73,7 +73,7 @@ class LandingPage extends StatelessWidget {
                                       value: user,
                                       child: Provider<Database>(
                                         builder: (_) => database,
-                                        child: HomePage(),
+                                        child: HomePage(database, apartmentId),
                                       ),
                                     ),
                                   ),

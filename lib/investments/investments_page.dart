@@ -35,7 +35,7 @@ class InvestmentsPage extends StatelessWidget {
     final mediaQuery = MediaQuery.of(context);
     final apartment = Provider.of<Apartment>(context);
     final apartmentInvestments = Provider.of<List<Investment>>(
-        context); //TODO: change to this month's investments
+        context); 
     if (apartment != null && apartmentInvestments != null) {
       return SafeArea(
         child: Column(//TODO Add pie chart

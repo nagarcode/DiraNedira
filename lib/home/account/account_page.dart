@@ -49,11 +49,11 @@ class AccountPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('building account page');
     final database = Provider.of<Database>(context);
     final user = Provider.of<User>(context);
     // we dont call auth.currentuser() because we can get the user SYNCHRONOUSLY here
     final mediaQuery = MediaQuery.of(context);
-
     final apartment = Provider.of<Apartment>(context);
     return Scaffold(
       appBar: AppBar(
