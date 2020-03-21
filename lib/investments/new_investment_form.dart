@@ -66,11 +66,13 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
       try {
         final uid = widget.user.uid;
         final id = widget.investment?.id ?? documentIdFromCurrentDate();
+        final photoUrl = widget.user.photoUrl;
         final investment = Investment(
             amount: _amount,
             title: _title,
             date: _selectedDate,
             id: id,
+            ownerPhotoUrl: photoUrl,
             ownerUid: uid);
         await widget.database.createInvestment(investment, widget.apartmentId);
         //TODO add the amount to a new total-month-sum field. (and also handle deletes)

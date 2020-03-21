@@ -35,11 +35,6 @@ class FirestoreService {
     return snapshots.map((snapshot) => builder(snapshot.data));
   }
 
-  Future<void> deleteData({@required String path}) async {
-    final reference = Firestore.instance.document(path);
-    await reference.delete();
-  }
-
   Future<bool> doesApartmentIdExist(String id) async {
     try {
       final snapShot =
@@ -91,5 +86,69 @@ class FirestoreService {
       if (doesMonthHaveTransactions.documents.length != 0) output.add(month);
     }
     return output;
+  }
+
+  Future<Map<String, dynamic>> getDocumentByPath(String path) async {
+    final docReference = await Firestore.instance.document(path).get();
+    if (docReference.exists)
+      return docReference.data;
+    else
+      return null;
+  }
+
+  Future<void> initNewMonthInMonthlySumDoc(
+      String pathTomonthlySumDoc, String monthYear) {
+    final sumDocRef = Firestore.instance.document(pathTomonthlySumDoc);
+    return Firestore.instance.runTransaction((Transaction tx) async {
+      final docSnapshot = await tx.get(sumDocRef);
+      if (docSnapshot.exists) {
+        final prevData = docSnapshot.data;
+        prevData[monthYear] = 0;
+        return await tx.set(sumDocRef, prevData);
+      } else
+        return await tx.set(
+          sumDocRef,
+          <String, dynamic>{monthYear: 0},
+        );
+    });
+  }
+
+  Future<void> deleteData({@required String path}) async {
+    final reference = Firestore.instance.document(path);
+    await reference.delete();
+  }
+
+  Future<void> addInvestmentTransaction(
+      String pathTomonthlySumDoc,
+      String pathToWriteInvestment,
+      String monthYear,
+      int investmentAmount,
+      Map<String, dynamic> investmentData) async {
+    // assumes sunDoc already exists and contains current month's sum
+    final paymentReference = Firestore.instance.document(pathToWriteInvestment);
+    final sumDocRef = Firestore.instance.document(pathTomonthlySumDoc);
+    return Firestore.instance.runTransaction((Transaction tx) async {
+      final docSnapshot = await tx.get(sumDocRef);
+      final prevSumDocData = docSnapshot.data;
+      prevSumDocData[monthYear] = prevSumDocData[monthYear] + investmentAmount;
+      await tx.set(sumDocRef, prevSumDocData);
+      return await tx.set(paymentReference, investmentData);
+    });
+  }
+
+  Future<void> deleteInvestmentTransaction(
+      String pathTomonthlySumDoc,
+      String pathToInvestment,
+      String monthYear,
+      int investmentAmount,) {
+    final paymentReference = Firestore.instance.document(pathToInvestment);
+    final sumDocRef = Firestore.instance.document(pathTomonthlySumDoc);
+    return Firestore.instance.runTransaction((Transaction tx) async {
+      final docSnapshot = await tx.get(sumDocRef);
+      final prevSumDocData = docSnapshot.data;
+      prevSumDocData[monthYear] = prevSumDocData[monthYear] - investmentAmount;
+      await tx.set(sumDocRef, prevSumDocData);
+      return await paymentReference.delete();
+    });
   }
 }

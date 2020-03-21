@@ -25,6 +25,7 @@ abstract class Database {
   Future<String> getUserPicUrlById(String uid);
   Future<List<String>> getMonthsWithTransactions(
       String apartmentId, List<String> months);
+  Future<void> initMonthSumToZero(String apartmentId, String currentMonthYear);
 }
 
 String documentIdFromCurrentDate() => DateTime.now().toIso8601String();
@@ -36,12 +37,38 @@ class FirestoreDatabase implements Database {
 
   @override
   Future<void> createInvestment(
-          Investment investment, String apartmentId) async =>
-      await _service.setData(
-        path: APIPath.investment(apartmentId, investment.id,
-            DateFormat.yMMM().format(investment.date)),
-        data: investment.toMap(),
-      );
+      Investment investment, String apartmentId) async {
+    String monthYear = DateFormat.yMMM().format(investment.date);
+    String pathToMonthlySumDoc = APIPath.monthlySumDoc(apartmentId);
+    String pathToWritePayment = APIPath.investment(
+        apartmentId, investment.id, DateFormat.yMMM().format(investment.date));
+    Map<String, dynamic> paymentData = investment.toMap();
+    int investmentAmount = investment.amount;
+    return _service.addInvestmentTransaction(pathToMonthlySumDoc,
+        pathToWritePayment, monthYear, investmentAmount, paymentData);
+  }
+  // _service.setData(
+  //   path: APIPath.investment(apartmentId, investment.id,
+  //       DateFormat.yMMM().format(investment.date)),
+  //   data: investment.toMap(),
+  // );
+
+  @override
+  Future<void> deleteInvestment(
+      Investment investment, String apartmentId) async {
+    String pathToMonthlySumDoc = APIPath.monthlySumDoc(apartmentId);
+    String pathToInvestment = APIPath.investment(
+        apartmentId, investment.id, DateFormat.yMMM().format(investment.date));
+    String monthYear = DateFormat.yMMM().format(investment.date);
+    int investmentAmount = investment.amount;
+
+    await _service.deleteInvestmentTransaction(
+        pathToMonthlySumDoc, pathToInvestment, monthYear, investmentAmount);
+  }
+  // await _service.deleteData(
+  //     path: APIPath.investment(apartmentId, investment.id,
+  //         DateFormat.yMMM().format(investment.date)));
+
   @override
   Stream<List<Investment>> investmentsStream(
           String apartmentId, String yearMonth) =>
@@ -63,13 +90,6 @@ class FirestoreDatabase implements Database {
       builder: (data) => Apartment.idFromMap(data),
     );
   }
-
-  @override
-  Future<void> deleteInvestment(
-          Investment investment, String apartmentId) async =>
-      await _service.deleteData(
-          path: APIPath.investment(apartmentId, investment.id,
-              DateFormat.yMMM().format(investment.date)));
 
   @override
   Future<void> createApartment(Apartment apartment) async {
@@ -133,5 +153,11 @@ class FirestoreDatabase implements Database {
   Future<List<String>> getMonthsWithTransactions(
       String apartmentId, List<String> months) {
     return _service.monthsWithTransactions(months, APIPath.months(apartmentId));
+  }
+
+  @override
+  Future<void> initMonthSumToZero(String apartmentId, String monthYear) async {
+    String pathToSumDoc = APIPath.monthlySumDoc(apartmentId);
+    return await _service.initNewMonthInMonthlySumDoc(pathToSumDoc, monthYear);
   }
 }

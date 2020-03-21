@@ -34,9 +34,9 @@ class InvestmentsPage extends StatelessWidget {
   Widget _buildContents(BuildContext context, Size appBarPrefsize) {
     final mediaQuery = MediaQuery.of(context);
     final apartment = Provider.of<Apartment>(context);
-    final apartmentInvestments = Provider.of<List<Investment>>(
+    final currentMonthInvestments = Provider.of<List<Investment>>(
         context); 
-    if (apartment != null && apartmentInvestments != null) {
+    if (apartment != null && currentMonthInvestments != null) {
       return SafeArea(
         child: Column(//TODO Add pie chart
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -44,7 +44,7 @@ class InvestmentsPage extends StatelessWidget {
             Container(
               height: 250,
               child: Chart(
-                currentMonthInvestments(apartmentInvestments),
+                currentMonthInvestments,
               ),
             ),
             Expanded(
@@ -57,12 +57,12 @@ class InvestmentsPage extends StatelessWidget {
       return NoApartmentWidget(mediaQuery: mediaQuery);
   }
 
-  List<Investment> currentMonthInvestments(
-      List<Investment> apartmentInventments) {
-    List<Investment> toReturn = new List();
-    apartmentInventments.forEach((inv) {
-      if (inv.date.month == DateTime.now().month) toReturn.add(inv);
-    });
-    return toReturn;
-  }
+  // List<Investment> currentMonthInvestments(
+  //     List<Investment> apartmentInventments) {
+  //   List<Investment> toReturn = new List();
+  //   apartmentInventments.forEach((inv) {
+  //     if (inv.date.month == DateTime.now().month) toReturn.add(inv);
+  //   });
+  //   return toReturn;
+  // }
 }

@@ -6,6 +6,7 @@ class Investment {
   DateTime date;
   String id;
   String ownerUid;
+  String ownerPhotoUrl;
 
   Investment({
     @required this.title,
@@ -13,6 +14,7 @@ class Investment {
     @required this.date,
     @required this.id,
     @required this.ownerUid,
+    @required this.ownerPhotoUrl,
   });
 
   factory Investment.fromMap(Map<String, dynamic> data, String documentId) {
@@ -21,12 +23,14 @@ class Investment {
     final int amount = data['amount'];
     final DateTime date = data['date'].toDate();
     final String ownerUid = data['ownerUid'];
+    final String ownerPhotoUrl = data['ownerPhotoUrl'];
     return Investment(
         amount: amount,
         title: title,
         date: date,
         id: documentId,
-        ownerUid: ownerUid);
+        ownerUid: ownerUid,
+        ownerPhotoUrl: ownerPhotoUrl);
   }
 
   Map<String, dynamic> toMap() {
@@ -34,7 +38,8 @@ class Investment {
       'title': title,
       'amount': amount,
       'date': date,
-      'ownerUid': ownerUid
+      'ownerUid': ownerUid,
+      'ownerPhotoUrl': ownerPhotoUrl,
     };
   }
 }

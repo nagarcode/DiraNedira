@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final currentMonthYear =
+        DateFormat.yMMM().format(DateTime.now()); //TODO undo substraction
     final auth = Provider.of<AuthBase>(context, listen: false);
     return StreamBuilder<User>(
       stream: auth.onAuthStateChanged,
@@ -52,20 +54,25 @@ class LandingPage extends StatelessWidget {
                           return StreamBuilder<List<Investment>>(
                             stream: apartment == null
                                 ? Stream.empty()
-                                : database.investmentsStream(apartment.id,
-                                    DateFormat.yMMM().format(DateTime.now())),
+                                : database.investmentsStream(
+                                    apartment.id, currentMonthYear),
                             builder: (context, investmentsSnapshot) {
-                              final apartmentInvestments =
+                              final currentMonthInvestments =
                                   investmentsSnapshot.hasData
                                       ? investmentsSnapshot.data
                                       : null;
-                              if (apartmentInvestments != null)
-                                apartmentInvestments
+                              if (investmentsSnapshot.connectionState !=
+                                  ConnectionState.active) return SplashScreen();
+                              if (currentMonthInvestments != null)
+                                currentMonthInvestments
                                     .sort((a, b) => b.date.compareTo(a.date));
+                              if (currentMonthInvestments.isEmpty)
+                                database.initMonthSumToZero(
+                                    apartment.id, currentMonthYear);
                               return Provider<Apartment>.value(
                                 value: apartment,
                                 child: Provider<List<Investment>>.value(
-                                  value: apartmentInvestments,
+                                  value: currentMonthInvestments,
                                   child: Provider<List<User>>.value(
                                     value: usersList,
                                     child: Provider<User>.value(

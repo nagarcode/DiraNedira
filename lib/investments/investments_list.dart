@@ -29,17 +29,21 @@ class InvestmentsList extends StatelessWidget {
       return investments.isEmpty
           ? ListView(
               children: <Widget>[
-                Text(
-                  'No transactions added yet!',
-                  style: Theme.of(context).textTheme.title,
+                Center(
+                  child: Text(
+                    'No transactions added yet!',
+                    style: Theme.of(context).textTheme.title,
+                  ),
                 ),
                 SizedBox(
                   height: 20,
                 ),
-                Container(
-                    height: 200,
-                    child: Image.asset('assets/images/waiting.png',
-                        fit: BoxFit.cover)),
+                Center(
+                  child: Container(
+                      height: 200,
+                      child: Image.asset('assets/images/waiting.png',
+                          fit: BoxFit.cover)),
+                ),
               ],
             )
           : ListView.builder(
@@ -66,8 +70,9 @@ class InvestmentsList extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Avatar(
-                          photoUrl: getPhotoUrlByUid(
-                              investments[index].ownerUid, context),
+                          photoUrl: investments[index].ownerPhotoUrl,
+                          // getPhotoUrlByUid(
+                          //     investments[index].ownerUid, context),
                           radius: 10,
                         ),
                         IconButton(

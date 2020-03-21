@@ -53,7 +53,6 @@ class _MonthsPageState extends State<MonthsPage>
   Widget _buildContents(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final apartment = Provider.of<Apartment>(context);
-
     if (apartment != null) {
       return SafeArea(
         child: Column(
@@ -72,6 +71,8 @@ class _MonthsPageState extends State<MonthsPage>
                           return SplashScreen();
                         case ConnectionState.done:
                           return monthsList(context, snapshot.data);
+                        default:
+                          return SplashScreen();
                       }
                     })
                 //monthsList(context), //TODO:Make scrollable

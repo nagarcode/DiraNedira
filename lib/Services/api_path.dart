@@ -5,6 +5,10 @@ class APIPath {
 
   static String investments(String apartmentId, String yearMonth) =>
       'apartments/$apartmentId/investments/investments/$yearMonth';
+
+  static monthlySumDoc(String apartmentId) =>
+      'apartments/$apartmentId/investments/sum';
+
   static String months(String apartmentId) =>
       'apartments/$apartmentId/investments/investments/';
 
