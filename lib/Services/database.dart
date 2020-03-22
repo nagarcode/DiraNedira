@@ -26,6 +26,9 @@ abstract class Database {
   Future<List<String>> getMonthsWithTransactions(
       String apartmentId, List<String> months);
   Future<void> initMonthSumToZero(String apartmentId, String currentMonthYear);
+  Future<Map<String, dynamic>> getMonthlySumDoc(String apartmentId);
+  Future<List<Investment>> getInvestmentsByMonthYear(
+      String monthYear, String apartmentId);
 }
 
 String documentIdFromCurrentDate() => DateTime.now().toIso8601String();
@@ -68,6 +71,20 @@ class FirestoreDatabase implements Database {
   // await _service.deleteData(
   //     path: APIPath.investment(apartmentId, investment.id,
   //         DateFormat.yMMM().format(investment.date)));
+
+  @override
+  Future<Map<String, dynamic>> getMonthlySumDoc(String apartmentId) async {
+    print('fetching sum doc'); //TODO debug print
+    return await _service.getDocumentByPath(APIPath.monthlySumDoc(apartmentId));
+  }
+
+  @override
+  Future<List<Investment>> getInvestmentsByMonthYear(
+      String monthYear, String apartmentId) async {
+    return await _service.getCollection(
+        path: APIPath.investments(apartmentId, monthYear),
+        builder: (data, documentId) => Investment.fromMap(data, documentId));
+  }
 
   @override
   Stream<List<Investment>> investmentsStream(

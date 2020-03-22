@@ -12,6 +12,15 @@ class FirestoreService {
     await reference.setData(data);
   }
 
+  Future<List<T>> getCollection<T>(
+      {String path,
+      T builder(Map<String, dynamic> data, String documentId)}) async {
+    final reference = Firestore.instance.collection(path);
+    final snap = await reference.getDocuments();
+    return snap.documents
+        .map((snapshot) => builder(snapshot.data, snapshot.documentID)).toList();
+  }
+
   Stream<List<T>> collectionStream<T>({
     @required String path,
     @required T builder(Map<String, dynamic> data, String documentId),
@@ -124,12 +133,15 @@ class FirestoreService {
       String monthYear,
       int investmentAmount,
       Map<String, dynamic> investmentData) async {
-    // assumes sunDoc already exists and contains current month's sum
+    // assumes sumDoc already exists and contains current month's sum
     final paymentReference = Firestore.instance.document(pathToWriteInvestment);
     final sumDocRef = Firestore.instance.document(pathTomonthlySumDoc);
     return Firestore.instance.runTransaction((Transaction tx) async {
       final docSnapshot = await tx.get(sumDocRef);
       final prevSumDocData = docSnapshot.data;
+      if (!prevSumDocData.containsKey(monthYear))
+        prevSumDocData[monthYear] =
+            0; // in case this is the first investment for the given month
       prevSumDocData[monthYear] = prevSumDocData[monthYear] + investmentAmount;
       await tx.set(sumDocRef, prevSumDocData);
       return await tx.set(paymentReference, investmentData);
@@ -137,10 +149,11 @@ class FirestoreService {
   }
 
   Future<void> deleteInvestmentTransaction(
-      String pathTomonthlySumDoc,
-      String pathToInvestment,
-      String monthYear,
-      int investmentAmount,) {
+    String pathTomonthlySumDoc,
+    String pathToInvestment,
+    String monthYear,
+    int investmentAmount,
+  ) {
     final paymentReference = Firestore.instance.document(pathToInvestment);
     final sumDocRef = Firestore.instance.document(pathTomonthlySumDoc);
     return Firestore.instance.runTransaction((Transaction tx) async {

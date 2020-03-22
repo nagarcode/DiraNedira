@@ -8,21 +8,51 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 class InvestmentsPage extends StatelessWidget {
+  //TODO change colors if history(got here through months page)
+  final bool isHistory;
+  final List<Investment> investments;
+  InvestmentsPage({this.isHistory, this.investments});
+
+  static Future<void> show(
+      {BuildContext context,
+      bool isHistory,
+      Future<List<Investment>> investmentsFuture}) async {
+    final investmentsToDisplay = await investmentsFuture;
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => InvestmentsPage(
+          isHistory: isHistory,
+          investments: investmentsToDisplay,
+        ),
+        fullscreenDialog: true,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final apartment = Provider.of<Apartment>(context);
     final PreferredSizeWidget appBar = AppBar(
       title: Text('Investments'),
       actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.add, color: Colors.white),
-          onPressed: () {
-            if (apartment != null)
-              return NewInvestmentForm.show(context);
-            else
-              return null;
-          },
-        ),
+        isHistory
+            ? FlatButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(
+                  'Done',
+                  style: Theme.of(context).textTheme.title.copyWith(
+                      color: Colors.white, fontWeight: FontWeight.normal),
+                ),
+              )
+            : IconButton(
+                icon: Icon(Icons.add, color: Colors.white),
+                onPressed: () {
+                  if (apartment != null)
+                    return NewInvestmentForm.show(context);
+                  else
+                    return null;
+                },
+              ),
       ],
     );
     return Scaffold(
@@ -34,21 +64,19 @@ class InvestmentsPage extends StatelessWidget {
   Widget _buildContents(BuildContext context, Size appBarPrefsize) {
     final mediaQuery = MediaQuery.of(context);
     final apartment = Provider.of<Apartment>(context);
-    final currentMonthInvestments = Provider.of<List<Investment>>(
-        context); 
+    final currentMonthInvestments = investments;
     if (apartment != null && currentMonthInvestments != null) {
       return SafeArea(
-        child: Column(//TODO Add pie chart
+        child: Column(
+          //TODO Add pie chart
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Container(
-              height: 250,
-              child: Chart(
-                currentMonthInvestments,
-              ),
+              height: 230,
+              child: Chart(investments: currentMonthInvestments),
             ),
             Expanded(
-              child: InvestmentsList(), //TODO:Make scrollable
+              child: InvestmentsList(investments), //TODO:Make scrollable
             ),
           ],
         ),
@@ -56,13 +84,4 @@ class InvestmentsPage extends StatelessWidget {
     } else
       return NoApartmentWidget(mediaQuery: mediaQuery);
   }
-
-  // List<Investment> currentMonthInvestments(
-  //     List<Investment> apartmentInventments) {
-  //   List<Investment> toReturn = new List();
-  //   apartmentInventments.forEach((inv) {
-  //     if (inv.date.month == DateTime.now().month) toReturn.add(inv);
-  //   });
-  //   return toReturn;
-  // }
 }

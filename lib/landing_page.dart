@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 class LandingPage extends StatelessWidget {
+  //TODO check pubspec.yaml dependencies versions before release
   @override
   Widget build(BuildContext context) {
     final currentMonthYear =

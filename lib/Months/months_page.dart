@@ -1,6 +1,7 @@
 import 'package:dira_nedira/Services/database.dart';
 import 'package:dira_nedira/common_widgets/no_apartment_widget.dart';
 import 'package:dira_nedira/home/account/apartment.dart';
+import 'package:dira_nedira/investments/investments_page.dart';
 import 'package:dira_nedira/splash-screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -21,18 +22,11 @@ class _MonthsPageState extends State<MonthsPage>
   @override
   void initState() {
     super.initState();
-    monthsFuture = _getMonthsWithTransactions();
+    monthsFuture = monthsSumMap();
   }
 
-  _getMonthsWithTransactions() async {
-    final List<String> months = List<String>();
-    for (int i = 1; i <= 12; i++) {
-      final toAdd = DateFormat.yMMM()
-          .format(DateTime.now().subtract(Duration(days: 31 * (i))));
-      months.add(toAdd);
-    }
-    return await widget.database
-        .getMonthsWithTransactions(widget.apartmentId, months);
+  Future<Map<String, dynamic>> monthsSumMap() async {
+    return await widget.database.getMonthlySumDoc(widget.apartmentId);
   }
 
   @override
@@ -70,12 +64,17 @@ class _MonthsPageState extends State<MonthsPage>
                         case ConnectionState.waiting:
                           return SplashScreen();
                         case ConnectionState.done:
-                          return monthsList(context, snapshot.data);
+                          final listToDisplay =
+                              monthsList(context, snapshot.data);
+                          if (listToDisplay == null) {
+                            return Text(
+                                'wow such empty'); //TODO replace with gui
+                          }
+                          return listToDisplay;
                         default:
                           return SplashScreen();
                       }
                     })
-                //monthsList(context), //TODO:Make scrollable
                 //TODO: limit the free version to 3 months history, paid - one year
                 ),
           ],
@@ -86,28 +85,65 @@ class _MonthsPageState extends State<MonthsPage>
     }
   }
 
-  ListView monthsList(
-      BuildContext context, List<String> monthsWithTransactions) {
+  ListView monthsList(BuildContext context,
+      Map<String, dynamic> monthsWithTransactionsAndAmount) {
+    final currentMonthYear = DateFormat.yMMM().format(DateTime.now());
+    if (monthsWithTransactionsAndAmount == null) return null;
+    final keys = monthsWithTransactionsAndAmount.keys.toList();
+    keys.remove(currentMonthYear);
+    final length = keys.length;
     return ListView.builder(
-        itemBuilder: (ctx, index) {
-          return Card(
+      itemCount: keys.length,
+      itemBuilder: (ctx, index) {
+        var reversedIndex = length - index - 1;
+        return GestureDetector(
+          onTap: () {
+            print('tapped');
+            InvestmentsPage.show(
+                isHistory: true,
+                context: context,
+                investmentsFuture: widget.database.getInvestmentsByMonthYear(
+                    keys[reversedIndex], widget.apartmentId));
+          },
+          child: Card(
             margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
             elevation: 5,
             child: ListTile(
-              title: Center(
-                  child: Text(
-                monthsWithTransactions[index],
-                style: Theme.of(context)
-                    .textTheme
-                    .title
-                    .copyWith(color: Colors.lightBlue),
-              )),
-              subtitle: Center(child: Text('amount spent')),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    keys[reversedIndex] + ':',
+                    style: Theme.of(context)
+                        .textTheme
+                        .title
+                        .copyWith(color: Colors.lightBlue, fontSize: 22),
+                  ),
+                ],
+              ),
+              subtitle: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    monthsWithTransactionsAndAmount[keys[reversedIndex]]
+                            .toString() +
+                        '₪',
+                    style: Theme.of(context).textTheme.title.copyWith(
+                          fontSize: 22,
+                        ),
+                  ),
+                  Text(
+                    ' total monthly expenses',
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          );
-        },
-        itemCount: monthsWithTransactions == null
-            ? 0
-            : monthsWithTransactions.length); //TODO replace
+          ),
+        );
+      },
+    );
   }
 }

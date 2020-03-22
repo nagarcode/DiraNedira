@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class ChartBar extends StatelessWidget {
-  //TODO:Change to display apartment residents and their respective expense
   final String label;
   final double spendingAmount;
   final double spendingPercentOfTotal;

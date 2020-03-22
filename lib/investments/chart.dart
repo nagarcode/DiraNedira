@@ -9,7 +9,7 @@ class Chart extends StatelessWidget {
   final List<Investment> investments;
   final Map<String, int> userInvestmentSum = new Map();
 
-  Chart(this.investments);
+  Chart({this.investments});
 
   List<Map<String, Object>> get groupedTransactionValues {
     return List.generate(6, (index) {

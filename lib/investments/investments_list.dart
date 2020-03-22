@@ -9,22 +9,21 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class InvestmentsList extends StatelessWidget {
-  InvestmentsList();
+  final List<Investment> investments;
+  InvestmentsList(this.investments);
 
-  String getPhotoUrlByUid(String uid, BuildContext context) {
-    final userList = Provider.of<List<User>>(context);
-    for (int i = 0; i < userList.length; i++) {
-      if (userList[i].uid == uid) return userList[i].photoUrl;
-    }
-  }
+  // String getPhotoUrlByUid(String uid, BuildContext context) {
+  //   final userList = Provider.of<List<User>>(context);
+  //   for (int i = 0; i < userList.length; i++) {
+  //     if (userList[i].uid == uid) return userList[i].photoUrl;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     final database = Provider.of<Database>(context);
     final apartment = Provider.of<Apartment>(context);
     final currentUser = Provider.of<User>(context);
-    final investments = Provider.of<List<Investment>>(
-        context); //TODO: change to this month's investments
     if (apartment != null)
       return investments.isEmpty
           ? ListView(
