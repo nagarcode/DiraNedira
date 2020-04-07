@@ -75,7 +75,6 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
             ownerPhotoUrl: photoUrl,
             ownerUid: uid);
         await widget.database.createInvestment(investment, widget.apartmentId);
-        //TODO add the amount to a new total-month-sum field. (and also handle deletes)
         Navigator.of(context).pop();
       } on PlatformException catch (e) {
         PlatformExceptionAlertDialog(
@@ -104,7 +103,8 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
             context: context,
             initialDate: now,
             //firstDate: DateTime(now.year, now.month, 1), //TODO: uncomment
-            firstDate: DateTime(now.year, DateTime.january, 1),
+            firstDate: DateTime(
+                now.subtract(Duration(days: 300)).year, DateTime.january, 1),
             lastDate: now)
         .then((pickedDate) {
       if (pickedDate == null) return;

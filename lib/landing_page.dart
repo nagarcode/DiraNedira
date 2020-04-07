@@ -19,7 +19,8 @@ class LandingPage extends StatelessWidget {
     return StreamBuilder<User>(
       stream: auth.onAuthStateChanged,
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.active) {
+        if (snapshot.connectionState == ConnectionState.active &&
+            snapshot.connectionState != ConnectionState.done) {
           User user = snapshot.data;
           if (user == null) {
             return SignInScreen.create(context);
@@ -29,7 +30,8 @@ class LandingPage extends StatelessWidget {
             stream: database.apartmentIdStream(),
             builder: (context, snapshot) {
               final apartmentId = snapshot.hasData ? snapshot.data : null;
-              if (snapshot.connectionState != ConnectionState.active)
+              if (snapshot.connectionState != ConnectionState.active &&
+                  snapshot.connectionState != ConnectionState.done)
                 return SplashScreen();
               else
                 return StreamBuilder<Apartment>(
@@ -40,7 +42,9 @@ class LandingPage extends StatelessWidget {
                             ? apartmentSnapshot.data
                             : null;
                     if (apartmentSnapshot.connectionState !=
-                        ConnectionState.active)
+                            ConnectionState.active &&
+                        apartmentSnapshot.connectionState !=
+                            ConnectionState.done)
                       return SplashScreen();
                     else
                       return StreamBuilder<List<User>>(
@@ -51,7 +55,9 @@ class LandingPage extends StatelessWidget {
                                   ? usersSnapshot.data
                                   : null;
                           if (usersSnapshot.connectionState !=
-                              ConnectionState.active) return SplashScreen();
+                                  ConnectionState.active &&
+                              usersSnapshot.connectionState !=
+                                  ConnectionState.done) return SplashScreen();
                           return StreamBuilder<List<Investment>>(
                             stream: apartment == null
                                 ? Stream.empty()
@@ -63,11 +69,15 @@ class LandingPage extends StatelessWidget {
                                       ? investmentsSnapshot.data
                                       : null;
                               if (investmentsSnapshot.connectionState !=
-                                  ConnectionState.active) return SplashScreen();
+                                      ConnectionState.active &&
+                                  investmentsSnapshot.connectionState !=
+                                      ConnectionState.done)
+                                return SplashScreen();
                               if (currentMonthInvestments != null)
                                 currentMonthInvestments
                                     .sort((a, b) => b.date.compareTo(a.date));
-                              if (currentMonthInvestments.isEmpty)
+                              if (currentMonthInvestments != null &&
+                                  currentMonthInvestments.isEmpty)
                                 database.initMonthSumToZero(
                                     apartment.id, currentMonthYear);
                               return Provider<Apartment>.value(

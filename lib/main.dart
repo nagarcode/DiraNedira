@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-void main() {//TODO Change bundle id - ios and android  NagarCode
+void main() {
+  //TODO Change bundle id - ios and android  NagarCode
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -21,7 +22,9 @@ class DiraNedira extends StatelessWidget {
       child: MaterialApp(
         title: 'Dira Nedira',
         theme: ThemeData(
+          disabledColor: Colors.grey,
           primarySwatch: Colors.lightBlue,
+          accentColor: Colors.amber[400],
           fontFamily: 'Quicksand',
           textTheme: ThemeData.light().textTheme.copyWith(
               title: TextStyle(

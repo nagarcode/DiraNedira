@@ -16,7 +16,8 @@ class MonthsPage extends StatefulWidget {
 }
 
 class _MonthsPageState extends State<MonthsPage>
-    with AutomaticKeepAliveClientMixin<MonthsPage> {
+    with AutomaticKeepAliveClientMixin<MonthsPage>
+     {
   Future monthsFuture;
 
   @override

@@ -10,7 +10,8 @@ import 'package:provider/provider.dart';
 
 class InvestmentsList extends StatelessWidget {
   final List<Investment> investments;
-  InvestmentsList(this.investments);
+  final bool isHistory;
+  InvestmentsList({this.investments, this.isHistory});
 
   // String getPhotoUrlByUid(String uid, BuildContext context) {
   //   final userList = Provider.of<List<User>>(context);
@@ -24,6 +25,7 @@ class InvestmentsList extends StatelessWidget {
     final database = Provider.of<Database>(context);
     final apartment = Provider.of<Apartment>(context);
     final currentUser = Provider.of<User>(context);
+    final theme = Theme.of(context);
     if (apartment != null)
       return investments.isEmpty
           ? ListView(
@@ -52,11 +54,17 @@ class InvestmentsList extends StatelessWidget {
                   elevation: 5,
                   child: ListTile(
                     leading: CircleAvatar(
+                      backgroundColor: isHistory
+                          ? theme.disabledColor
+                          : theme.appBarTheme.color,
                       radius: 30,
                       child: Padding(
                         padding: EdgeInsets.all(6),
                         child: FittedBox(
-                            child: Text('₪${investments[index].amount}')),
+                            child: Text(
+                          '₪${investments[index].amount}',
+                          style: TextStyle(color: isHistory ? Colors.white : Colors.black),
+                        )),
                       ),
                     ),
                     title: Text(

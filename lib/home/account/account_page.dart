@@ -97,46 +97,76 @@ class AccountPage extends StatelessWidget {
       children: <Widget>[
         Container(
           height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.3,
-          child: _usersCard(context, apartment, database, userList),
+          child: Column(
+            children: <Widget>[
+              _usersCard(context, apartment, database, userList),
+            ],
+          ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            CustomRaisedButton(
-              child: Text(
-                'Leave Apartment',
-                style: TextStyle(color: Colors.white),
-              ),
-              color: Colors.red,
-              onPressed: () =>
-                  _confirmLeaveApartment(context, apartment.id, database),
-            ),
-          ],
+          children: <Widget>[],
         ),
       ],
     );
   }
 
+  CustomRaisedButton leaveApartmentButton(
+      BuildContext context, Apartment apartment, Database database) {
+    return CustomRaisedButton(
+      child: Text(
+        'Leave Apartment',
+        style: TextStyle(color: Colors.white),
+      ),
+      color: Colors.red,
+      onPressed: () => _confirmLeaveApartment(context, apartment.id, database),
+    );
+  }
+
   Widget _usersCard(BuildContext context, Apartment apartment,
       Database database, List<User> userList) {
+    final theme = Theme.of(context);
     return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9.0)),
       elevation: 6,
       margin: EdgeInsets.all(20),
       child: Padding(
         padding: EdgeInsets.all(10),
         child: Column(
           children: <Widget>[
-            Center(
-              child: Text("Your Dira Nedira:\n ${apartment.id}"),
-            ),
+            apartmentInfoCard(theme, apartment),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: userList.map((data) {
                 return _buildUserInfo(data, Colors.black, 25);
               }).toList(),
             ),
+            leaveApartmentButton(context, apartment, database),
+            SizedBox(height: 1),
           ],
         ),
+      ),
+    );
+  }
+
+  Center apartmentInfoCard(ThemeData theme, Apartment apartment) {
+    return Center(
+      child: SizedBox(
+        width: double.infinity,
+        child: Center(
+            child: Column(
+          children: <Widget>[
+            Text(
+              "Your Dira Nedira:",
+              style: theme.textTheme.title.copyWith(color: theme.primaryColor),
+            ),
+            Center(
+                child: Text(
+              apartment.id,
+              style: theme.textTheme.title,
+            ))
+          ],
+        )),
       ),
     );
   }

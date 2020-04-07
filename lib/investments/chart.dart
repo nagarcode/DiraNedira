@@ -3,7 +3,6 @@ import 'package:dira_nedira/common_widgets/avatar.dart';
 import 'package:dira_nedira/investments/investment.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class Chart extends StatelessWidget {
   final List<Investment> investments;
@@ -11,25 +10,25 @@ class Chart extends StatelessWidget {
 
   Chart({this.investments});
 
-  List<Map<String, Object>> get groupedTransactionValues {
-    return List.generate(6, (index) {
-      final weekDay = DateTime.now().subtract(Duration(days: index));
+  // List<Map<String, Object>> get groupedTransactionValues {
+  //   return List.generate(6, (index) {
+  //     final weekDay = DateTime.now().subtract(Duration(days: index));
 
-      int totalSum = 0;
+  //     int totalSum = 0;
 
-      for (var i = 0; i < investments.length; i++) {
-        if (investments[i].date.day == weekDay.day &&
-            investments[i].date.month == weekDay.month &&
-            investments[i].date.year == weekDay.year) {
-          totalSum += investments[i].amount;
-        }
-      }
-      return {
-        'day': DateFormat.E().format(weekDay).substring(0, 1),
-        'amount': totalSum,
-      };
-    }).reversed.toList();
-  }
+  //     for (var i = 0; i < investments.length; i++) {
+  //       if (investments[i].date.day == weekDay.day &&
+  //           investments[i].date.month == weekDay.month &&
+  //           investments[i].date.year == weekDay.year) {
+  //         totalSum += investments[i].amount;
+  //       }
+  //     }
+  //     return {
+  //       'day': DateFormat.E().format(weekDay).substring(0, 1),
+  //       'amount': totalSum,
+  //     };
+  //   }).reversed.toList();
+  // }
 
   int get totalSpending {
     var sum = 0;
@@ -41,6 +40,7 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final userList = Provider.of<List<User>>(context);
     for (int i = 0; i < userList.length; i++)
       initUserinvestmentSumMap(userList[i].uid);
@@ -57,7 +57,7 @@ class Chart extends StatelessWidget {
               children: userList.map((data) {
                 return Flexible(
                   fit: FlexFit.tight,
-                  child: _buildUserInfo(data),
+                  child: _buildUserInfo(data, theme),
                 );
               }).toList(),
             ),
@@ -93,7 +93,7 @@ class Chart extends StatelessWidget {
     return (totalSpending ~/ userInvestmentSum.length);
   }
 
-  Widget _buildUserInfo(User user) {
+  Widget _buildUserInfo(User user, ThemeData theme) {
     return Wrap(
       runAlignment: WrapAlignment.center,
       alignment: WrapAlignment.center,
@@ -103,6 +103,8 @@ class Chart extends StatelessWidget {
         if (user.disaplayName != null)
           Text(
             user.disaplayName,
+            style: theme.textTheme.title
+                .copyWith(fontSize: 14, color: Colors.black),
           ),
         Avatar(
           photoUrl: user.photoUrl,
@@ -111,6 +113,7 @@ class Chart extends StatelessWidget {
         SizedBox(height: 8),
         Text(
           'Spent: ' + userInvestmentSum[user.uid].toString() + '₪',
+          style: theme.textTheme.title.copyWith(fontSize: 14),
         ),
         SizedBox(height: 8),
         Center(child: shouldGetOrAdd(user.uid)),

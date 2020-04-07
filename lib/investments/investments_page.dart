@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 class InvestmentsPage extends StatelessWidget {
-  //TODO change colors if history(got here through months page)
   final bool isHistory;
   final List<Investment> investments;
   InvestmentsPage({this.isHistory, this.investments});
@@ -32,7 +31,10 @@ class InvestmentsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final apartment = Provider.of<Apartment>(context);
+    final theme = Theme.of(context);
     final PreferredSizeWidget appBar = AppBar(
+      backgroundColor:
+          isHistory ? theme.disabledColor : theme.appBarTheme.color,
       title: Text('Investments'),
       actions: <Widget>[
         isHistory
@@ -56,6 +58,7 @@ class InvestmentsPage extends StatelessWidget {
       ],
     );
     return Scaffold(
+      backgroundColor: isHistory ? Colors.grey[300] : Colors.white,
       appBar: appBar,
       body: _buildContents(context, appBar.preferredSize),
     );
@@ -76,7 +79,9 @@ class InvestmentsPage extends StatelessWidget {
               child: Chart(investments: currentMonthInvestments),
             ),
             Expanded(
-              child: InvestmentsList(investments), //TODO:Make scrollable
+              child: InvestmentsList(
+                  investments: investments,
+                  isHistory: isHistory), //TODO:Make scrollable
             ),
           ],
         ),
