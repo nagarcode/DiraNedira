@@ -74,7 +74,6 @@ class FirestoreDatabase implements Database {
 
   @override
   Future<Map<String, dynamic>> getMonthlySumDoc(String apartmentId) async {
-    print('fetching sum doc'); //TODO debug print
     return await _service.getDocumentByPath(APIPath.monthlySumDoc(apartmentId));
   }
 

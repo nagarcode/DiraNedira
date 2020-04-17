@@ -55,6 +55,7 @@ class AccountPage extends StatelessWidget {
     // we dont call auth.currentuser() because we can get the user SYNCHRONOUSLY here
     final mediaQuery = MediaQuery.of(context);
     final apartment = Provider.of<Apartment>(context);
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Account'),
@@ -75,9 +76,20 @@ class AccountPage extends StatelessWidget {
       body: (apartment != null)
           ? SafeArea(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  _hasApartmentColumn(context, apartment, database)
+                  _hasApartmentColumn(context, apartment, database),
+                  Center(
+                      child: Text(
+                    'More Features Coming Soon! stay tuned',
+                    style:
+                        theme.textTheme.title.copyWith(color: Colors.lightBlue),
+                  )),
+                  Center(
+                      child: Text(
+                    'Dira nedira is developed by a single developer with a vision and not a billion dollar company... ',
+                    textAlign: TextAlign.center,
+                  )),
                 ],
               ),
             )

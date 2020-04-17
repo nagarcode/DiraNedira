@@ -14,7 +14,7 @@ class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentMonthYear =
-        DateFormat.yMMM().format(DateTime.now()); //TODO undo substraction
+        DateFormat.yMMM().format(DateTime.now()); 
     final auth = Provider.of<AuthBase>(context, listen: false);
     return StreamBuilder<User>(
       stream: auth.onAuthStateChanged,

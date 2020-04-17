@@ -8,6 +8,7 @@ class FirestoreService {
 
   Future<void> setData(
       {@required String path, Map<String, dynamic> data}) async {
+    print("Writing: " + data.toString()); //TODO: Delete
     final reference = Firestore.instance.document(path);
     await reference.setData(data);
   }
@@ -15,17 +16,19 @@ class FirestoreService {
   Future<List<T>> getCollection<T>(
       {String path,
       T builder(Map<String, dynamic> data, String documentId)}) async {
+    print("getting collection:" + path); //TODO: Delete
     final reference = Firestore.instance.collection(path);
     final snap = await reference.getDocuments();
     return snap.documents
-        .map((snapshot) => builder(snapshot.data, snapshot.documentID)).toList();
+        .map((snapshot) => builder(snapshot.data, snapshot.documentID))
+        .toList();
   }
 
   Stream<List<T>> collectionStream<T>({
     @required String path,
     @required T builder(Map<String, dynamic> data, String documentId),
   }) {
-    print('collection streaming: $path'); //TODO delete
+    print('Getting collection stream: $path'); //TODO delete
     final reference = Firestore.instance.collection(path);
     final snapshots = reference.snapshots();
     return snapshots.map((snapshot) => snapshot.documents
@@ -39,12 +42,14 @@ class FirestoreService {
       {@required String path,
       @required String uid,
       String builder(Map<String, dynamic> data)}) {
+    print('Getting ApartmentId stream:'); //TODO delete
     final reference = Firestore.instance.collection(path).document(uid);
     final snapshots = reference.snapshots();
     return snapshots.map((snapshot) => builder(snapshot.data));
   }
 
   Future<bool> doesApartmentIdExist(String id) async {
+    print('Getting does apartment exists boolean'); //TODO delete
     try {
       final snapShot =
           await Firestore.instance.collection('apartments').document(id).get();
@@ -58,6 +63,7 @@ class FirestoreService {
   }
 
   Future<bool> loginToApartment({String apartmentId, String pass}) async {
+    print('Logging in to apartment'); //TODO delete
     final snapshot = await Firestore.instance
         .collection('apartments')
         .document(apartmentId)
@@ -71,12 +77,14 @@ class FirestoreService {
       {@required String path,
       String apartmentId,
       Apartment builder(Map<String, dynamic> data)}) {
+        print('Getting Apartment Stream'); //TODO delete
     final reference = Firestore.instance.collection(path).document(apartmentId);
     final snapshots = reference.snapshots();
     return snapshots.map((snapshot) => builder(snapshot.data));
   }
 
   Future<String> userPhotoUrl(String path, String uid) async {
+    print('Getting user pgoto url'); //TODO delete
     final snapshot =
         await Firestore.instance.collection(path).document(uid).get();
     final map = snapshot.data;
@@ -86,6 +94,7 @@ class FirestoreService {
 
   Future<List<String>> monthsWithTransactions(
       List<String> months, String path) async {
+        print('Getting months with transactions'); //TODO delete
     final List<String> output = List<String>();
     for (String month in months) {
       final doesMonthHaveTransactions = await Firestore.instance
@@ -98,6 +107,7 @@ class FirestoreService {
   }
 
   Future<Map<String, dynamic>> getDocumentByPath(String path) async {
+    print('Getting doc by path: ' + path); //TODO delete
     final docReference = await Firestore.instance.document(path).get();
     if (docReference.exists)
       return docReference.data;
@@ -107,6 +117,7 @@ class FirestoreService {
 
   Future<void> initNewMonthInMonthlySumDoc(
       String pathTomonthlySumDoc, String monthYear) {
+        print('initializing monthly doc'); //TODO delete
     final sumDocRef = Firestore.instance.document(pathTomonthlySumDoc);
     return Firestore.instance.runTransaction((Transaction tx) async {
       final docSnapshot = await tx.get(sumDocRef);
@@ -123,6 +134,7 @@ class FirestoreService {
   }
 
   Future<void> deleteData({@required String path}) async {
+    print('Deleting: ' + path); //TODO delete
     final reference = Firestore.instance.document(path);
     await reference.delete();
   }
@@ -133,6 +145,7 @@ class FirestoreService {
       String monthYear,
       int investmentAmount,
       Map<String, dynamic> investmentData) async {
+        print('Adding an investment'); //TODO delete
     // assumes sumDoc already exists and contains current month's sum
     final paymentReference = Firestore.instance.document(pathToWriteInvestment);
     final sumDocRef = Firestore.instance.document(pathTomonthlySumDoc);
@@ -154,6 +167,7 @@ class FirestoreService {
     String monthYear,
     int investmentAmount,
   ) {
+    print('Deleting an investment'); //TODO delete
     final paymentReference = Firestore.instance.document(pathToInvestment);
     final sumDocRef = Firestore.instance.document(pathTomonthlySumDoc);
     return Firestore.instance.runTransaction((Transaction tx) async {

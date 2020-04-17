@@ -35,7 +35,7 @@ class _MonthsPageState extends State<MonthsPage>
 
   @override
   Widget build(BuildContext context) {
-    print('building months page');
+    print('building months page'); //TODO: delete
     final PreferredSizeWidget appBar = AppBar(
       title: Text('History'),
     );
@@ -99,7 +99,6 @@ class _MonthsPageState extends State<MonthsPage>
         var reversedIndex = length - index - 1;
         return GestureDetector(
           onTap: () {
-            print('tapped');
             InvestmentsPage.show(
                 isHistory: true,
                 context: context,
