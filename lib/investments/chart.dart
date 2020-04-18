@@ -10,26 +10,6 @@ class Chart extends StatelessWidget {
 
   Chart({this.investments});
 
-  // List<Map<String, Object>> get groupedTransactionValues {
-  //   return List.generate(6, (index) {
-  //     final weekDay = DateTime.now().subtract(Duration(days: index));
-
-  //     int totalSum = 0;
-
-  //     for (var i = 0; i < investments.length; i++) {
-  //       if (investments[i].date.day == weekDay.day &&
-  //           investments[i].date.month == weekDay.month &&
-  //           investments[i].date.year == weekDay.year) {
-  //         totalSum += investments[i].amount;
-  //       }
-  //     }
-  //     return {
-  //       'day': DateFormat.E().format(weekDay).substring(0, 1),
-  //       'amount': totalSum,
-  //     };
-  //   }).reversed.toList();
-  // }
-
   int get totalSpending {
     var sum = 0;
     for (var i = 0; i < investments.length; i++) {
@@ -73,7 +53,7 @@ class Chart extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Text(
-                    'Total Apartment Spendings',
+                    'הוצאות דירה כוללות:',
                     style: TextStyle(color: Colors.lightBlue),
                   ),
                   Text(
@@ -112,7 +92,7 @@ class Chart extends StatelessWidget {
         ),
         SizedBox(height: 8),
         Text(
-          'Spent: ' + userInvestmentSum[user.uid].toString() + '₪',
+          'הוציא: ' + userInvestmentSum[user.uid].toString() + '₪',
           style: theme.textTheme.title.copyWith(fontSize: 14),
         ),
         SizedBox(height: 8),
@@ -129,14 +109,14 @@ class Chart extends StatelessWidget {
     var getOrAdd = _eachShouldSpend() - spent;
     if (getOrAdd < 0) {
       color = Colors.green;
-      text = 'Should get ';
+      text = 'צריך לקבל: ';
     } else {
       color = Colors.red;
-      text = 'Should give ';
+      text = 'צריך לתת: ';
     }
     return Text(
-      text + getOrAdd.abs().toString(),
-      style: TextStyle(color: color, fontSize: 14, fontWeight: FontWeight.bold),
+      text + getOrAdd.abs().toString() + '₪',
+      style: TextStyle(color: color, fontSize: 13, fontWeight: FontWeight.bold),
     );
   }
 

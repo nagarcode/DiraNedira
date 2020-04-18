@@ -10,8 +10,8 @@ import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   HomePage(this.database, this.apartmentId);
-  Database database;
-  String apartmentId;
+  final Database database;
+  final String apartmentId;
   @override
   _HomePageState createState() => _HomePageState();
 }

@@ -9,15 +9,15 @@ import 'package:provider/provider.dart';
 
 class MonthsPage extends StatefulWidget {
   MonthsPage(this.database, this.apartmentId);
-  String apartmentId;
-  Database database;
+  final String apartmentId;
+  final Database database;
   @override
   _MonthsPageState createState() => _MonthsPageState();
 }
 
 class _MonthsPageState extends State<MonthsPage>
-    with AutomaticKeepAliveClientMixin<MonthsPage>
-     {
+// with AutomaticKeepAliveClientMixin<MonthsPage>
+{
   Future monthsFuture;
 
   @override
@@ -30,14 +30,14 @@ class _MonthsPageState extends State<MonthsPage>
     return await widget.database.getMonthlySumDoc(widget.apartmentId);
   }
 
-  @override
-  bool get wantKeepAlive => true;
+  // @override
+  // bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
     print('building months page'); //TODO: delete
     final PreferredSizeWidget appBar = AppBar(
-      title: Text('History'),
+      title: Text('היסטוריה'),
     );
     return Scaffold(
       appBar: appBar,
@@ -46,12 +46,13 @@ class _MonthsPageState extends State<MonthsPage>
   }
 
   Widget _buildContents(BuildContext context) {
+    final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
     final apartment = Provider.of<Apartment>(context);
     if (apartment != null) {
       return SafeArea(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Expanded(
                 child: FutureBuilder(
@@ -68,8 +69,13 @@ class _MonthsPageState extends State<MonthsPage>
                           final listToDisplay =
                               monthsList(context, snapshot.data);
                           if (listToDisplay == null) {
-                            return Text(
-                                'wow such empty'); //TODO replace with gui
+                            return Center(
+                              child: Text(
+                                'כאן תוצג היסטוריית חודשים וסיכום שלהם',
+                                style: theme.textTheme.title
+                                    .copyWith(color: Colors.lightBlue),
+                              ),
+                            ); //TODO replace with gui
                           }
                           return listToDisplay;
                         default:
@@ -89,7 +95,8 @@ class _MonthsPageState extends State<MonthsPage>
   ListView monthsList(BuildContext context,
       Map<String, dynamic> monthsWithTransactionsAndAmount) {
     final currentMonthYear = DateFormat.yMMM().format(DateTime.now());
-    if (monthsWithTransactionsAndAmount == null) return null;
+    if (monthsWithTransactionsAndAmount == null ||
+        monthsWithTransactionsAndAmount.length == 1) return null;
     final keys = monthsWithTransactionsAndAmount.keys.toList();
     keys.remove(currentMonthYear);
     final length = keys.length;
@@ -133,7 +140,7 @@ class _MonthsPageState extends State<MonthsPage>
                         ),
                   ),
                   Text(
-                    ' total monthly expenses',
+                    'סה״כ הוצאות דירה חודשיות',
                     style: TextStyle(
                       color: Colors.grey,
                     ),

@@ -19,7 +19,6 @@ abstract class Database {
   Future<bool> loginToApartment({String apartmentId, String pass});
   Future<void> setUserApartment(String apartmentId);
   Future<void> leaveApartment(String apartmentId);
-  Future<Apartment> getApartmentById(String aptId);
   Stream<Apartment> apartmentStream(String apartmentId);
   Stream<List<User>> userStream(String apartmentId);
   Future<String> getUserPicUrlById(String uid);
@@ -121,17 +120,12 @@ class FirestoreDatabase implements Database {
   }
 
   @override
-  Future<Apartment> getApartmentById(String aptId) {
-    //TODO: implement and use after the apartmentId stream
-  }
-
-  @override
   Future<void> addUserDataToApartment(
       {String apartmentId, Map<String, dynamic> data}) async {
     return await _service.setData(
       path: APIPath.userInApartment(apartmentId: apartmentId, uid: data['uid']),
-      data: data, //TODO: add user display name
-    ); //TODO: try writing a user dociment with no fields instead of a "uid" field
+      data: data, 
+    ); 
   }
 
   @override

@@ -65,18 +65,19 @@ class _JoinApartmentFormState extends State<JoinApartmentForm> {
             .loginToApartment(apartmentId: apartmentId, pass: pass);
         if (loginAttempt) {
           widget.database.setUserApartment(apartmentId);
-          widget.database.addUserDataToApartment(apartmentId: apartmentId, data: data);
+          widget.database
+              .addUserDataToApartment(apartmentId: apartmentId, data: data);
           Navigator.of(context).pop();
         } else {
           PlatformAlertDialog(
-            title: 'Login Failed',
-            content: 'Wrong pass, try again',
-            defaultActionText: 'OK',
+            title: 'הצטרפות נכשלה',
+            content: 'סיסמא לא נכונה, נסה שוב',
+            defaultActionText: 'אישור',
           ).show(context);
         }
       } on PlatformException catch (e) {
         PlatformExceptionAlertDialog(
-          title: 'Operation Failed',
+          title: 'כשל',
           exception: e,
         ).show(context);
       } finally {}
@@ -94,9 +95,9 @@ class _JoinApartmentFormState extends State<JoinApartmentForm> {
   }
 
   String apartmentIdValidator(String id) {
-    if (id.isEmpty) return 'id can\'t be empty';
-    if (id.length > 12) return 'Must be less than 20 chars';
-    if (id.length < 4) return 'Must be over 4 chars';
+    if (id.isEmpty) return 'שדה חובה';
+    if (id.length > 12) return 'לכל היותר 20 תווים';
+    if (id.length < 4) return 'לכל הפחות 4 תווים';
     return null;
   }
 
@@ -108,23 +109,22 @@ class _JoinApartmentFormState extends State<JoinApartmentForm> {
   }
 
   String apartmentPasswordValidator(String pass) {
-    if (pass.length < 4) return 'Pass must be over 4 chars';
-    if (pass.isEmpty) return 'Password can\'t be empty';
-    if (pass.length > 15) return 'Pass must be less than 15 chars long';
-    if (isAlpha(pass) || isNumeric(pass))
-      return 'Pass must contain letters AND numbers';
+    if (pass.length < 4) return 'לכל הפחות 4 תווים';
+    if (pass.isEmpty) return 'שדה חובה';
+    if (pass.length > 15) return 'לכל היותר 15 תווים';
     return null;
   }
 
   List<Widget> _buildFormChildren() {
     return [
       TextFormField(
-        decoration: InputDecoration(labelText: 'id'),
+        decoration: InputDecoration(labelText: 'שם דירה'),
         validator: apartmentIdValidator,
         onSaved: (value) => _id = value,
       ),
       TextFormField(
-        decoration: InputDecoration(labelText: 'Password'),
+        obscureText: true,
+        decoration: InputDecoration(labelText: 'סיסמא'),
         validator: apartmentPasswordValidator,
         onSaved: (value) => _password = value,
       ),
@@ -132,7 +132,7 @@ class _JoinApartmentFormState extends State<JoinApartmentForm> {
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
         color: Theme.of(context).primaryColor,
-        child: Text('Join Apartment'),
+        child: Text('הצטרף לדירה'),
         textColor: Theme.of(context).textTheme.button.color,
         onPressed: _submitData,
       )

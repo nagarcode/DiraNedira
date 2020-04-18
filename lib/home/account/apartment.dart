@@ -1,4 +1,3 @@
-import 'package:dira_nedira/home/account/user_account_bar.dart';
 import 'package:flutter/foundation.dart';
 
 class Apartment {
@@ -34,8 +33,5 @@ class Apartment {
     return data['apartmentId'];
   }
 
-List<UserAccountBar> accountBarList(){
-
-}
 
 }

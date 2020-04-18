@@ -20,10 +20,10 @@ class AccountPage extends StatelessWidget {
 
   Future<void> _confirmSignOut(BuildContext context) async {
     final didRequestSignOut = await PlatformAlertDialog(
-      title: 'Logout',
-      content: 'Are you sure that you want to logout?',
-      defaultActionText: 'Logout',
-      cancelActionText: 'Cancel',
+      title: 'התנתק',
+      content: 'האם אתה בטוח שברצונך להתנתק?',
+      defaultActionText: 'התנתק',
+      cancelActionText: 'ביטול',
     ).show(context);
     if (didRequestSignOut) {
       _signOut(context);
@@ -33,10 +33,10 @@ class AccountPage extends StatelessWidget {
   Future<void> _confirmLeaveApartment(
       BuildContext context, String apartmentId, Database database) async {
     final didRequestLeave = await PlatformAlertDialog(
-      title: 'Leave Apartment',
-      content: 'Are you sure that you want to leave your apartment?',
-      defaultActionText: 'Leave',
-      cancelActionText: 'Cancel',
+      title: 'עזוב דירה',
+      content: 'האם אתה בטוח שברצונך לעזוב את הדירה שלך?',
+      defaultActionText: 'עזוב',
+      cancelActionText: 'ביטול',
     ).show(context);
     if (didRequestLeave) {
       _leaveApartment(apartmentId, database);
@@ -58,11 +58,11 @@ class AccountPage extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Account'),
+        title: Text('דירה'),
         actions: <Widget>[
           FlatButton(
             child: Text(
-              'Logout',
+              'התנתק',
               style: TextStyle(fontSize: 18, color: Colors.white),
             ),
             onPressed: () => _confirmSignOut(context),
@@ -81,13 +81,13 @@ class AccountPage extends StatelessWidget {
                   _hasApartmentColumn(context, apartment, database),
                   Center(
                       child: Text(
-                    'More Features Coming Soon! stay tuned',
+                    'פיצ׳רים נוספים בקרוב!',
                     style:
                         theme.textTheme.title.copyWith(color: Colors.lightBlue),
                   )),
                   Center(
                       child: Text(
-                    'Dira nedira is developed by a single developer with a vision and not a billion dollar company... ',
+                    'הישארו מעודכנים, פונקציונליות נוספת בדרך בזמן הקרוב! \n' + 'האפליקציה ״דירה נדירה״ מפותחת ע״י סטודנט יחיד ולא חברת ענק, לכן אשמח לשמוע כל בעיה/בקשה/חוות דעת :) מייל: \n' + 'dira.nedira.team@gmail.com',
                     textAlign: TextAlign.center,
                   )),
                 ],
@@ -127,7 +127,7 @@ class AccountPage extends StatelessWidget {
       BuildContext context, Apartment apartment, Database database) {
     return CustomRaisedButton(
       child: Text(
-        'Leave Apartment',
+        'עזוב דירה',
         style: TextStyle(color: Colors.white),
       ),
       color: Colors.red,
@@ -169,7 +169,7 @@ class AccountPage extends StatelessWidget {
             child: Column(
           children: <Widget>[
             Text(
-              "Your Dira Nedira:",
+              "הדירה הנדירה שלך:",
               style: theme.textTheme.title.copyWith(color: theme.primaryColor),
             ),
             Center(

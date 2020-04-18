@@ -20,6 +20,12 @@ class DiraNedira extends StatelessWidget {
     return Provider<AuthBase>(
       builder: (context) => Auth(),
       child: MaterialApp(
+        builder: (context, child) {
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: child,
+          );
+        },
         title: 'Dira Nedira',
         theme: ThemeData(
           disabledColor: Colors.grey,

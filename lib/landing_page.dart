@@ -5,6 +5,7 @@ import 'package:dira_nedira/home/home_page.dart';
 import 'package:dira_nedira/investments/investment.dart';
 import 'package:dira_nedira/sign_in/sign_in_screen.dart';
 import 'package:dira_nedira/splash-screen.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +14,11 @@ class LandingPage extends StatelessWidget {
   //TODO check pubspec.yaml dependencies versions before release
   @override
   Widget build(BuildContext context) {
+    initializeDateFormatting('he', null);
+    Intl.defaultLocale = 'he';
     final currentMonthYear =
-        DateFormat.yMMM().format(DateTime.now()); 
+        DateFormat.yMMM().format(DateTime.now()); //TODO undo substraction
+    print(currentMonthYear);
     final auth = Provider.of<AuthBase>(context, listen: false);
     return StreamBuilder<User>(
       stream: auth.onAuthStateChanged,

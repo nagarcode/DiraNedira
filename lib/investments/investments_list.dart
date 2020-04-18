@@ -32,7 +32,7 @@ class InvestmentsList extends StatelessWidget {
               children: <Widget>[
                 Center(
                   child: Text(
-                    'No transactions added yet!',
+                    'טרם בוצעו תשלומים!',
                     style: Theme.of(context).textTheme.title,
                   ),
                 ),

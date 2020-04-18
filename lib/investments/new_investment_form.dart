@@ -78,7 +78,7 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
         Navigator.of(context).pop();
       } on PlatformException catch (e) {
         PlatformExceptionAlertDialog(
-          title: 'Operation Failed',
+          title: 'כשל',
           exception: e,
         ).show(context);
       } finally {}
@@ -127,14 +127,14 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
   List<Widget> _buildFormChildren() {
     return [
       TextFormField(
-        decoration: InputDecoration(labelText: 'Title'),
-        validator: (value) => value.isNotEmpty ? null : 'Title can\'t be empty',
+        decoration: InputDecoration(labelText: 'שם הוצאה'),
+        validator: (value) => value.isNotEmpty ? null : 'שם הוצאה לא יכול להיות ריק',
         onSaved: (value) => _title = value,
       ),
       TextFormField(
-        decoration: InputDecoration(labelText: 'Amount'),
+        decoration: InputDecoration(labelText: 'סכום'),
         validator: (value) =>
-            value.isNotEmpty ? null : 'Amount can\'t be empty',
+            value.isNotEmpty ? null : 'סכום לא יכול להיות ריק',
         keyboardType: TextInputType.numberWithOptions(decimal: false),
         onSaved: (value) => _amount = int.tryParse(value) ?? 0,
       ),
@@ -144,11 +144,11 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
           children: <Widget>[
             Expanded(
               child: Text(_selectedDate == null
-                  ? 'No Date Chosen'
-                  : 'Picked Date: ${DateFormat.yMMMd().format(_selectedDate)}'),
+                  ? 'לא נבחר תאריך'
+                  : 'התאריך שנבחר: ${DateFormat.yMMMd().format(_selectedDate)}'),
             ),
             AdaptiveFlatButton(
-              text: 'Choose Date',
+              text: 'בחר תאריך',
               handler: _presentDatePicker,
             )
           ],
@@ -158,7 +158,7 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
         color: Theme.of(context).primaryColor,
-        child: Text('Add Investment'),
+        child: Text('הוסף הוצאה'),
         textColor: Theme.of(context).textTheme.button.color,
         onPressed: _submitData,
       )

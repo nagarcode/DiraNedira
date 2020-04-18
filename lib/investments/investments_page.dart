@@ -35,13 +35,13 @@ class InvestmentsPage extends StatelessWidget {
     final PreferredSizeWidget appBar = AppBar(
       backgroundColor:
           isHistory ? theme.disabledColor : theme.appBarTheme.color,
-      title: Text('Investments'),
+      title: Text('הוצאות'),
       actions: <Widget>[
         isHistory
             ? FlatButton(
                 onPressed: () => Navigator.of(context).pop(),
                 child: Text(
-                  'Done',
+                  'סיום',
                   style: Theme.of(context).textTheme.title.copyWith(
                       color: Colors.white, fontWeight: FontWeight.normal),
                 ),
@@ -81,7 +81,7 @@ class InvestmentsPage extends StatelessWidget {
             Expanded(
               child: InvestmentsList(
                   investments: investments,
-                  isHistory: isHistory), //TODO:Make scrollable
+                  isHistory: isHistory),
             ),
           ],
         ),

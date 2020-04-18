@@ -63,9 +63,9 @@ class _NewApartmentFormState extends State<NewApartmentForm> {
         final data = widget.user.dataMap();
         if (isTaken) {
           PlatformAlertDialog(
-            title: 'Apartment ID taken',
-            content: 'id taken, please choose a different id',
-            defaultActionText: 'OK',
+            title: 'שם דירה תפוס',
+            content: 'דירה אחרת כבר משתמשת בשם הזה, אנא בחר שם אחר',
+            defaultActionText: 'אישור',
           ).show(context);
         } else {
           final apartment = Apartment(
@@ -79,7 +79,7 @@ class _NewApartmentFormState extends State<NewApartmentForm> {
         }
       } on PlatformException catch (e) {
         PlatformExceptionAlertDialog(
-          title: 'Operation Failed',
+          title: 'כשל',
           exception: e,
         ).show(context);
       } finally {}
@@ -97,9 +97,9 @@ class _NewApartmentFormState extends State<NewApartmentForm> {
   }
 
   String apartmentIdValidator(String id) {
-    if (id.isEmpty) return 'id can\'t be empty';
-    if (id.length > 12) return 'Must be less than 20 chars';
-    if (id.length < 4) return 'Must be over 4 chars';
+    if (id.isEmpty) return 'שם דירה לא יכול להיות ריק';
+    if (id.length > 12) return 'לכל היותר 20 תווים';
+    if (id.length < 4) return 'לכל הפחות 4 תווים';
     return null;
   }
 
@@ -112,41 +112,45 @@ class _NewApartmentFormState extends State<NewApartmentForm> {
 
   String apartmentPasswordValidator(String pass) {
     _password = pass;
-    if (pass.length < 4) return 'Pass must be over 4 chars';
-    if (pass.isEmpty) return 'Password can\'t be empty';
-    if (pass.length > 15) return 'Pass must be less than 15 chars long';
+    if (pass.length < 4) return 'אורך סיסמא מינימלי הוא 4 תווים';
+    if (pass.isEmpty) return 'שדה חובה';
+    if (pass.length > 15) return 'לכל היותר 15 תווים';
     if (isAlpha(pass) || isNumeric(pass))
-      return 'Pass must contain letters AND numbers';
+      return 'סיסמא חייבת להכיל אותיות ותווים';
     return null;
+  }
+
+  String matchingPasswordsValidator(String confirmPass) {
+    if (confirmPass == _password)
+      return null;
+    else
+      return 'חוסר התאמה בין הסיסמאות';
   }
 
   List<Widget> _buildFormChildren() {
     return [
       TextFormField(
-        decoration: InputDecoration(labelText: 'id'),
+        decoration: InputDecoration(labelText: 'שם דירה'),
         validator: apartmentIdValidator,
         onSaved: (value) => _id = value,
       ),
       TextFormField(
-        decoration: InputDecoration(labelText: 'Password'),
+        obscureText: true,
+        decoration: InputDecoration(labelText: 'סיסמא'),
         validator: apartmentPasswordValidator,
         onSaved: (value) => _password = value,
       ),
       TextFormField(
-        decoration: InputDecoration(labelText: 'Confirm Password'),
-        validator: (value) {
-          if (value == _password)
-            return null;
-          else
-            return 'Passwords dont match';
-        },
+        obscureText: true,
+        decoration: InputDecoration(labelText: 'אשר סיסמא'),
+        validator: matchingPasswordsValidator,
         onSaved: (value) => _confirmPass = value,
       ),
       RaisedButton(
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
         color: Theme.of(context).primaryColor,
-        child: Text('Create Apartment'),
+        child: Text('צור דירה'),
         textColor: Theme.of(context).textTheme.button.color,
         onPressed: _submitData,
       )

@@ -31,7 +31,7 @@ class SignInScreen extends StatelessWidget {
 
   void _showSignInError(BuildContext context, PlatformException exception) {
     PlatformExceptionAlertDialog(
-      title: 'Sign in failed',
+      title: 'ההתחברות נכשלה',
       exception: exception,
     ).show(context);
   }
@@ -40,7 +40,7 @@ class SignInScreen extends StatelessWidget {
     try {
       await bloc.signInWithGoogle();
     } on PlatformException catch (e) {
-      if (e.code != 'ERROR: ABORTED BY USER') {
+      if (e.code != 'שגיאה: בוטל ע״י המשתמש') {
         _showSignInError(context, e);
       }
     }
@@ -50,7 +50,7 @@ class SignInScreen extends StatelessWidget {
     try {
       await bloc.signInWithFacebook();
     } on PlatformException catch (e) {
-      if (e.code != 'ERROR: ABORTED BY USER') {
+      if (e.code != 'שגיאה: בוטל ע״י המשתמש') {
         _showSignInError(context, e);
       }
     }
@@ -111,7 +111,7 @@ class SignInScreen extends StatelessWidget {
                       ],
                     ),
                     child: Text(
-                      'Dira Nedira',
+                      'דירה נדירה',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 30,

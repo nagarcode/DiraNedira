@@ -26,12 +26,12 @@ class NoApartmentWidget extends StatelessWidget {
               children: <Widget>[
                 Center(
                   child: Text(
-                    "You do not have an apartment yet",
+                    "טרם הצטרפת לדירה",
                   ),
                 ),
                 CustomRaisedButton(
                   child: Text(
-                    'create apartment',
+                    'צור דירה חדשה',
                     style: TextStyle(color: Colors.white),
                   ),
                   color: Theme.of(context).primaryColor,
@@ -39,7 +39,7 @@ class NoApartmentWidget extends StatelessWidget {
                 ),
                 CustomRaisedButton(
                   child: Text(
-                    'Join an existing apartment',
+                    'הצטרף לדירה קיימת',
                     style: TextStyle(color: Colors.white),
                   ),
                   color: Theme.of(context).primaryColor,
