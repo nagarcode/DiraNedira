@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>534759855534-3bmvrq17l8h0395hclpkeqh9q1gtu5k6.apps.googleusercontent.com</string>
+	<string>534759855534-l28q5o5u9rf3haaqc6a5nidiotu8upes.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.534759855534-3bmvrq17l8h0395hclpkeqh9q1gtu5k6</string>
+	<string>com.googleusercontent.apps.534759855534-l28q5o5u9rf3haaqc6a5nidiotu8upes</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>534759855534-i5vdgb1l6o8onp0rg6lih75a9i9nbboa.apps.googleusercontent.com</string>
+	<string>534759855534-jmm90c8l9le45dlsiopr2a57l382p3du.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBOpZna6Vg8UQsdIpg05JIT0lPLL9FkaTU</string>
 	<key>GCM_SENDER_ID</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.diraNedira</string>
+	<string>com.NagarCode.diraNedira</string>
 	<key>PROJECT_ID</key>
 	<string>dira-nedira-e40aa</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:534759855534:ios:2aff5952ba0163802f643f</string>
+	<string>1:534759855534:ios:9229077179e197c62f643f</string>
 	<key>DATABASE_URL</key>
 	<string>https://dira-nedira-e40aa.firebaseio.com</string>
 </dict>
