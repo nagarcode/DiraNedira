@@ -9,7 +9,6 @@ class SignInBloc {
   final AuthBase auth;
   final ValueNotifier<bool> isLoading;
 
-
   Future<User> _signIn(Future<User> Function() signInMethod) async {
     try {
       isLoading.value = true;
@@ -24,4 +23,6 @@ class SignInBloc {
 
   Future<User> signInWithFacebook() async =>
       await _signIn(auth.signInWithFacebook);
+
+  Future<User> signInWithApple() async => await _signIn(auth.signInWithApple);
 }

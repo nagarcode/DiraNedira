@@ -1,4 +1,7 @@
 import 'dart:math';
+import 'package:apple_sign_in/apple_sign_in.dart';
+import 'package:dira_nedira/sign_in/apple_sign_in_available.dart';
+
 import '../Services/auth.dart';
 import '../common_widgets/platform_exception_alert_dialog.dart';
 import '../sign_in/sign_in_bloc.dart';
@@ -56,6 +59,16 @@ class SignInScreen extends StatelessWidget {
     }
   }
 
+  Future<void> _signInWithApple(BuildContext context) async {
+    try {
+      await bloc.signInWithApple();
+    } on PlatformException catch (e) {
+      if (e.code != 'שגיאה: בוטל ע״י המשתמש') {
+        _showSignInError(context, e);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // final transformConfig = Matrix4.rotationZ(-8 * pi / 180);
@@ -68,6 +81,8 @@ class SignInScreen extends StatelessWidget {
 
   Widget _buildContent(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+    final appleSignInAvailable =
+        Provider.of<AppleSignInAvailable>(context, listen: false);
     return Stack(
       children: <Widget>[
         Container(
@@ -134,6 +149,12 @@ class SignInScreen extends StatelessWidget {
                         SizedBox(
                           height: 20,
                         ),
+                        if (appleSignInAvailable.isAvailable)
+                          AppleSignInButton(
+                            style: ButtonStyle.white,
+                            type: ButtonType.signIn,
+                            onPressed: () => _signInWithApple(context),
+                          ),
                         SizedBox(
                           width: double.infinity,
                           child: isLoading

@@ -1,17 +1,22 @@
 import 'package:dira_nedira/Services/auth.dart';
 import 'package:dira_nedira/landing_page.dart';
+import 'package:dira_nedira/sign_in/apple_sign_in_available.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
   //TODO Change bundle id - ios and android  NagarCode
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  runApp(DiraNedira());
+  final appleSignInAvailable = await AppleSignInAvailable.check();
+  runApp(
+    Provider<AppleSignInAvailable>.value(
+        value: appleSignInAvailable, child: DiraNedira()),
+  );
 }
 
 class DiraNedira extends StatelessWidget {
