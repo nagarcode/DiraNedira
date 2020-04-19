@@ -96,7 +96,7 @@ class _JoinApartmentFormState extends State<JoinApartmentForm> {
 
   String apartmentIdValidator(String id) {
     if (id.isEmpty) return 'שדה חובה';
-    if (id.length > 12) return 'לכל היותר 20 תווים';
+    if (id.length > 25) return 'לכל היותר 25 תווים';
     if (id.length < 4) return 'לכל הפחות 4 תווים';
     return null;
   }

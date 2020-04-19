@@ -102,9 +102,7 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
     showDatePicker(
             context: context,
             initialDate: now,
-            firstDate: now.subtract(Duration(days: 31)),
-            // firstDate: DateTime(
-            //     now.subtract(Duration(days: 300)).year, DateTime.january, 1),
+            firstDate: now.subtract(Duration(days: 3100)),//TODO make 31
             lastDate: now)
         .then((pickedDate) {
       if (pickedDate == null) return;

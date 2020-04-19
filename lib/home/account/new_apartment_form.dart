@@ -98,8 +98,9 @@ class _NewApartmentFormState extends State<NewApartmentForm> {
 
   String apartmentIdValidator(String id) {
     if (id.isEmpty) return 'שם דירה לא יכול להיות ריק';
-    if (id.length > 12) return 'לכל היותר 20 תווים';
+    if (id.length > 25) return 'לכל היותר 25 תווים';
     if (id.length < 4) return 'לכל הפחות 4 תווים';
+    if (id == "null") return 'אל תקריס אותי..';
     return null;
   }
 

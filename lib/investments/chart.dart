@@ -29,41 +29,43 @@ class Chart extends StatelessWidget {
       margin: EdgeInsets.all(20),
       child: Padding(
         padding: EdgeInsets.all(5),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: userList.map((data) {
-                return Flexible(
-                  fit: FlexFit.tight,
-                  child: _buildUserInfo(data, theme),
-                );
-              }).toList(),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 3),
-              decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              width: 200,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(
-                    'הוצאות דירה כוללות:',
-                    style: TextStyle(color: Colors.lightBlue),
-                  ),
-                  Text(
-                    totalSpending.toString() + '₪',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-                  ),
-                ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              SingleChildScrollView(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: userList.map((data) {
+                    return _buildUserInfo(data, theme);
+                  }).toList(),
+                ),
               ),
-            ),
-          ],
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 3),
+                decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                width: 200,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      'הוצאות דירה כוללות:',
+                      style: TextStyle(color: Colors.lightBlue),
+                    ),
+                    Text(
+                      totalSpending.toString() + '₪',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 17),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

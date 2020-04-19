@@ -37,7 +37,7 @@ class _MonthsPageState extends State<MonthsPage>
   Widget build(BuildContext context) {
     print('building months page'); //TODO: delete
     final PreferredSizeWidget appBar = AppBar(
-      title: Text('היסטוריה'),
+      title: const Text('היסטוריה'),
     );
     return Scaffold(
       appBar: appBar,
@@ -139,7 +139,7 @@ class _MonthsPageState extends State<MonthsPage>
                           fontSize: 22,
                         ),
                   ),
-                  Text(
+                  const Text(
                     'סה״כ הוצאות דירה חודשיות',
                     style: TextStyle(
                       color: Colors.grey,

@@ -58,10 +58,10 @@ class AccountPage extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('דירה'),
+        title: const Text('דירה'),
         actions: <Widget>[
           FlatButton(
-            child: Text(
+            child: const Text(
               'התנתק',
               style: TextStyle(fontSize: 18, color: Colors.white),
             ),
