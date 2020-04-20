@@ -68,7 +68,7 @@ class InvestmentsPage extends StatelessWidget {
     final mediaQuery = MediaQuery.of(context);
     final apartment = Provider.of<Apartment>(context);
     final currentMonthInvestments = investments;
-    final containerHeight = mediaQuery.size.height * 0.35;
+    final containerHeight = mediaQuery.size.height * 0.3;
     if (apartment != null && currentMonthInvestments != null) {
       return SafeArea(
         child: Column(
@@ -76,7 +76,7 @@ class InvestmentsPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Expanded(
-              flex: 4,
+              flex: 2,
               child: Container(
                 child: Chart(
                   investments: currentMonthInvestments,
@@ -84,7 +84,7 @@ class InvestmentsPage extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 6,
+              flex: 3,
               child: InvestmentsList(
                   investments: investments, isHistory: isHistory),
             ),

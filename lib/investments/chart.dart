@@ -20,7 +20,6 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
     final theme = Theme.of(context);
     final userList = Provider.of<List<User>>(context);
     for (int i = 0; i < userList.length; i++)
@@ -31,37 +30,45 @@ class Chart extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(5),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: userList.map((data) {
-                  return _buildUserInfo(data, theme);
-                }).toList(),
+            Expanded(
+              flex: 3,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  textBaseline: TextBaseline.alphabetic,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: userList.map((data) {
+                    return _buildUserInfo(data, theme, context);
+                  }).toList(),
+                ),
               ),
             ),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 3),
-              decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              width: 150,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(
-                    'הוצאות דירה כוללות:',
-                    style: TextStyle(color: Colors.lightBlue),
-                  ),
-                  Text(
-                    totalSpending.toString() + '₪',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-                  ),
-                ],
+            Expanded(
+              flex: 1,
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 3),
+                decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                width: 150,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      'הוצאות דירה כוללות:',
+                      style: TextStyle(color: Colors.lightBlue),
+                    ),
+                    Text(
+                      totalSpending.toString() + '₪',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -74,18 +81,22 @@ class Chart extends StatelessWidget {
     return (totalSpending ~/ userInvestmentSum.length);
   }
 
-  Widget _buildUserInfo(User user, ThemeData theme) {
+  Widget _buildUserInfo(User user, ThemeData theme, BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text(
-          user.disaplayName != null ? user.disaplayName : 'אנונימי',
-          style:
-              theme.textTheme.title.copyWith(fontSize: 12, color: Colors.black),
+        FittedBox(
+          fit: BoxFit.contain,
+          child: Text(
+            user.disaplayName != null ? user.disaplayName : 'אנונימי',
+            style: theme.textTheme.title
+                .copyWith(fontSize: 12, color: Colors.black),
+          ),
         ),
         Avatar(
           photoUrl: user.photoUrl,
-          radius: 25,
+          radius: screenSize.height * 0.04,
         ),
         // SizedBox(height: 6),
         Text(
