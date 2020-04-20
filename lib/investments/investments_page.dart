@@ -68,20 +68,25 @@ class InvestmentsPage extends StatelessWidget {
     final mediaQuery = MediaQuery.of(context);
     final apartment = Provider.of<Apartment>(context);
     final currentMonthInvestments = investments;
+    final containerHeight = mediaQuery.size.height * 0.35;
     if (apartment != null && currentMonthInvestments != null) {
       return SafeArea(
         child: Column(
           //TODO Add pie chart
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Container(
-              height: 230,
-              child: Chart(investments: currentMonthInvestments),
+            Expanded(
+              flex: 4,
+              child: Container(
+                child: Chart(
+                  investments: currentMonthInvestments,
+                ),
+              ),
             ),
             Expanded(
+              flex: 6,
               child: InvestmentsList(
-                  investments: investments,
-                  isHistory: isHistory),
+                  investments: investments, isHistory: isHistory),
             ),
           ],
         ),

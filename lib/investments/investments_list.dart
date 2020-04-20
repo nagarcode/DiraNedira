@@ -121,10 +121,10 @@ class InvestmentsList extends StatelessWidget {
       String apartmentId,
       Database database) async {
     final didRequestLeave = await PlatformAlertDialog(
-      title: 'Delete Investment',
-      content: 'Are you sure that you want to delete this investment?',
-      defaultActionText: 'Delete',
-      cancelActionText: 'Cancel',
+      title: 'מחק הוצאה',
+      content: 'האם אתה בטוח שברצונך למחוק הוצאה זו?',
+      defaultActionText: 'מחק',
+      cancelActionText: 'בטל',
     ).show(context);
     if (didRequestLeave) {
       database.deleteInvestment(investments[index], apartmentId);

@@ -123,7 +123,8 @@ class Auth implements AuthBase {
   }
 
   @override
-  Future<User> signInWithApple({List<Scope> scopes = const []}) async {
+  Future<User> signInWithApple(
+      {List<Scope> scopes = const [Scope.fullName]}) async {
     // 1. perform the sign-in request
     final result = await AppleSignIn.performRequests(
         [AppleIdRequest(requestedScopes: scopes)]);

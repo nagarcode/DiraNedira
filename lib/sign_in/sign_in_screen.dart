@@ -150,10 +150,17 @@ class SignInScreen extends StatelessWidget {
                           height: 20,
                         ),
                         if (appleSignInAvailable.isAvailable)
-                          AppleSignInButton(
-                            style: ButtonStyle.white,
-                            type: ButtonType.signIn,
-                            onPressed: () => _signInWithApple(context),
+                          SizedBox(
+                            width: double.infinity,
+                            child: isLoading
+                                ? CupertinoActivityIndicator()
+                                : SignInButton(
+                                    Buttons.Apple,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    onPressed: () => _signInWithApple(context),
+                                  ),
                           ),
                         SizedBox(
                           width: double.infinity,

@@ -87,7 +87,9 @@ class AccountPage extends StatelessWidget {
                   )),
                   Center(
                       child: Text(
-                    'הישארו מעודכנים, פונקציונליות נוספת בדרך בזמן הקרוב! \n' + 'האפליקציה ״דירה נדירה״ מפותחת ע״י סטודנט יחיד ולא חברת ענק, לכן אשמח לשמוע כל בעיה/בקשה/חוות דעת :) מייל: \n' + 'dira.nedira.team@gmail.com',
+                    'הישארו מעודכנים, פונקציונליות נוספת בדרך בזמן הקרוב! \n' +
+                        'האפליקציה ״דירה נדירה״ מפותחת ע״י סטודנט יחיד ולא חברת ענק, לכן אשמח לשמוע כל בעיה/בקשה/חוות דעת :) מייל: \n' +
+                        'dira.nedira.team@gmail.com',
                     textAlign: TextAlign.center,
                   )),
                 ],
@@ -101,23 +103,12 @@ class AccountPage extends StatelessWidget {
 
   Widget _hasApartmentColumn(
       BuildContext context, Apartment apartment, Database database) {
-    final mediaQuery = MediaQuery.of(context);
     final userList = Provider.of<List<User>>(context);
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Container(
-          height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.3,
-          child: Column(
-            children: <Widget>[
-              _usersCard(context, apartment, database, userList),
-            ],
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[],
+          child: _apartmentCard(context, apartment, database, userList),
         ),
       ],
     );
@@ -135,7 +126,7 @@ class AccountPage extends StatelessWidget {
     );
   }
 
-  Widget _usersCard(BuildContext context, Apartment apartment,
+  Widget _apartmentCard(BuildContext context, Apartment apartment,
       Database database, List<User> userList) {
     final theme = Theme.of(context);
     return Card(
@@ -147,11 +138,14 @@ class AccountPage extends StatelessWidget {
         child: Column(
           children: <Widget>[
             apartmentInfoCard(theme, apartment),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: userList.map((data) {
-                return _buildUserInfo(data, Colors.black, 25);
-              }).toList(),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: userList.map((data) {
+                  return _buildUserInfo(data, Colors.black, 25);
+                }).toList(),
+              ),
             ),
             leaveApartmentButton(context, apartment, database),
             SizedBox(height: 1),
@@ -161,12 +155,13 @@ class AccountPage extends StatelessWidget {
     );
   }
 
-  Center apartmentInfoCard(ThemeData theme, Apartment apartment) {
-    return Center(
-      child: SizedBox(
-        width: double.infinity,
+  Widget apartmentInfoCard(ThemeData theme, Apartment apartment) {
+    return Container(
+      width: double.infinity,
+      child: Center(
         child: Center(
             child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Text(
               "הדירה הנדירה שלך:",
@@ -184,22 +179,19 @@ class AccountPage extends StatelessWidget {
   }
 
   Widget _buildUserInfo(User user, Color color, double radius) {
-    return Wrap(
-      alignment: WrapAlignment.center,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      direction: Axis.vertical,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         Avatar(
           photoUrl: user.photoUrl,
           radius: radius,
         ),
-        SizedBox(height: 2),
-        if (user.disaplayName != null)
-          Text(
-            user.disaplayName,
-            style: TextStyle(color: color),
-          ),
-        SizedBox(height: 2),
+        // SizedBox(height: 2),
+        Text(
+          user.disaplayName == null ? 'אנונימי' : user.disaplayName,
+          style: TextStyle(color: color),
+        ),
+        // SizedBox(height: 2),
       ],
     );
   }
