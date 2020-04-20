@@ -17,7 +17,7 @@ class LandingPage extends StatelessWidget {
     initializeDateFormatting('he', null);
     Intl.defaultLocale = 'he';
     final currentMonthYear =
-        DateFormat.yMMM().format(DateTime.now()); //TODO undo substraction
+        DateFormat.yMMM().format(DateTime.now());
     print(currentMonthYear);
     final auth = Provider.of<AuthBase>(context, listen: false);
     return StreamBuilder<User>(

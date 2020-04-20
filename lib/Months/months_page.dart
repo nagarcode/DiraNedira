@@ -35,7 +35,6 @@ class _MonthsPageState extends State<MonthsPage>
 
   @override
   Widget build(BuildContext context) {
-    print('building months page'); //TODO: delete
     final PreferredSizeWidget appBar = AppBar(
       title: const Text('היסטוריה'),
     );
@@ -75,7 +74,7 @@ class _MonthsPageState extends State<MonthsPage>
                                 style: theme.textTheme.title
                                     .copyWith(color: Colors.lightBlue),
                               ),
-                            ); //TODO replace with gui
+                            );
                           }
                           return listToDisplay;
                         default:
