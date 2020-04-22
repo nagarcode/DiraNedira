@@ -75,20 +75,22 @@ class InvestmentsPage extends StatelessWidget {
           //TODO Add pie chart
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Expanded(
-              flex: 2,
+            // Expanded(
+            //   flex: 2,
               // child: Container(
-              child: Chart(
+              // child: 
+              Chart(
                 investments: currentMonthInvestments,
               ),
               // ),
-            ),
+            // ),
             Divider(
               color: Colors.grey,
             ),
             Expanded(
               flex: 3,
-              child: InvestmentsList(
+              child: 
+              InvestmentsList(
                   investments: investments, isHistory: isHistory),
             ),
           ],
