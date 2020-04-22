@@ -24,55 +24,60 @@ class Chart extends StatelessWidget {
     final userList = Provider.of<List<User>>(context);
     for (int i = 0; i < userList.length; i++)
       initUserinvestmentSumMap(userList[i].uid);
-    return Card(
-      elevation: 6,
-      margin: EdgeInsets.all(5),
-      child: Padding(
-        padding: EdgeInsets.all(5),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              flex: 3,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  textBaseline: TextBaseline.alphabetic,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: userList.map((data) {
-                    return _buildUserInfo(data, theme, context);
-                  }).toList(),
-                ),
+    return Padding(
+      padding: EdgeInsets.all(5),
+      child: 
+      Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            flex: 3,
+            // child: ListView.builder(
+            //   itemCount: userList.length,
+            //   itemBuilder: (ctx, index) {
+            //     return Container(
+            //       child: _buildUserInfo(userList[index], theme, context),
+            //     );
+            //   },
+            //   scrollDirection: Axis.horizontal,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                textBaseline: TextBaseline.alphabetic,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: userList.map((data) {
+                  return _buildUserInfo(data, theme, context);
+                }).toList(),
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 3),
-                decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                width: 150,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Text(
-                      'הוצאות דירה כוללות:',
-                      style: TextStyle(color: Colors.lightBlue),
-                    ),
-                    Text(
-                      totalSpending.toString() + '₪',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-                    ),
-                  ],
-                ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 3),
+              decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              width: 150,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    'הוצאות דירה כוללות:',
+                    style: TextStyle(color: Colors.lightBlue),
+                  ),
+                  Text(
+                    totalSpending.toString() + '₪',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -123,7 +128,7 @@ class Chart extends StatelessWidget {
       text = 'צריך לתת: ';
     }
     return Text(
-      text + getOrAdd.abs().toString() + '₪',
+      '    ' + text + getOrAdd.abs().toString() + '₪' + '    ',
       style: TextStyle(color: color, fontSize: 13, fontWeight: FontWeight.bold),
     );
   }

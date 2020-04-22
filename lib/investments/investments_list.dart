@@ -47,23 +47,27 @@ class InvestmentsList extends StatelessWidget {
                 ),
               ],
             )
-          : ListView.builder(
+          : ListView.separated(
+              separatorBuilder: (context, index) => Divider(
+                color: Colors.grey,
+              ),
               itemBuilder: (ctx, index) {
                 return Card(
-                  margin: EdgeInsets.symmetric(vertical: 4, horizontal: 5),
-                  elevation: 5,
+                  margin: EdgeInsets.symmetric(horizontal: 5),
+                  elevation: 0,
                   child: ListTile(
                     leading: CircleAvatar(
                       backgroundColor: isHistory
                           ? theme.disabledColor
                           : theme.appBarTheme.color,
-                      radius: 30,
+                      radius: 25,
                       child: Padding(
                         padding: EdgeInsets.all(6),
                         child: FittedBox(
                             child: Text(
                           '₪${investments[index].amount}',
-                          style: TextStyle(color: isHistory ? Colors.white : Colors.black),
+                          style: TextStyle(
+                              color: isHistory ? Colors.white : Colors.black),
                         )),
                       ),
                     ),

@@ -77,11 +77,14 @@ class InvestmentsPage extends StatelessWidget {
           children: <Widget>[
             Expanded(
               flex: 2,
-              child: Container(
-                child: Chart(
-                  investments: currentMonthInvestments,
-                ),
+              // child: Container(
+              child: Chart(
+                investments: currentMonthInvestments,
               ),
+              // ),
+            ),
+            Divider(
+              color: Colors.grey,
             ),
             Expanded(
               flex: 3,
