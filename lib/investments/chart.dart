@@ -26,7 +26,7 @@ class Chart extends StatelessWidget {
       initUserinvestmentSumMap(userList[i].uid);
     return Card(
       elevation: 6,
-      margin: EdgeInsets.all(15),
+      margin: EdgeInsets.all(5),
       child: Padding(
         padding: EdgeInsets.all(5),
         child: Column(

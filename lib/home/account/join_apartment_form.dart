@@ -4,7 +4,6 @@ import 'package:dira_nedira/common_widgets/platform_alert_dialog.dart';
 import 'package:dira_nedira/common_widgets/platform_exception_alert_dialog.dart';
 import 'package:dira_nedira/home/account/apartment.dart';
 import 'package:flutter/services.dart';
-import 'package:string_validator/string_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -63,6 +62,13 @@ class _JoinApartmentFormState extends State<JoinApartmentForm> {
         final data = widget.user.dataMap();
         final loginAttempt = await widget.database
             .loginToApartment(apartmentId: apartmentId, pass: pass);
+        if (loginAttempt == null) {
+          PlatformAlertDialog(
+            title: 'הצטרפות נכשלה',
+            content: 'שם דירה זה לא קיים במערכת. נסה שוב',
+            defaultActionText: 'אישור',
+          ).show(context);
+        }
         if (loginAttempt) {
           widget.database.setUserApartment(apartmentId);
           widget.database

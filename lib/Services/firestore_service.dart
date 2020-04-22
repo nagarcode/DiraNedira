@@ -68,16 +68,19 @@ class FirestoreService {
         .collection('apartments')
         .document(apartmentId)
         .get();
-    final map = snapshot.data;
-    final apartmentPassword = map['password'];
-    return pass == apartmentPassword;
+    if (snapshot.exists) {
+      final map = snapshot.data;
+      final apartmentPassword = map['password'];
+      return pass == apartmentPassword;
+    }
+    else return null;
   }
 
   Stream<Apartment> apartmentStream(
       {@required String path,
       String apartmentId,
       Apartment builder(Map<String, dynamic> data)}) {
-        print('Getting Apartment Stream'); //TODO delete
+    print('Getting Apartment Stream'); //TODO delete
     final reference = Firestore.instance.collection(path).document(apartmentId);
     final snapshots = reference.snapshots();
     return snapshots.map((snapshot) => builder(snapshot.data));
@@ -94,7 +97,7 @@ class FirestoreService {
 
   Future<List<String>> monthsWithTransactions(
       List<String> months, String path) async {
-        print('Getting months with transactions'); //TODO delete
+    print('Getting months with transactions'); //TODO delete
     final List<String> output = List<String>();
     for (String month in months) {
       final doesMonthHaveTransactions = await Firestore.instance
@@ -117,7 +120,7 @@ class FirestoreService {
 
   Future<void> initNewMonthInMonthlySumDoc(
       String pathTomonthlySumDoc, String monthYear) {
-        print('initializing monthly doc'); //TODO delete
+    print('initializing monthly doc'); //TODO delete
     final sumDocRef = Firestore.instance.document(pathTomonthlySumDoc);
     return Firestore.instance.runTransaction((Transaction tx) async {
       final docSnapshot = await tx.get(sumDocRef);
@@ -145,7 +148,7 @@ class FirestoreService {
       String monthYear,
       int investmentAmount,
       Map<String, dynamic> investmentData) async {
-        print('Adding an investment'); //TODO delete
+    print('Adding an investment'); //TODO delete
     // assumes sumDoc already exists and contains current month's sum
     final paymentReference = Firestore.instance.document(pathToWriteInvestment);
     final sumDocRef = Firestore.instance.document(pathTomonthlySumDoc);
