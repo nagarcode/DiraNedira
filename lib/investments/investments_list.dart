@@ -26,6 +26,9 @@ class InvestmentsList extends StatelessWidget {
     final apartment = Provider.of<Apartment>(context);
     final currentUser = Provider.of<User>(context);
     final theme = Theme.of(context);
+    final Brightness brightnessValue =
+        MediaQuery.of(context).platformBrightness;
+
     if (apartment != null)
       return investments.isEmpty
           ? ListView(
@@ -49,8 +52,12 @@ class InvestmentsList extends StatelessWidget {
             )
           : ListView.separated(
               separatorBuilder: (context, index) => Divider(
-                color: Colors.grey,
-              ),
+                  color:
+                      // brightnessValue == Brightness.light
+                      //     ?
+                      Colors.grey
+                  // : Colors.white70,
+                  ),
               itemBuilder: (ctx, index) {
                 return Card(
                   margin: EdgeInsets.symmetric(horizontal: 5),

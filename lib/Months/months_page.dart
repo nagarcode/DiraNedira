@@ -93,6 +93,7 @@ class _MonthsPageState extends State<MonthsPage>
 
   ListView monthsList(BuildContext context,
       Map<String, dynamic> monthsWithTransactionsAndAmount) {
+    final theme = Theme.of(context);
     final currentMonthYear = DateFormat.yMMM().format(DateTime.now());
     if (monthsWithTransactionsAndAmount == null ||
         monthsWithTransactionsAndAmount.length == 1) return null;
@@ -138,11 +139,9 @@ class _MonthsPageState extends State<MonthsPage>
                           fontSize: 22,
                         ),
                   ),
-                  const Text(
+                  Text(
                     'סה״כ הוצאות דירה חודשיות',
-                    style: TextStyle(
-                      color: Colors.grey,
-                    ),
+                    style: theme.textTheme.subtitle,
                   ),
                 ],
               ),

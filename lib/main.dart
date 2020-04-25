@@ -42,6 +42,10 @@ class DiraNedira extends StatelessWidget {
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
+              subtitle: TextStyle(
+                color: Colors.grey,
+              ),
+              body2: TextStyle(color: Colors.lightBlue),
               button: TextStyle(color: Colors.white)),
           appBarTheme: AppBarTheme(
             textTheme: ThemeData.light().textTheme.copyWith(
@@ -53,6 +57,36 @@ class DiraNedira extends StatelessWidget {
                 ),
           ),
         ),
+        // darkTheme: ThemeData(
+        //   // cardColor: Colors.grey[800],
+        //   brightness: Brightness.dark,
+        //   disabledColor: Colors.grey,
+        //   primarySwatch: Colors.lightBlue,
+        //   accentColor: Colors.amber[400],
+        //   fontFamily: 'Quicksand',
+        //   textTheme: ThemeData.light().textTheme.copyWith(
+        //       title: TextStyle(
+        //         fontFamily: 'OpenSans',
+        //         fontSize: 18,
+        //         fontWeight: FontWeight.bold,
+        //         color: Colors.white,
+        //       ),
+        //       subtitle: TextStyle(
+        //         fontFamily: 'OpenSans',
+        //         color: Colors.white70,
+        //       ),
+        //       button: TextStyle(color: Colors.white)),
+        //   appBarTheme: AppBarTheme(
+        //     textTheme: ThemeData.light().textTheme.copyWith(
+        //           title: TextStyle(
+        //             fontFamily: 'OpenSans',
+        //             fontSize: 20,
+        //             fontWeight: FontWeight.bold,
+        //             color: Colors.lightBlue,
+        //           ),
+        //         ),
+        //   ),
+        // ),
         home: LandingPage(),
       ),
     );

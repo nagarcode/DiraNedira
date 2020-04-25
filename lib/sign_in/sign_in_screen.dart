@@ -43,7 +43,7 @@ class SignInScreen extends StatelessWidget {
     try {
       await bloc.signInWithGoogle();
     } on PlatformException catch (e) {
-      if (e.code != 'שגיאה: בוטל ע״י המשתמש') {
+      if (e.code != 'ההתחברות בוטלה ע״י המשתמש') {
         _showSignInError(context, e);
       }
     }
@@ -53,7 +53,7 @@ class SignInScreen extends StatelessWidget {
     try {
       await bloc.signInWithFacebook();
     } on PlatformException catch (e) {
-      if (e.code != 'שגיאה: בוטל ע״י המשתמש') {
+      if (e.code != 'ההתחברות בוטלה ע״י המשתמש') {
         _showSignInError(context, e);
       }
     }
@@ -63,7 +63,7 @@ class SignInScreen extends StatelessWidget {
     try {
       await bloc.signInWithApple();
     } on PlatformException catch (e) {
-      if (e.code != 'שגיאה: בוטל ע״י המשתמש') {
+      if (e.code != 'ההתחברות בוטלה ע״י המשתמש') {
         _showSignInError(context, e);
       }
     }

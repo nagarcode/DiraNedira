@@ -5,6 +5,7 @@ import 'package:dira_nedira/common_widgets/custom_raised_button.dart';
 import 'package:dira_nedira/common_widgets/no_apartment_widget.dart';
 import 'package:dira_nedira/common_widgets/platform_alert_dialog.dart';
 import 'package:dira_nedira/home/account/apartment.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -47,6 +48,15 @@ class AccountPage extends StatelessWidget {
     await database.leaveApartment(apartmentId);
   }
 
+  Future<void> _showApartmentPassword(
+      BuildContext context, Apartment apartment) {
+    PlatformAlertDialog(
+      title: apartment.id,
+      content: 'הסיסמא שלכם: ' + apartment.password,
+      defaultActionText: 'סגור',
+    ).show(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     print('building account page');
@@ -82,8 +92,7 @@ class AccountPage extends StatelessWidget {
                   Center(
                       child: Text(
                     'פיצ׳רים נוספים בקרוב!',
-                    style:
-                        theme.textTheme.title.copyWith(color: Colors.lightBlue),
+                    style: theme.textTheme.title,
                   )),
                   Center(
                       child: Text(
@@ -132,12 +141,12 @@ class AccountPage extends StatelessWidget {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9.0)),
       elevation: 6,
-      margin: EdgeInsets.all(20),
+      margin: EdgeInsets.all(5),
       child: Padding(
         padding: EdgeInsets.all(10),
         child: Column(
           children: <Widget>[
-            apartmentInfoCard(theme, apartment),
+            apartmentInfoCard(theme, apartment, context),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -155,7 +164,8 @@ class AccountPage extends StatelessWidget {
     );
   }
 
-  Widget apartmentInfoCard(ThemeData theme, Apartment apartment) {
+  Widget apartmentInfoCard(
+      ThemeData theme, Apartment apartment, BuildContext context) {
     return Container(
       width: double.infinity,
       child: Center(
@@ -168,10 +178,15 @@ class AccountPage extends StatelessWidget {
               style: theme.textTheme.title.copyWith(color: theme.primaryColor),
             ),
             Center(
-                child: Text(
-              apartment.id,
-              style: theme.textTheme.title,
-            ))
+              child: Text(
+                apartment.id,
+                style: theme.textTheme.title,
+              ),
+            ),
+            InkWell(
+              child: Container(margin: EdgeInsets.all(3), child: Text('הצג סיסמא', style: theme.textTheme.body2,)),
+              onTap: () => _showApartmentPassword(context, apartment),
+            )
           ],
         )),
       ),
@@ -188,7 +203,9 @@ class AccountPage extends StatelessWidget {
         ),
         // SizedBox(height: 2),
         Text(
-          user.disaplayName == null ? 'אנונימי' : user.disaplayName,
+          '   ' + user.disaplayName == null
+              ? 'אנונימי'
+              : user.disaplayName + '  ',
           style: TextStyle(color: color),
         ),
         // SizedBox(height: 2),

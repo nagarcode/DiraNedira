@@ -9,7 +9,7 @@ class PlatformExceptionAlertDialog extends PlatformAlertDialog {
   }) : super(
     title: title,
     content: _message(exception),
-    defaultActionText: 'OK'
+    defaultActionText: 'סגור'
   );
 
   static String _message(PlatformException exception) {

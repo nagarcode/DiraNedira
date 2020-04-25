@@ -82,7 +82,7 @@ class Auth implements AuthBase {
     } else {
       throw PlatformException(
         code: 'ERROR: ABORTED BY USER',
-        message: 'Sign in aborted by user',
+        message: 'ההתחברות בוטלה ע״י המשתמש',
       );
     }
   }
@@ -108,7 +108,7 @@ class Auth implements AuthBase {
     } else {
       throw PlatformException(
         code: 'ERROR: ABORTED BY USER',
-        message: 'Sign in aborted by user',
+        message: 'ההתחברות בוטלה ע״י המשתמש',
       );
     }
   }
@@ -158,7 +158,7 @@ class Auth implements AuthBase {
       case AuthorizationStatus.cancelled:
         throw PlatformException(
           code: 'ERROR_ABORTED_BY_USER',
-          message: 'Sign in aborted by user',
+        message: 'ההתחברות בוטלה ע״י המשתמש',
         );
     }
     return null;
