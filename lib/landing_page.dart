@@ -18,7 +18,6 @@ class LandingPage extends StatelessWidget {
     Intl.defaultLocale = 'he';
     final currentMonthYear =
         DateFormat.yMMM().format(DateTime.now());
-    print(currentMonthYear);
     final auth = Provider.of<AuthBase>(context, listen: false);
     return StreamBuilder<User>(
       stream: auth.onAuthStateChanged,

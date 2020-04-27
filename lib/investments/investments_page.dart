@@ -4,6 +4,7 @@ import 'package:dira_nedira/investments/chart.dart';
 import 'package:dira_nedira/investments/investment.dart';
 import 'package:dira_nedira/investments/investments_list.dart';
 import 'package:dira_nedira/investments/new_investment_form.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -66,8 +67,10 @@ class InvestmentsPage extends StatelessWidget {
 
   Widget _buildContents(BuildContext context, Size appBarPrefsize) {
     final mediaQuery = MediaQuery.of(context);
+    final theme = Theme.of(context);
     final apartment = Provider.of<Apartment>(context);
     final currentMonthInvestments = investments;
+    final currentMonthYear = DateFormat.yMMM().format(DateTime.now());
     final containerHeight = mediaQuery.size.height * 0.3;
     if (apartment != null && currentMonthInvestments != null) {
       return SafeArea(
@@ -75,22 +78,27 @@ class InvestmentsPage extends StatelessWidget {
           //TODO Add pie chart
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            Center(
+              child: Text(
+                currentMonthYear,
+                style: theme.textTheme.title,
+              ),
+            ),
             // Expanded(
             //   flex: 2,
-              // child: Container(
-              // child: 
-              Chart(
-                investments: currentMonthInvestments,
-              ),
-              // ),
+            // child: Container(
+            // child:
+            Chart(
+              investments: currentMonthInvestments,
+            ),
+            // ),
             // ),
             Divider(
               color: Colors.grey,
             ),
             Expanded(
               flex: 3,
-              child: 
-              InvestmentsList(
+              child: InvestmentsList(
                   investments: investments, isHistory: isHistory),
             ),
           ],

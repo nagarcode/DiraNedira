@@ -203,9 +203,9 @@ class AccountPage extends StatelessWidget {
         ),
         // SizedBox(height: 2),
         Text(
-          '   ' + user.disaplayName == null
+          '   ' + (user.disaplayName == null
               ? 'אנונימי'
-              : user.disaplayName + '  ',
+              : user.disaplayName + '  '),
           style: TextStyle(color: color),
         ),
         // SizedBox(height: 2),

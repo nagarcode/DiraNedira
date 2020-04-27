@@ -114,7 +114,7 @@ class Chart extends StatelessWidget {
         ),
         // SizedBox(height: 6),
         Center(child: shouldGetOrAdd(user.uid)),
-        // SizedBox(height: 6),
+        SizedBox(height: 6),
       ],
     );
   }
