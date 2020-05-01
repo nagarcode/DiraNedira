@@ -156,8 +156,9 @@ class AccountPage extends StatelessWidget {
                 }).toList(),
               ),
             ),
-            leaveApartmentButton(context, apartment, database),
             SizedBox(height: 1),
+            leaveApartmentButton(context, apartment, database),
+            // SizedBox(height: 1),
           ],
         ),
       ),
@@ -184,7 +185,12 @@ class AccountPage extends StatelessWidget {
               ),
             ),
             InkWell(
-              child: Container(margin: EdgeInsets.all(3), child: Text('הצג סיסמא', style: theme.textTheme.body2,)),
+              child: Container(
+                  margin: EdgeInsets.all(3),
+                  child: Text(
+                    'הצג סיסמא',
+                    style: theme.textTheme.body2,
+                  )),
               onTap: () => _showApartmentPassword(context, apartment),
             )
           ],
@@ -203,9 +209,10 @@ class AccountPage extends StatelessWidget {
         ),
         // SizedBox(height: 2),
         Text(
-          '   ' + (user.disaplayName == null
-              ? 'אנונימי'
-              : user.disaplayName + '  '),
+          '   ' +
+              (user.disaplayName == null
+                  ? 'אנונימי'
+                  : user.disaplayName + '  '),
           style: TextStyle(color: color),
         ),
         // SizedBox(height: 2),
