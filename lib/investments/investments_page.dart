@@ -70,6 +70,7 @@ class InvestmentsPage extends StatelessWidget {
     final theme = Theme.of(context);
     final apartment = Provider.of<Apartment>(context);
     final currentMonthInvestments = investments;
+    currentMonthInvestments.sort((a, b) => b.date.compareTo(a.date));
     final currentMonthYear = DateFormat.yMMM().format(DateTime.now());
     final containerHeight = mediaQuery.size.height * 0.3;
     if (apartment != null && currentMonthInvestments != null) {

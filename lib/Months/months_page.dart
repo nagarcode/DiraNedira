@@ -113,8 +113,8 @@ class _MonthsPageState extends State<MonthsPage>
                     keys[reversedIndex], widget.apartmentId));
           },
           child: Card(
-            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
-            elevation: 5,
+            margin: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+            elevation: 2,
             child: ListTile(
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.center,

@@ -21,7 +21,8 @@ class Chart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final Brightness brightnessValue = MediaQuery.of(context).platformBrightness; 
+    final Brightness brightnessValue =
+        MediaQuery.of(context).platformBrightness;
     final userList = Provider.of<List<User>>(context);
     for (int i = 0; i < userList.length; i++)
       initUserinvestmentSumMap(userList[i].uid);
@@ -49,7 +50,7 @@ class Chart extends StatelessWidget {
                 textBaseline: TextBaseline.alphabetic,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: userList.map((data) {
-                  return _buildUserInfo(data, theme, context);
+                  return _buildUserInfo(data, theme, context, userList);
                 }).toList(),
               ),
             ),
@@ -90,7 +91,8 @@ class Chart extends StatelessWidget {
     return (totalSpending ~/ userInvestmentSum.length);
   }
 
-  Widget _buildUserInfo(User user, ThemeData theme, BuildContext context) {
+  Widget _buildUserInfo(
+      User user, ThemeData theme, BuildContext context, List<User> userList) {
     final screenSize = MediaQuery.of(context).size;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -113,7 +115,8 @@ class Chart extends StatelessWidget {
           style: theme.textTheme.title.copyWith(fontSize: 13),
         ),
         // SizedBox(height: 6),
-        Center(child: shouldGetOrAdd(user.uid)),
+        if (userList.length > 1)
+          Center(child: shouldGetOrAdd(user.uid)),
         SizedBox(height: 6),
       ],
     );
@@ -124,7 +127,7 @@ class Chart extends StatelessWidget {
     var text;
     var spent = userInvestmentSum[uid];
     var getOrAdd = _eachShouldSpend() - spent;
-    if (getOrAdd < 0) {
+    if (getOrAdd <= 0) {
       color = Colors.green;
       text = 'צריך לקבל: ';
     } else {

@@ -135,7 +135,7 @@ class InvestmentsList extends StatelessWidget {
       title: 'מחק הוצאה',
       content: 'האם אתה בטוח שברצונך למחוק הוצאה זו?',
       defaultActionText: 'מחק',
-      cancelActionText: 'Cancel',
+      cancelActionText: 'בטל',
     ).show(context);
     if (didRequestLeave) {
       database.deleteInvestment(investments[index], apartmentId);

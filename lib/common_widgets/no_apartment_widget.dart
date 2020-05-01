@@ -19,8 +19,8 @@ class NoApartmentWidget extends StatelessWidget {
           alignment: Alignment.center,
           height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.4,
           child: Card(
-            elevation: 6,
-            margin: EdgeInsets.all(20),
+            elevation: 0,
+            // margin: EdgeInsets.all(20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[

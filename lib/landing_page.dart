@@ -16,8 +16,7 @@ class LandingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     initializeDateFormatting('he', null);
     Intl.defaultLocale = 'he';
-    final currentMonthYear =
-        DateFormat.yMMM().format(DateTime.now());
+    final currentMonthYear = DateFormat.yMMM().format(DateTime.now());
     final auth = Provider.of<AuthBase>(context, listen: false);
     return StreamBuilder<User>(
       stream: auth.onAuthStateChanged,
@@ -76,9 +75,9 @@ class LandingPage extends StatelessWidget {
                                   investmentsSnapshot.connectionState !=
                                       ConnectionState.done)
                                 return SplashScreen();
-                              if (currentMonthInvestments != null)
-                                currentMonthInvestments
-                                    .sort((a, b) => b.date.compareTo(a.date));
+                              // if (currentMonthInvestments != null)
+                              //   currentMonthInvestments
+                              //       .sort((a, b) => b.date.compareTo(a.date));
                               if (currentMonthInvestments != null &&
                                   currentMonthInvestments.isEmpty)
                                 database.initMonthSumToZero(

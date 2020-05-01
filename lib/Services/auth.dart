@@ -140,12 +140,15 @@ class Auth implements AuthBase {
         );
         final authResult = await _firebaseAuth.signInWithCredential(credential);
         final firebaseUser = authResult.user;
+        if (firebaseUser.displayName == null) {
+          final updateUser = UserUpdateInfo();
+          updateUser.displayName =
+          appleIdCredential.fullName.givenName;
+              // '${appleIdCredential.fullName.givenName} ${appleIdCredential.fullName.familyName}';
+          await firebaseUser.updateProfile(updateUser);
+        }
         // if (scopes.contains(Scope.fullName)) {
 
-        final updateUser = UserUpdateInfo();
-        updateUser.displayName =
-            '${appleIdCredential.fullName.givenName} ${appleIdCredential.fullName.familyName}';
-        await firebaseUser.updateProfile(updateUser);
         // }
         return _userFromFirebase(firebaseUser);
       case AuthorizationStatus.error:
@@ -158,7 +161,7 @@ class Auth implements AuthBase {
       case AuthorizationStatus.cancelled:
         throw PlatformException(
           code: 'ERROR_ABORTED_BY_USER',
-        message: 'ההתחברות בוטלה ע״י המשתמש',
+          message: 'ההתחברות בוטלה ע״י המשתמש',
         );
     }
     return null;
