@@ -74,7 +74,7 @@ class Chart extends StatelessWidget {
                     style: TextStyle(color: Colors.lightBlue),
                   ),
                   Text(
-                    totalSpending.toString() + '₪',
+                    '₪' + totalSpending.toString(),
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                   ),
                 ],
@@ -111,7 +111,7 @@ class Chart extends StatelessWidget {
         ),
         // SizedBox(height: 6),
         Text(
-          'הוציא: ' + userInvestmentSum[user.uid].toString() + '₪',
+          'הוציא: ' + '₪' + userInvestmentSum[user.uid].toString(),
           style: theme.textTheme.title.copyWith(fontSize: 13),
         ),
         // SizedBox(height: 6),
@@ -135,7 +135,7 @@ class Chart extends StatelessWidget {
       text = 'צריך לתת: ';
     }
     return Text(
-      '    ' + text + getOrAdd.abs().toString() + '₪' + '    ',
+      '    ' + text + '₪' + getOrAdd.abs().toString() + '    ',
       style: TextStyle(color: color, fontSize: 13, fontWeight: FontWeight.bold),
     );
   }

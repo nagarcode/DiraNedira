@@ -132,9 +132,9 @@ class _MonthsPageState extends State<MonthsPage>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    monthsWithTransactionsAndAmount[keys[reversedIndex]]
-                            .toString() +
-                        '₪',
+                    '₪' +
+                        monthsWithTransactionsAndAmount[keys[reversedIndex]]
+                            .toString(),
                     style: Theme.of(context).textTheme.title.copyWith(
                           fontSize: 22,
                         ),

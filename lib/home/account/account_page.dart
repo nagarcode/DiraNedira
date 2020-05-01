@@ -89,18 +89,6 @@ class AccountPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   _hasApartmentColumn(context, apartment, database),
-                  Center(
-                      child: Text(
-                    'פיצ׳רים נוספים בקרוב!',
-                    style: theme.textTheme.title,
-                  )),
-                  Center(
-                      child: Text(
-                    'הישארו מעודכנים, פונקציונליות נוספת בדרך בזמן הקרוב! \n' +
-                        'האפליקציה ״דירה נדירה״ מפותחת ע״י סטודנט יחיד ולא חברת ענק, לכן אשמח לשמוע כל בעיה/בקשה/חוות דעת :) מייל: \n' +
-                        'dira.nedira.team@gmail.com',
-                    textAlign: TextAlign.center,
-                  )),
                 ],
               ),
             )
