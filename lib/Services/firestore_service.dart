@@ -72,8 +72,8 @@ class FirestoreService {
       final map = snapshot.data;
       final apartmentPassword = map['password'];
       return pass == apartmentPassword;
-    }
-    else return null;
+    } else
+      return null;
   }
 
   Stream<Apartment> apartmentStream(
@@ -179,6 +179,17 @@ class FirestoreService {
       prevSumDocData[monthYear] = prevSumDocData[monthYear] - investmentAmount;
       await tx.set(sumDocRef, prevSumDocData);
       return await paymentReference.delete();
+    });
+  }
+
+  Future<void> toggleCheckbox(String path) async {
+    print('Changing check status');
+    final ref = Firestore.instance.document(path);
+    return Firestore.instance.runTransaction((Transaction tx) async {
+      final snapshot = await tx.get(ref);
+      final prevData = snapshot.data;
+      prevData['checked'] = !prevData['checked'];
+      return await tx.set(ref, prevData);
     });
   }
 }

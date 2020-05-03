@@ -13,13 +13,6 @@ class InvestmentsList extends StatelessWidget {
   final bool isHistory;
   InvestmentsList({this.investments, this.isHistory});
 
-  // String getPhotoUrlByUid(String uid, BuildContext context) {
-  //   final userList = Provider.of<List<User>>(context);
-  //   for (int i = 0; i < userList.length; i++) {
-  //     if (userList[i].uid == uid) return userList[i].photoUrl;
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     final database = Provider.of<Database>(context);
@@ -59,54 +52,49 @@ class InvestmentsList extends StatelessWidget {
                   // : Colors.white70,
                   ),
               itemBuilder: (ctx, index) {
-                return Card(
-                  margin: EdgeInsets.symmetric(horizontal: 5),
-                  elevation: 0,
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: isHistory
-                          ? theme.disabledColor
-                          : theme.appBarTheme.color,
-                      radius: 25,
-                      child: Padding(
-                        padding: EdgeInsets.all(6),
-                        child: FittedBox(
-                            child: Text(
-                          '₪${investments[index].amount}',
-                          style: TextStyle(
-                              color: isHistory ? Colors.white : Colors.black),
-                        )),
+                return ListTile(
+                  dense: true,
+                  leading: CircleAvatar(
+                    backgroundColor: isHistory
+                        ? theme.disabledColor
+                        : theme.appBarTheme.color,
+                    radius: 25,
+                    child: Padding(
+                      padding: EdgeInsets.all(6),
+                      child: FittedBox(
+                          child: Text(
+                        '₪${investments[index].amount}',
+                        style: TextStyle(
+                            color: isHistory ? Colors.white : Colors.black),
+                      )),
+                    ),
+                  ),
+                  title: Text(
+                    investments[index].title,
+                    style: Theme.of(context).textTheme.title,
+                  ),
+                  subtitle:
+                      Text(DateFormat.yMMMd().format(investments[index].date)),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Avatar(
+                        photoUrl: investments[index].ownerPhotoUrl,
+                        radius: 10,
                       ),
-                    ),
-                    title: Text(
-                      investments[index].title,
-                      style: Theme.of(context).textTheme.title,
-                    ),
-                    subtitle: Text(
-                        DateFormat.yMMMd().format(investments[index].date)),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Avatar(
-                          photoUrl: investments[index].ownerPhotoUrl,
-                          // getPhotoUrlByUid(
-                          //     investments[index].ownerUid, context),
-                          radius: 10,
+                      IconButton(
+                        disabledColor: Colors.grey,
+                        icon: Icon(
+                          Icons.delete,
                         ),
-                        IconButton(
-                          disabledColor: Colors.grey,
-                          icon: Icon(
-                            Icons.delete,
-                          ),
-                          color: Theme.of(context).errorColor,
-                          onPressed: isDeletable(investments[index].ownerUid,
-                                  currentUser.uid, context)
-                              ? () => _confirmDeleteInvestment(context,
-                                  investments, index, apartment.id, database)
-                              : null,
-                        ),
-                      ],
-                    ),
+                        color: Theme.of(context).errorColor,
+                        onPressed: isDeletable(investments[index].ownerUid,
+                                currentUser.uid, context)
+                            ? () => _confirmDeleteInvestment(context,
+                                investments, index, apartment.id, database)
+                            : null,
+                      ),
+                    ],
                   ),
                 );
               },

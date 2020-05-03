@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
       TabItem.investments: (_) => InvestmentsPage(
           isHistory: false,
           investments: Provider.of<List<Investment>>(context)),
-      TabItem.account: (_) => AccountPage(),
+      TabItem.account: (_) => AccountPage(widget.database, widget.apartmentId),
     };
   }
 

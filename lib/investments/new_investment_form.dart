@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dira_nedira/Services/auth.dart';
 import 'package:dira_nedira/Services/database.dart';
 import 'package:dira_nedira/common_widgets/adaptive_flat_button.dart';
@@ -126,15 +128,25 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
     return [
       TextFormField(
         decoration: InputDecoration(labelText: 'שם הוצאה'),
-        validator: (value) => value.isNotEmpty ? null : 'שם הוצאה לא יכול להיות ריק',
+        validator: (value) =>
+            value.isNotEmpty ? null : 'שם הוצאה לא יכול להיות ריק',
         onSaved: (value) => _title = value,
       ),
       TextFormField(
         decoration: InputDecoration(labelText: 'סכום'),
         validator: (value) =>
             value.isNotEmpty ? null : 'סכום לא יכול להיות ריק',
-        keyboardType: TextInputType.numberWithOptions(decimal: false),
-        onSaved: (value) => _amount = int.tryParse(value) ?? 0,
+        keyboardType:
+            TextInputType.numberWithOptions(decimal: false, signed: false),
+        inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+        onSaved: (value) {
+          double amountDouble = 0;
+          int amount = int.tryParse(value) ?? 0;
+          if (amount == 0) amountDouble = double.tryParse(value) ?? 0;
+          if (amountDouble != null && amountDouble != 0)
+            amount = amountDouble.round();
+          return _amount = amount;
+        },
       ),
       Container(
         height: 70,

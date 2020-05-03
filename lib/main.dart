@@ -39,13 +39,32 @@ class DiraNedira extends StatelessWidget {
           textTheme: ThemeData.light().textTheme.copyWith(
               title: TextStyle(
                 fontFamily: 'OpenSans',
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
+                color: Colors.black,
               ),
               subtitle: TextStyle(
                 color: Colors.grey,
               ),
               body2: TextStyle(color: Colors.lightBlue),
+              display1: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 19,
+                color: Colors.lightBlue,
+                fontWeight: FontWeight.bold,
+              ),
+              display2: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.lightBlue,
+              ),
+              display3: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 19,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
               button: TextStyle(color: Colors.white)),
           appBarTheme: AppBarTheme(
             textTheme: ThemeData.light().textTheme.copyWith(

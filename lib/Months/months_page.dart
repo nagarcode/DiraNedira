@@ -71,8 +71,7 @@ class _MonthsPageState extends State<MonthsPage>
                             return Center(
                               child: Text(
                                 'כאן תוצג היסטוריית חודשים וסיכום שלהם',
-                                style: theme.textTheme.title
-                                    .copyWith(color: Colors.lightBlue),
+                                style: theme.textTheme.display2,
                               ),
                             );
                           }
@@ -113,19 +112,14 @@ class _MonthsPageState extends State<MonthsPage>
                     keys[reversedIndex], widget.apartmentId));
           },
           child: Card(
-            margin: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+            margin: EdgeInsets.symmetric(vertical: 2, horizontal: 0),
             elevation: 2,
             child: ListTile(
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(
-                    keys[reversedIndex] + ':',
-                    style: Theme.of(context)
-                        .textTheme
-                        .title
-                        .copyWith(color: Colors.lightBlue, fontSize: 22),
-                  ),
+                  Text(keys[reversedIndex] + ':',
+                      style: theme.textTheme.display1),
                 ],
               ),
               subtitle: Column(
@@ -135,9 +129,7 @@ class _MonthsPageState extends State<MonthsPage>
                     '₪' +
                         monthsWithTransactionsAndAmount[keys[reversedIndex]]
                             .toString(),
-                    style: Theme.of(context).textTheme.title.copyWith(
-                          fontSize: 22,
-                        ),
+                    style: theme.textTheme.display3,
                   ),
                   Text(
                     'סה״כ הוצאות דירה חודשיות',

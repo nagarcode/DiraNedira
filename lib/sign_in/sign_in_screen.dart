@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:dira_nedira/sign_in/apple_sign_in_available.dart';
 
 import '../Services/auth.dart';

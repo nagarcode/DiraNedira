@@ -2,6 +2,7 @@ import 'package:dira_nedira/Services/api_path.dart';
 import 'package:dira_nedira/Services/auth.dart';
 import 'package:dira_nedira/Services/firestore_service.dart';
 import 'package:dira_nedira/home/account/apartment.dart';
+import 'package:dira_nedira/home/account/shopping_item.dart';
 import 'package:dira_nedira/investments/investment.dart';
 import 'package:meta/meta.dart';
 import 'package:intl/intl.dart';
@@ -28,6 +29,12 @@ abstract class Database {
   Future<Map<String, dynamic>> getMonthlySumDoc(String apartmentId);
   Future<List<Investment>> getInvestmentsByMonthYear(
       String monthYear, String apartmentId);
+  Future<void> addShoppingListItem(ShoppingItem item, String apartmentId);
+  Stream<List<ShoppingItem>> shoppingItemStream(String apartmentId);
+  Future<void> toggleCheckedState(
+      ShoppingItem shoppingItem, Apartment apartment);
+  Future<void> deleteShoppingItem(
+      ShoppingItem shoppingItem, Apartment apartment);
 }
 
 String documentIdFromCurrentDate() => DateTime.now().toIso8601String();
@@ -36,6 +43,14 @@ class FirestoreDatabase implements Database {
   FirestoreDatabase({@required this.uid}) : assert(uid != null);
   final String uid;
   final _service = FirestoreService.instace;
+
+  @override
+  Future<void> addShoppingListItem(
+      ShoppingItem item, String apartmentId) async {
+    String path = APIPath.shoppingItemById(apartmentId, item.id);
+    Map<String, dynamic> dataMap = item.toMap();
+    return _service.setData(path: path, data: dataMap);
+  }
 
   @override
   Future<void> createInvestment(
@@ -91,6 +106,13 @@ class FirestoreDatabase implements Database {
           path: APIPath.investments(apartmentId, yearMonth),
           builder: (data, documentId) => Investment.fromMap(data, documentId));
 
+  Stream<List<ShoppingItem>> shoppingItemStream(String apartmentId) {
+    final path = APIPath.shoppingItems(apartmentId);
+    return _service.collectionStream(
+        path: path,
+        builder: (data, documentId) => ShoppingItem.fromMap(data, documentId));
+  }
+
   @override
   Stream<List<User>> userStream(String apartmentId) =>
       _service.collectionStream(
@@ -124,8 +146,8 @@ class FirestoreDatabase implements Database {
       {String apartmentId, Map<String, dynamic> data}) async {
     return await _service.setData(
       path: APIPath.userInApartment(apartmentId: apartmentId, uid: data['uid']),
-      data: data, 
-    ); 
+      data: data,
+    );
   }
 
   @override
@@ -169,5 +191,19 @@ class FirestoreDatabase implements Database {
   Future<void> initMonthSumToZero(String apartmentId, String monthYear) async {
     String pathToSumDoc = APIPath.monthlySumDoc(apartmentId);
     return await _service.initNewMonthInMonthlySumDoc(pathToSumDoc, monthYear);
+  }
+
+  @override
+  Future<void> toggleCheckedState(
+      ShoppingItem shoppingItem, Apartment apartment) async {
+    String path = APIPath.shoppingItemById(apartment.id, shoppingItem.id);
+    _service.toggleCheckbox(path);
+  }
+
+  @override
+  Future<void> deleteShoppingItem(
+      ShoppingItem shoppingItem, Apartment apartment) async {
+    await _service.deleteData(
+        path: APIPath.shoppingItemById(apartment.id, shoppingItem.id));
   }
 }

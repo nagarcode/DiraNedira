@@ -5,11 +5,33 @@ import 'package:dira_nedira/common_widgets/custom_raised_button.dart';
 import 'package:dira_nedira/common_widgets/no_apartment_widget.dart';
 import 'package:dira_nedira/common_widgets/platform_alert_dialog.dart';
 import 'package:dira_nedira/home/account/apartment.dart';
+import 'package:dira_nedira/home/account/shopping_item.dart';
+import 'package:dira_nedira/home/account/shopping_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AccountPage extends StatelessWidget {
+class AccountPage extends StatefulWidget {
+  AccountPage(this.database, this.apartmentId);
+  final String apartmentId;
+  final Database database;
+  @override
+  _AccountPageState createState() => _AccountPageState();
+}
+
+class _AccountPageState extends State<AccountPage> {
+  Stream<List<ShoppingItem>> shoppingItemsStream;
+
+  @override
+  void initState() {
+    super.initState();
+    shoppingItemsStream = getShoppingItemList();
+  }
+
+  Stream<List<ShoppingItem>> getShoppingItemList() {
+    return widget.database.shoppingItemStream(widget.apartmentId);
+  }
+
   Future<void> _signOut(BuildContext context) async {
     try {
       final auth = Provider.of<AuthBase>(context);
@@ -66,6 +88,8 @@ class AccountPage extends StatelessWidget {
     final mediaQuery = MediaQuery.of(context);
     final apartment = Provider.of<Apartment>(context);
     final theme = Theme.of(context);
+    final userList = Provider.of<List<User>>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('דירה'),
@@ -78,17 +102,40 @@ class AccountPage extends StatelessWidget {
             onPressed: () => _confirmSignOut(context),
           )
         ],
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(100),
-          child: _buildUserInfo(user, Colors.white, 50),
-        ),
+        // bottom:
+        // PreferredSize(
+        // preferredSize: Size.fromHeight(100),
+        // child:
+        // _buildUserInfo(user, Colors.white, 30),
+        // ),
       ),
       body: (apartment != null)
           ? SafeArea(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  _hasApartmentColumn(context, apartment, database),
+                  Container(
+                    child:
+                        _apartmentCard(context, apartment, database, userList),
+                  ),
+                  Expanded(
+                                      child: Container(
+                      child: StreamBuilder<List<ShoppingItem>>(
+                        stream: shoppingItemsStream,
+                        builder: (context, snapshot) {
+                          final shoppingList =
+                              snapshot.hasData ? snapshot.data : null;
+                          if (snapshot.connectionState !=
+                                  ConnectionState.active &&
+                              snapshot.connectionState != ConnectionState.done)
+                            return CupertinoActivityIndicator();
+                          else
+                            return ShoppingList(
+                                shoppingList, apartment, database, user);
+                        },
+                      ),
+                    ),
+                  ),
                 ],
               ),
             )
@@ -98,18 +145,31 @@ class AccountPage extends StatelessWidget {
     );
   }
 
-  Widget _hasApartmentColumn(
-      BuildContext context, Apartment apartment, Database database) {
-    final userList = Provider.of<List<User>>(context);
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        Container(
-          child: _apartmentCard(context, apartment, database, userList),
-        ),
-      ],
-    );
-  }
+  // Widget _hasApartmentColumn(
+  //     BuildContext context, Apartment apartment, Database database, User user) {
+  //   final userList = Provider.of<List<User>>(context);
+  //   return Column(
+  //     mainAxisAlignment: MainAxisAlignment.start,
+  //     children: <Widget>[
+  //       Container(
+  //         child: _apartmentCard(context, apartment, database, userList),
+  //       ),
+  //       Container(
+  //         child: StreamBuilder<List<ShoppingItem>>(
+  //           stream: shoppingItemsStream,
+  //           builder: (context, snapshot) {
+  //             final shoppingList = snapshot.hasData ? snapshot.data : null;
+  //             if (snapshot.connectionState != ConnectionState.active &&
+  //                 snapshot.connectionState != ConnectionState.done)
+  //               return CupertinoActivityIndicator();
+  //             else
+  //               return ShoppingList(shoppingList, apartment, database, user);
+  //           },
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   CustomRaisedButton leaveApartmentButton(
       BuildContext context, Apartment apartment, Database database) {
@@ -128,7 +188,7 @@ class AccountPage extends StatelessWidget {
     final theme = Theme.of(context);
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9.0)),
-      elevation: 6,
+      elevation: 0,
       margin: EdgeInsets.all(5),
       child: Padding(
         padding: EdgeInsets.all(10),

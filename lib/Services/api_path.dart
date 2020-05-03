@@ -2,9 +2,14 @@ class APIPath {
   static String investment(
           String apartmentId, String investmentId, String yearMonth) =>
       'apartments/$apartmentId/investments/investments/$yearMonth/$investmentId';
+  static String shoppingItemById(String apartmentId, String itemId) =>
+      'apartments/$apartmentId/shopping/$itemId';
 
   static String investments(String apartmentId, String yearMonth) =>
       'apartments/$apartmentId/investments/investments/$yearMonth';
+
+  static String shoppingItems(String apartmentId) =>
+      'apartments/$apartmentId/shopping';
 
   static monthlySumDoc(String apartmentId) =>
       'apartments/$apartmentId/investments/sum';
