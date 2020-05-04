@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:dira_nedira/sign_in/apple_sign_in_available.dart';
-
 import '../Services/auth.dart';
 import '../common_widgets/platform_exception_alert_dialog.dart';
 import '../sign_in/sign_in_bloc.dart';

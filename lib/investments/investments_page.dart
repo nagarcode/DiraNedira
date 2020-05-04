@@ -73,7 +73,6 @@ class InvestmentsPage extends StatelessWidget {
     if (currentMonthInvestments != null)
       currentMonthInvestments.sort((a, b) => b.date.compareTo(a.date));
     final currentMonthYear = DateFormat.yMMM().format(DateTime.now());
-    final containerHeight = mediaQuery.size.height * 0.3;
     if (apartment != null && currentMonthInvestments != null) {
       return SafeArea(
         child: Column(
