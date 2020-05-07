@@ -29,7 +29,7 @@ class InvestmentsList extends StatelessWidget {
                 Center(
                   child: Text(
                     'טרם בוצעו תשלומים!',
-                    style: Theme.of(context).textTheme.title,
+                    style: Theme.of(context).textTheme.subtitle1,
                   ),
                 ),
                 SizedBox(
@@ -71,7 +71,7 @@ class InvestmentsList extends StatelessWidget {
                   ),
                   title: Text(
                     investments[index].title,
-                    style: Theme.of(context).textTheme.title,
+                    style: Theme.of(context).textTheme.headline6,
                   ),
                   subtitle:
                       Text(DateFormat.yMMMd().format(investments[index].date)),

@@ -4,7 +4,6 @@ import 'package:dira_nedira/common_widgets/platform_exception_alert_dialog.dart'
 import 'package:dira_nedira/home/account/apartment.dart';
 import 'package:dira_nedira/home/account/shopping_item.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 
 class NewShoppingItemForm extends StatefulWidget {

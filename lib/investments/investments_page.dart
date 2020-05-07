@@ -43,7 +43,7 @@ class InvestmentsPage extends StatelessWidget {
                 onPressed: () => Navigator.of(context).pop(),
                 child: Text(
                   'סיום',
-                  style: Theme.of(context).textTheme.title.copyWith(
+                  style: Theme.of(context).textTheme.subtitle1.copyWith(
                       color: Colors.white, fontWeight: FontWeight.normal),
                 ),
               )
@@ -82,7 +82,7 @@ class InvestmentsPage extends StatelessWidget {
             Center(
               child: Text(
                 currentMonthYear,
-                style: theme.textTheme.title,
+                style: theme.textTheme.headline6,
               ),
             ),
             // Expanded(

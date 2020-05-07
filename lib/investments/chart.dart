@@ -101,7 +101,7 @@ class Chart extends StatelessWidget {
           fit: BoxFit.contain,
           child: Text(
             user.disaplayName != null ? user.disaplayName : 'אנונימי',
-            style: theme.textTheme.title
+            style: theme.textTheme.headline6
                 .copyWith(fontSize: 12, color: Colors.black),
           ),
         ),
@@ -112,7 +112,7 @@ class Chart extends StatelessWidget {
         // SizedBox(height: 6),
         Text(
           'הוציא: ' + '₪' + userInvestmentSum[user.uid].toString(),
-          style: theme.textTheme.title.copyWith(fontSize: 13),
+          style: theme.textTheme.headline6.copyWith(fontSize: 13),
         ),
         // SizedBox(height: 6),
         if (userList.length > 1)

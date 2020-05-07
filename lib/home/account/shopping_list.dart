@@ -24,15 +24,14 @@ class ShoppingList extends StatelessWidget {
           children: <Widget>[
             InkWell(
               onTap: () => _confirmClearCheckedItems(context),
-              child: Text(
-                'נקה',
-                style: theme.textTheme.display2,
-              ),
+              child: Text('נקה',
+                  style: theme.textTheme.bodyText1
+                      .copyWith(fontWeight: FontWeight.bold)),
             ),
             Center(
               child: Text(
                 'רשימת קניות משותפת',
-                style: theme.textTheme.title,
+                style: theme.textTheme.headline6,
               ),
             ),
             addShoppingItemButton(context),
@@ -48,7 +47,7 @@ class ShoppingList extends StatelessWidget {
                   ),
                 ),
               )
-            : shoppingListView(),
+            : shoppingListView(theme),
       ],
     );
   }
@@ -56,7 +55,7 @@ class ShoppingList extends StatelessWidget {
   Future<void> _confirmClearCheckedItems(BuildContext context) async {
     final didRequestClear = await PlatformAlertDialog(
       title: 'נקה רשימה',
-      content: 'האם אתה בטוח שברצונך לנקות את כל האיברים המסומנים ברשימה?',
+      content: 'האם אתה בטוח שברצונך לנקות את כל הפריטים המסומנים ברשימה?',
       defaultActionText: 'נקה',
       cancelActionText: 'בטל',
     ).show(context);
@@ -68,7 +67,7 @@ class ShoppingList extends StatelessWidget {
       if (item.checked) await database.deleteShoppingItem(item, apartment);
   }
 
-  Widget shoppingListView() {
+  Widget shoppingListView(ThemeData theme) {
     shoppingList.sort((a, b) {
       final aInt = a.checked ? 1 : 0;
       final bInt = b.checked ? 1 : 0;
@@ -88,7 +87,10 @@ class ShoppingList extends StatelessWidget {
                     changeCheckedStatus(index);
                   }),
               enabled: !shoppingList[index].checked,
-              title: Text(shoppingList[index].title),
+              title: Text(
+                shoppingList[index].title,
+                // style: theme.textTheme.bodyText2,
+              ),
               trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                 Avatar(
                   photoUrl: shoppingList[index].authorPhotoUrl,

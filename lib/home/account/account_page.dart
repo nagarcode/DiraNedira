@@ -92,7 +92,7 @@ class _AccountPageState extends State<AccountPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('דירה'),
+        title: Text('דירה'),
         actions: <Widget>[
           FlatButton(
             child: const Text(
@@ -224,12 +224,12 @@ class _AccountPageState extends State<AccountPage> {
           children: <Widget>[
             Text(
               "הדירה הנדירה שלך:",
-              style: theme.textTheme.title.copyWith(color: theme.primaryColor),
+              style: theme.textTheme.subtitle2,
             ),
             Center(
               child: Text(
                 apartment.id,
-                style: theme.textTheme.title,
+                style: theme.textTheme.headline6,
               ),
             ),
             InkWell(
@@ -237,7 +237,7 @@ class _AccountPageState extends State<AccountPage> {
                   margin: EdgeInsets.all(3),
                   child: Text(
                     'הצג סיסמא',
-                    style: theme.textTheme.body2,
+                    style: theme.textTheme.bodyText1,
                   )),
               onTap: () => _showApartmentPassword(context, apartment),
             )

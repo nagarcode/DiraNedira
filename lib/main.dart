@@ -37,29 +37,35 @@ class DiraNedira extends StatelessWidget {
           accentColor: Colors.amber[400],
           fontFamily: 'Quicksand',
           textTheme: ThemeData.light().textTheme.copyWith(
-              title: TextStyle(
+              subtitle1: TextStyle(
                 fontFamily: 'OpenSans',
                 fontSize: 16,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w500,
                 color: Colors.black,
               ),
-              subtitle: TextStyle(
-                color: Colors.grey,
-              ),
-              body2: TextStyle(color: Colors.lightBlue),
-              display1: TextStyle(
+              subtitle2: TextStyle(
                 fontFamily: 'OpenSans',
                 fontSize: 19,
                 color: Colors.lightBlue,
                 fontWeight: FontWeight.bold,
               ),
-              display2: TextStyle(
+              caption: TextStyle(
+                color: Colors.grey,
+              ),
+              bodyText1: TextStyle(color: Colors.lightBlue),
+              headline6: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+              headline5: TextStyle(
                 fontFamily: 'OpenSans',
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: Colors.lightBlue,
               ),
-              display3: TextStyle(
+              headline4: TextStyle(
                 fontFamily: 'OpenSans',
                 fontSize: 19,
                 fontWeight: FontWeight.bold,
@@ -68,7 +74,7 @@ class DiraNedira extends StatelessWidget {
               button: TextStyle(color: Colors.white)),
           appBarTheme: AppBarTheme(
             textTheme: ThemeData.light().textTheme.copyWith(
-                  title: TextStyle(
+                  headline6: TextStyle(
                     fontFamily: 'OpenSans',
                     fontSize: 20,
                     fontWeight: FontWeight.bold,

@@ -49,6 +49,7 @@ class _MonthsPageState extends State<MonthsPage>
     final mediaQuery = MediaQuery.of(context);
     final apartment = Provider.of<Apartment>(context);
     if (apartment != null) {
+      // theme.textTheme.
       return SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,8 +71,8 @@ class _MonthsPageState extends State<MonthsPage>
                           if (listToDisplay == null) {
                             return Center(
                               child: Text(
-                                'כאן תוצג היסטוריית חודשים וסיכום שלהם',
-                                style: theme.textTheme.display2,
+                                'טרם עבר חודש מאז שהתחלתם להשתמש ב״דירה נדירה״',
+                                style: theme.textTheme.bodyText1,
                               ),
                             );
                           }
@@ -119,7 +120,7 @@ class _MonthsPageState extends State<MonthsPage>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(keys[reversedIndex] + ':',
-                      style: theme.textTheme.display1),
+                      style: theme.textTheme.headline6),
                 ],
               ),
               subtitle: Column(
@@ -129,11 +130,11 @@ class _MonthsPageState extends State<MonthsPage>
                     '₪' +
                         monthsWithTransactionsAndAmount[keys[reversedIndex]]
                             .toString(),
-                    style: theme.textTheme.display3,
+                    style: theme.textTheme.subtitle2,
                   ),
                   Text(
                     'סה״כ הוצאות דירה חודשיות',
-                    style: theme.textTheme.subtitle,
+                    style: theme.textTheme.caption,
                   ),
                 ],
               ),
