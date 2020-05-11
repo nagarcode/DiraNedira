@@ -1,8 +1,7 @@
 import 'dart:async';
-
+import 'package:dira_nedira/Services/auth.dart';
 import 'package:flutter/foundation.dart';
 
-import '../Services/auth.dart';
 
 class SignInBloc {
   SignInBloc({@required this.auth, @required this.isLoading});

@@ -1,8 +1,8 @@
 import 'dart:math';
+import 'package:dira_nedira/Services/auth.dart';
+import 'package:dira_nedira/common_widgets/platform_exception_alert_dialog.dart';
 import 'package:dira_nedira/sign_in/apple_sign_in_available.dart';
-import '../Services/auth.dart';
-import '../common_widgets/platform_exception_alert_dialog.dart';
-import '../sign_in/sign_in_bloc.dart';
+import 'package:dira_nedira/sign_in/sign_in_bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:provider/provider.dart';
