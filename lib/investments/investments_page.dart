@@ -10,19 +10,16 @@ import 'package:flutter/material.dart';
 
 class InvestmentsPage extends StatelessWidget {
   final bool isHistory;
-  final List<Investment> investments;
-  InvestmentsPage({this.isHistory, this.investments});
+  final String monthYear;
+  InvestmentsPage({this.isHistory, this.monthYear});
 
   static Future<void> show(
-      {BuildContext context,
-      bool isHistory,
-      Future<List<Investment>> investmentsFuture}) async {
-    final investmentsToDisplay = await investmentsFuture;
+      {BuildContext context, bool isHistory, String monthYear}) async {
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => InvestmentsPage(
           isHistory: isHistory,
-          investments: investmentsToDisplay,
+          monthYear: monthYear,
         ),
         fullscreenDialog: true,
       ),
@@ -31,7 +28,7 @@ class InvestmentsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final apartment = Provider.of<Apartment>(context);
+    final apartment = Provider.of<Apartment>(context, listen: false);
     final theme = Theme.of(context);
     final PreferredSizeWidget appBar = AppBar(
       backgroundColor:
@@ -61,19 +58,22 @@ class InvestmentsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: isHistory ? Colors.grey[300] : Colors.white,
       appBar: appBar,
-      body: _buildContents(context, appBar.preferredSize),
+      body: _buildContents(context, appBar.preferredSize, monthYear),
     );
   }
 
-  Widget _buildContents(BuildContext context, Size appBarPrefsize) {
+  Widget _buildContents(
+      BuildContext context, Size appBarPrefsize, String monthYear) {
     final mediaQuery = MediaQuery.of(context);
     final theme = Theme.of(context);
-    final apartment = Provider.of<Apartment>(context);
-    final currentMonthInvestments = investments;
-    if (currentMonthInvestments != null)
-      currentMonthInvestments.sort((a, b) => b.date.compareTo(a.date));
+    final apartment = Provider.of<Apartment>(context, listen: false);
+    final investmentsToDisplay = Provider.of<List<Investment>>(context);
+    if (monthYear != null)
+      filterInvestmentsList(investmentsToDisplay, monthYear);
+    if (investmentsToDisplay != null)
+      investmentsToDisplay.sort((a, b) => b.date.compareTo(a.date));
     final currentMonthYear = DateFormat.yMMM().format(DateTime.now());
-    if (apartment != null && currentMonthInvestments != null) {
+    if (apartment != null && investmentsToDisplay != null) {
       return SafeArea(
         child: Column(
           //TODO Add pie chart
@@ -90,7 +90,7 @@ class InvestmentsPage extends StatelessWidget {
             // child: Container(
             // child:
             Chart(
-              investments: currentMonthInvestments,
+              investments: investmentsToDisplay,
             ),
             // ),
             // ),
@@ -100,12 +100,20 @@ class InvestmentsPage extends StatelessWidget {
             Expanded(
               flex: 3,
               child: InvestmentsList(
-                  investments: investments, isHistory: isHistory),
+                  investments: investmentsToDisplay, isHistory: isHistory),
             ),
           ],
         ),
       );
     } else
       return NoApartmentWidget(mediaQuery: mediaQuery);
+  }
+
+  filterInvestmentsList(
+      List<Investment> investmentsToDisplay, String monthYear) {
+    for (Investment inv in investmentsToDisplay) {
+      final invMonthYear = DateFormat.yMMM().format(inv.date);
+      if (invMonthYear != monthYear) investmentsToDisplay.remove(inv);
+    }
   }
 }

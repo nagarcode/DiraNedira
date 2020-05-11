@@ -23,9 +23,9 @@ class NewInvestmentForm extends StatefulWidget {
 
   static Future<void> show(BuildContext context,
       {Investment investment}) async {
-    final database = Provider.of<Database>(context);
-    final user = Provider.of<User>(context);
-    final apartment = Provider.of<Apartment>(context);
+    final database = Provider.of<Database>(context,listen:false);
+    final user = Provider.of<User>(context,listen:false);
+    final apartment = Provider.of<Apartment>(context,listen:false);
     await showModalBottomSheet(
       useRootNavigator: true,
       isScrollControlled: true,

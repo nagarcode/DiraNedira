@@ -22,7 +22,7 @@ class DiraNedira extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Provider<AuthBase>(
-      builder: (context) => Auth(),
+      create: (context) => Auth(),
       child: MaterialApp(
         builder: (context, child) {
           return Directionality(

@@ -17,8 +17,8 @@ class JoinApartmentForm extends StatefulWidget {
   final Apartment apartment;
 
   static Future<void> show(BuildContext context, {Apartment apartment}) async {
-    final database = Provider.of<Database>(context);
-    final user = Provider.of<User>(context);
+    final database = Provider.of<Database>(context,listen: false);
+    final user = Provider.of<User>(context,listen: false);
     await showModalBottomSheet(
       useRootNavigator: true,
       isScrollControlled: true,

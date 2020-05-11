@@ -30,4 +30,16 @@ class APIPath {
 
   static String userInApartment({String apartmentId, String uid}) =>
       'apartments/$apartmentId/users/$uid';
+
+  static String investmentsForSingleDoc(String apartmentId) =>
+      'apartments/$apartmentId/investments/';
+
+  static String invetmentsSingleDoc(String apartmentId) =>
+      'apartments/$apartmentId/investments/investmentsDoc';
+
+  static String shoppingItemsSingleDoc(String apartmentId) =>
+      'apartments/$apartmentId/shopping/shoppingListDoc';
+
+  static String shoppingItemsForSingleDoc(String apartmentId) =>
+      'apartments/$apartmentId/shopping/';
 }
