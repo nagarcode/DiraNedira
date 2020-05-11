@@ -32,6 +32,13 @@ class Investment {
         ownerUid: ownerUid,
         ownerPhotoUrl: ownerPhotoUrl);
   }
+  static List<Investment> fromDocument(Map<String, dynamic> doc) {
+    List<Investment> list = [];
+    doc.forEach((key, value) {
+      list.add(Investment.fromMap(value, key));
+    });
+    return list;
+  }
 
   Map<String, dynamic> toMap() {
     return {

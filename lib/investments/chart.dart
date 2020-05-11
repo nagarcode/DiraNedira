@@ -23,7 +23,7 @@ class Chart extends StatelessWidget {
     final theme = Theme.of(context);
     final Brightness brightnessValue =
         MediaQuery.of(context).platformBrightness;
-    final userList = Provider.of<List<User>>(context);
+    final userList = Provider.of<List<User>>(context,listen: false);
     for (int i = 0; i < userList.length; i++)
       initUserinvestmentSumMap(userList[i].uid);
     return Container(

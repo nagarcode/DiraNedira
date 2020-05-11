@@ -29,7 +29,7 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   Stream<List<ShoppingItem>> getShoppingItemList() {
-    return widget.database.shoppingItemStream(widget.apartmentId);
+    return widget.database.singleDocShoppingItemStream(widget.apartmentId);
   }
 
   Future<void> _signOut(BuildContext context) async {
@@ -81,14 +81,13 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
-    print('building account page');
     final database = Provider.of<Database>(context);
-    final user = Provider.of<User>(context);
+    final user = Provider.of<User>(context,listen: false);
     // we dont call auth.currentuser() because we can get the user SYNCHRONOUSLY here
     final mediaQuery = MediaQuery.of(context);
-    final apartment = Provider.of<Apartment>(context);
+    final apartment = Provider.of<Apartment>(context,listen: false);
     final theme = Theme.of(context);
-    final userList = Provider.of<List<User>>(context);
+    final userList = Provider.of<List<User>>(context,listen: false);
 
     return Scaffold(
       appBar: AppBar(

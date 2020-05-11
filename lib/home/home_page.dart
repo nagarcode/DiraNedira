@@ -2,11 +2,9 @@ import 'package:dira_nedira/Services/database.dart';
 import 'package:dira_nedira/home/account/account_page.dart';
 import 'package:dira_nedira/home/cupertino_home_scaffold.dart';
 import 'package:dira_nedira/home/tab_item.dart';
-import 'package:dira_nedira/investments/investment.dart';
 import 'package:dira_nedira/investments/investments_page.dart';
 import 'package:dira_nedira/months/months_page.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   HomePage(this.database, this.apartmentId);
@@ -27,9 +25,8 @@ class _HomePageState extends State<HomePage> {
   Map<TabItem, WidgetBuilder> get widgetBuilders {
     return {
       TabItem.months: (_) => MonthsPage(widget.database, widget.apartmentId),
-      TabItem.investments: (_) => InvestmentsPage(
-          isHistory: false,
-          investments: Provider.of<List<Investment>>(context)),
+      TabItem.investments: (_) =>
+          InvestmentsPage(isHistory: false, monthYear: null),
       TabItem.account: (_) => AccountPage(widget.database, widget.apartmentId),
     };
   }

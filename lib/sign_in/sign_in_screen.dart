@@ -1,8 +1,8 @@
 import 'dart:math';
+import 'package:dira_nedira/Services/auth.dart';
+import 'package:dira_nedira/common_widgets/platform_exception_alert_dialog.dart';
 import 'package:dira_nedira/sign_in/apple_sign_in_available.dart';
-import '../Services/auth.dart';
-import '../common_widgets/platform_exception_alert_dialog.dart';
-import '../sign_in/sign_in_bloc.dart';
+import 'package:dira_nedira/sign_in/sign_in_bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:provider/provider.dart';
@@ -14,12 +14,12 @@ class SignInScreen extends StatelessWidget {
   final SignInBloc bloc;
   final bool isLoading;
   static Widget create(BuildContext context) {
-    final auth = Provider.of<AuthBase>(context);
+    final auth = Provider.of<AuthBase>(context,listen: false);
     return ChangeNotifierProvider<ValueNotifier<bool>>(
-      builder: (_) => ValueNotifier<bool>(false),
+      create: (_) => ValueNotifier<bool>(false),
       child: Consumer<ValueNotifier<bool>>(
         builder: (_, isLoading, __) => Provider<SignInBloc>(
-          builder: (_) => SignInBloc(auth: auth, isLoading: isLoading),
+          create: (_) => SignInBloc(auth: auth, isLoading: isLoading),
           child: Consumer<SignInBloc>(
               builder: (context, bloc, _) => SignInScreen(
                     bloc: bloc,

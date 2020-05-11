@@ -11,12 +11,10 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 class LandingPage extends StatelessWidget {
-  //TODO check pubspec.yaml dependencies versions before release
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting('he', null);
     Intl.defaultLocale = 'he';
-    final currentMonthYear = DateFormat.yMMM().format(DateTime.now());
     final auth = Provider.of<AuthBase>(context, listen: false);
     return StreamBuilder<User>(
       stream: auth.onAuthStateChanged,
@@ -63,36 +61,36 @@ class LandingPage extends StatelessWidget {
                           return StreamBuilder<List<Investment>>(
                             stream: apartment == null
                                 ? Stream.empty()
-                                : database.investmentsStream(
-                                    apartment.id, currentMonthYear),
+                                :
+                                // database.investmentsStream(
+                                //     apartment.id, currentMonthYear),
+                                database
+                                    .singleDocInvestmentsStream(apartmentId),
                             builder: (context, investmentsSnapshot) {
-                              final currentMonthInvestments =
-                                  investmentsSnapshot.hasData
-                                      ? investmentsSnapshot.data
-                                      : null;
+                              final allInvestments = investmentsSnapshot.hasData
+                                  ? investmentsSnapshot.data
+                                  : null;
                               if (investmentsSnapshot.connectionState !=
                                       ConnectionState.active &&
                                   investmentsSnapshot.connectionState !=
                                       ConnectionState.done)
                                 return SplashScreen();
-                              // if (currentMonthInvestments != null)
-                              //   currentMonthInvestments
-                              //       .sort((a, b) => b.date.compareTo(a.date));
-                              if (currentMonthInvestments != null &&
-                                  currentMonthInvestments.isEmpty)
-                                database.initMonthSumToZero(
-                                    apartment.id, currentMonthYear);
+                              // if (currentMonthInvestments != null &&
+                              //     currentMonthInvestments.isEmpty)
+                              //   database.initMonthSumToZero(
+                              //       apartment.id, currentMonthYear);
                               return Provider<Apartment>.value(
                                 value: apartment,
                                 child: Provider<List<Investment>>.value(
-                                  value: currentMonthInvestments,
+                                  // updateShouldNotify: (previous, next) => true,
+                                  value: allInvestments,
                                   child: Provider<List<User>>.value(
                                     value: usersList,
                                     child: Provider<User>.value(
                                       // doesnt need a builder because i just want to provide the user value
                                       value: user,
                                       child: Provider<Database>(
-                                        builder: (_) => database,
+                                        create: (_) => database,
                                         child: HomePage(database, apartmentId),
                                       ),
                                     ),

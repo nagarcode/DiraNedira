@@ -15,9 +15,10 @@ class InvestmentsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final database = Provider.of<Database>(context);
-    final apartment = Provider.of<Apartment>(context);
-    final currentUser = Provider.of<User>(context);
+    print('this should update: ' + investments.toString());
+    final database = Provider.of<Database>(context, listen: false);
+    final apartment = Provider.of<Apartment>(context, listen: false);
+    final currentUser = Provider.of<User>(context, listen: false);
     final theme = Theme.of(context);
     final Brightness brightnessValue =
         MediaQuery.of(context).platformBrightness;
@@ -28,7 +29,7 @@ class InvestmentsList extends StatelessWidget {
               children: <Widget>[
                 Center(
                   child: Text(
-                    'טרם בוצעו תשלומים!',
+                    'טרם בוצעו תשלומים',
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
                 ),
@@ -106,7 +107,7 @@ class InvestmentsList extends StatelessWidget {
 
   bool isDeletable(String ownerId, String currentUserId, BuildContext context) {
     if (ownerId == currentUserId) return true;
-    final userList = Provider.of<List<User>>(context);
+    final userList = Provider.of<List<User>>(context, listen: false);
     bool found = false;
     for (int i = 0; i < userList.length; i++)
       if (userList[i].uid == ownerId) found = true;

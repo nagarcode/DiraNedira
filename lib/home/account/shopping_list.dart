@@ -63,8 +63,9 @@ class ShoppingList extends StatelessWidget {
   }
 
   _clearCheckedItems() async {
-    for (ShoppingItem item in shoppingList)
-      if (item.checked) await database.deleteShoppingItem(item, apartment);
+    final List<ShoppingItem> list = [];
+    for (ShoppingItem item in shoppingList) if (item.checked) list.add(item);
+    database.deleteShoppingListItems(apartment, list);
   }
 
   Widget shoppingListView(ThemeData theme) {
