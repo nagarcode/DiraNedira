@@ -15,7 +15,6 @@ class InvestmentsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('this should update: ' + investments.toString());
     final database = Provider.of<Database>(context, listen: false);
     final apartment = Provider.of<Apartment>(context, listen: false);
     final currentUser = Provider.of<User>(context, listen: false);

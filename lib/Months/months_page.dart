@@ -123,9 +123,8 @@ class MonthsPage extends StatelessWidget {
     for (Investment inv in allInvestments) {
       final monthYear = DateFormat.yMMM().format(inv.date);
       if (!monthsToInvestments.containsKey(monthYear))
-        monthsToInvestments[monthYear] = [inv];
-      else
-        monthsToInvestments[monthYear].add(inv);
+        monthsToInvestments[monthYear] = [];
+      monthsToInvestments[monthYear].add(inv);
     }
   }
 }

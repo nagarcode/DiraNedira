@@ -67,9 +67,9 @@ class InvestmentsPage extends StatelessWidget {
     final mediaQuery = MediaQuery.of(context);
     final theme = Theme.of(context);
     final apartment = Provider.of<Apartment>(context, listen: false);
-    final investmentsToDisplay = Provider.of<List<Investment>>(context);
-    if (monthYear != null)
-      filterInvestmentsList(investmentsToDisplay, monthYear);
+    final allInvestments = Provider.of<List<Investment>>(context);
+    final investmentsToDisplay =
+        filterInvestmentsList(allInvestments, monthYear);
     if (investmentsToDisplay != null)
       investmentsToDisplay.sort((a, b) => b.date.compareTo(a.date));
     final currentMonthYear = DateFormat.yMMM().format(DateTime.now());
@@ -109,11 +109,14 @@ class InvestmentsPage extends StatelessWidget {
       return NoApartmentWidget(mediaQuery: mediaQuery);
   }
 
-  filterInvestmentsList(
-      List<Investment> investmentsToDisplay, String monthYear) {
-    for (Investment inv in investmentsToDisplay) {
+  List<Investment> filterInvestmentsList(
+      List<Investment> allInvestments, String monthYear) {
+    if (monthYear == null) return allInvestments;
+    final List<Investment> investmentsToDisplay = [];
+    for (Investment inv in allInvestments) {
       final invMonthYear = DateFormat.yMMM().format(inv.date);
-      if (invMonthYear != monthYear) investmentsToDisplay.remove(inv);
+      if (invMonthYear == monthYear) investmentsToDisplay.add(inv);
     }
+    return investmentsToDisplay;
   }
 }
