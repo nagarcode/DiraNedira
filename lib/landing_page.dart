@@ -75,10 +75,6 @@ class LandingPage extends StatelessWidget {
                                   investmentsSnapshot.connectionState !=
                                       ConnectionState.done)
                                 return SplashScreen();
-                              // if (currentMonthInvestments != null &&
-                              //     currentMonthInvestments.isEmpty)
-                              //   database.initMonthSumToZero(
-                              //       apartment.id, currentMonthYear);
                               return Provider<Apartment>.value(
                                 value: apartment,
                                 child: Provider<List<Investment>>.value(

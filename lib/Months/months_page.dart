@@ -41,8 +41,8 @@ class MonthsPage extends StatelessWidget {
                 child: listToDisplay == null || listToDisplay.isEmpty
                     ? Center(
                         child: Text(
-                          'טרם עבר חודש מאז שהתחלתם להשתמש ב״דירה נדירה״',
-                          style: theme.textTheme.bodyText1,
+                          'טרם בוצעו תשלומים',
+                          style: theme.textTheme.bodyText1
                         ),
                       )
                     : monthsList(context, listToDisplay)

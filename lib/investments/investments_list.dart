@@ -29,7 +29,7 @@ class InvestmentsList extends StatelessWidget {
                 Center(
                   child: Text(
                     'טרם בוצעו תשלומים',
-                    style: Theme.of(context).textTheme.subtitle1,
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ),
                 SizedBox(
