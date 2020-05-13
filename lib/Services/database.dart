@@ -13,7 +13,8 @@ abstract class Database {
       String apartmentId, String yearMonth);
   Stream<List<Investment>> singleDocInvestmentsStream(String apartmentId);
   Future<void> deleteInvestment(Investment investment, String apartmentId);
-  Future<void> createApartment(Apartment apartment);
+  Future<void> createApartment(
+      Apartment apartment, Map<String, dynamic> userData);
   Future<bool> doesApartmentIdExist(String apartmentId);
   Stream<String> apartmentIdStream();
   Future<void> addUserDataToApartment(
@@ -31,6 +32,7 @@ abstract class Database {
       ShoppingItem shoppingItem, Apartment apartment);
   Future<void> deleteShoppingListItems(
       Apartment apartment, List<ShoppingItem> toDelete);
+  Stream<List<User>> singleDocUserStream(String apartmentId);
 }
 
 String documentIdFromCurrentDate() => DateTime.now().toIso8601String();
@@ -56,6 +58,13 @@ class FirestoreDatabase implements Database {
         builder: (data, documentId) => Investment.fromMap(data, documentId));
   }
 
+  @override
+  Stream<List<User>> singleDocUserStream(String apartmentId) {
+    final path = APIPath.usersForSingleDoc(apartmentId);
+    return _service.singleDocCollectionStream(
+        path: path, builder: (data, documentId) => User.fromMap(data));
+  }
+
   Stream<List<ShoppingItem>> singleDocShoppingItemStream(String apartmentId) {
     final path = APIPath.shoppingItemsForSingleDoc(apartmentId);
     return _service.singleDocCollectionStream(
@@ -66,7 +75,7 @@ class FirestoreDatabase implements Database {
   @override
   Future<void> addShoppingListItem(
       ShoppingItem item, String apartmentId) async {
-    String docPath = APIPath.shoppingItemsSingleDoc(apartmentId);
+    final docPath = APIPath.shoppingItemsSingleDoc(apartmentId);
     Map<String, dynamic> dataMap = item.toMap();
     return _service.addFieldToSingleDoc(
         docPath: docPath, fieldId: item.id, field: dataMap);
@@ -126,14 +135,35 @@ class FirestoreDatabase implements Database {
   }
 
   @override
-  Future<void> createApartment(Apartment apartment) async {
+  Future<void> setUserApartment(String apartmentId) async {
+    await _service
+        .setData(path: APIPath.user(uid), data: {'apartmentId': apartmentId});
+  }
+
+  @override
+  Future<void> createApartment(
+      Apartment apartment, Map<String, dynamic> userData) async {
     await _service.setData(path: APIPath.user(uid), data: apartment.idToMap());
     await _service.setData(
         path: APIPath.apartment(apartment.id), data: apartment.toMap());
     await _service
         .setData(path: APIPath.shoppingItemsSingleDoc(apartment.id), data: {});
+    await _service.setData(
+        path: APIPath.usersSingleDoc(apartment.id), data: {uid: userData});
     return await _service
         .setData(path: APIPath.invetmentsSingleDoc(apartment.id), data: {});
+  }
+
+  @override
+  Future<void> addUserDataToApartment(
+      {String apartmentId, Map<String, dynamic> data}) async {
+    final docPath = APIPath.usersSingleDoc(apartmentId);
+    return await _service.addFieldToSingleDoc(
+        docPath: docPath, fieldId: data[uid], field: data);
+    // return await _service.setData(
+    //   path: APIPath.userInApartment(apartmentId: apartmentId, uid: data['uid']),
+    //   data: data,
+    // );
   }
 
 //maybe automatically delete apartment: if the last user leaves the apartment, he will get a warning saying if he'll leave the apartment's data will be deleted
@@ -143,31 +173,19 @@ class FirestoreDatabase implements Database {
   }
 
   @override
-  Future<void> addUserDataToApartment(
-      {String apartmentId, Map<String, dynamic> data}) async {
-    return await _service.setData(
-      path: APIPath.userInApartment(apartmentId: apartmentId, uid: data['uid']),
-      data: data,
-    );
-  }
-
-  @override
   Future<bool> loginToApartment({String apartmentId, String pass}) async {
     return await _service.loginToApartment(
         apartmentId: apartmentId, pass: pass);
   }
 
   @override
-  Future<void> setUserApartment(String apartmentId) async {
-    await _service
-        .setData(path: APIPath.user(uid), data: {'apartmentId': apartmentId});
-  }
-
   Future<void> leaveApartment(String apartmentId) async {
-    await _service.deleteData(
-      path: APIPath.userInApartment(apartmentId: apartmentId, uid: uid),
-    );
-    await setUserApartment(null);
+    final docPath = APIPath.usersSingleDoc(apartmentId);
+    await _service.deleteFieldFromSingleDoc(docPath: docPath, fieldId: uid);
+    return await setUserApartment(null);
+    // await _service.deleteData(
+    //   path: APIPath.userInApartment(apartmentId: apartmentId, uid: uid),
+    // );
   }
 
   Stream<Apartment> apartmentStream(String apartmentId) {

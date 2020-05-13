@@ -37,41 +37,42 @@ class DiraNedira extends StatelessWidget {
           accentColor: Colors.amber[400],
           fontFamily: 'Quicksand',
           textTheme: ThemeData.light().textTheme.copyWith(
-              subtitle1: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
+                subtitle1: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                ),
+                subtitle2: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontSize: 19,
+                  color: Colors.lightBlue,
+                  fontWeight: FontWeight.bold,
+                ),
+                caption: TextStyle(
+                  color: Colors.grey,
+                ),
+                bodyText1: TextStyle(color: Colors.lightBlue),
+                headline6: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+                headline5: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.lightBlue,
+                ),
+                headline4: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontSize: 19,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+                button: TextStyle(color: Colors.white),
               ),
-              subtitle2: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 19,
-                color: Colors.lightBlue,
-                fontWeight: FontWeight.bold,
-              ),
-              caption: TextStyle(
-                color: Colors.grey,
-              ),
-              bodyText1: TextStyle(color: Colors.lightBlue),
-              headline6: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-              headline5: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.lightBlue,
-              ),
-              headline4: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 19,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-              button: TextStyle(color: Colors.white)),
           appBarTheme: AppBarTheme(
             textTheme: ThemeData.light().textTheme.copyWith(
                   headline6: TextStyle(
@@ -82,36 +83,6 @@ class DiraNedira extends StatelessWidget {
                 ),
           ),
         ),
-        // darkTheme: ThemeData(
-        //   // cardColor: Colors.grey[800],
-        //   brightness: Brightness.dark,
-        //   disabledColor: Colors.grey,
-        //   primarySwatch: Colors.lightBlue,
-        //   accentColor: Colors.amber[400],
-        //   fontFamily: 'Quicksand',
-        //   textTheme: ThemeData.light().textTheme.copyWith(
-        //       title: TextStyle(
-        //         fontFamily: 'OpenSans',
-        //         fontSize: 18,
-        //         fontWeight: FontWeight.bold,
-        //         color: Colors.white,
-        //       ),
-        //       subtitle: TextStyle(
-        //         fontFamily: 'OpenSans',
-        //         color: Colors.white70,
-        //       ),
-        //       button: TextStyle(color: Colors.white)),
-        //   appBarTheme: AppBarTheme(
-        //     textTheme: ThemeData.light().textTheme.copyWith(
-        //           title: TextStyle(
-        //             fontFamily: 'OpenSans',
-        //             fontSize: 20,
-        //             fontWeight: FontWeight.bold,
-        //             color: Colors.lightBlue,
-        //           ),
-        //         ),
-        //   ),
-        // ),
         home: LandingPage(),
       ),
     );
