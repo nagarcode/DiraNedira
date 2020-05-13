@@ -48,7 +48,9 @@ class LandingPage extends StatelessWidget {
                       return SplashScreen();
                     else
                       return StreamBuilder<List<User>>(
-                        stream: database.singleDocUserStream(apartmentId),
+                        stream: apartment == null
+                            ? Stream.empty()
+                            : database.singleDocUserStream(apartmentId),
                         builder: (context, usersSnapshot) {
                           final usersList =
                               usersSnapshot.hasData && apartmentId != null

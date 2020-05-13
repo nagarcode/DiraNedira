@@ -17,8 +17,8 @@ class JoinApartmentForm extends StatefulWidget {
   final Apartment apartment;
 
   static Future<void> show(BuildContext context, {Apartment apartment}) async {
-    final database = Provider.of<Database>(context,listen: false);
-    final user = Provider.of<User>(context,listen: false);
+    final database = Provider.of<Database>(context, listen: false);
+    final user = Provider.of<User>(context, listen: false);
     await showModalBottomSheet(
       useRootNavigator: true,
       isScrollControlled: true,
@@ -68,8 +68,7 @@ class _JoinApartmentFormState extends State<JoinApartmentForm> {
             content: 'שם דירה זה לא קיים במערכת. נסה שוב',
             defaultActionText: 'אישור',
           ).show(context);
-        }
-        if (loginAttempt) {
+        } else if (loginAttempt) {
           widget.database.setUserApartment(apartmentId);
           widget.database
               .addUserDataToApartment(apartmentId: apartmentId, data: data);

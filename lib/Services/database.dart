@@ -157,9 +157,11 @@ class FirestoreDatabase implements Database {
   @override
   Future<void> addUserDataToApartment(
       {String apartmentId, Map<String, dynamic> data}) async {
+    print('Adding user data to apartment. data: $data');
+    final fieldId = data['uid'];
     final docPath = APIPath.usersSingleDoc(apartmentId);
     return await _service.addFieldToSingleDoc(
-        docPath: docPath, fieldId: data[uid], field: data);
+        docPath: docPath, fieldId: fieldId, field: data);
     // return await _service.setData(
     //   path: APIPath.userInApartment(apartmentId: apartmentId, uid: data['uid']),
     //   data: data,

@@ -73,8 +73,8 @@ class _NewApartmentFormState extends State<NewApartmentForm> {
             password: _password,
           );
           await widget.database.createApartment(apartment, widget.user.dataMap());
-          await widget.database
-              .addUserDataToApartment(apartmentId: _id, data: data);
+          // await widget.database
+          //     .addUserDataToApartment(apartmentId: _id, data: data);
           Navigator.of(context).pop();
         }
       } on PlatformException catch (e) {

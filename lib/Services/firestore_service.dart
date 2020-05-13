@@ -112,7 +112,7 @@ class FirestoreService {
   Stream<List<T>> singleDocCollectionStream<T>(
       {@required String path,
       @required T builder(Map<String, dynamic> data, String documentId)}) {
-    print('firebase request: Single doc collection stream');
+    print('firebase request: Single doc collection stream: $path');
     final reference = Firestore.instance.collection(path);
     final snapshots = reference.snapshots();
     return snapshots
@@ -136,8 +136,7 @@ class FirestoreService {
       {@required String docPath,
       @required String fieldId,
       @required Map<String, dynamic> field}) async {
-    print('firebase request: Adding field to Single doc');
-
+    print('firebase request: Adding field $fieldId to doc $docPath');
     final reference = Firestore.instance.document(docPath);
     return await reference.setData({fieldId: field}, merge: true);
   }
@@ -146,7 +145,7 @@ class FirestoreService {
     @required String docPath,
     @required String fieldId,
   }) async {
-    print('firebase request: Deleting field from Single doc');
+    print('firebase request: Deleting field $fieldId Single doc $docPath');
 
     final reference = Firestore.instance.document(docPath);
     return await reference.setData({fieldId: FieldValue.delete()}, merge: true);
