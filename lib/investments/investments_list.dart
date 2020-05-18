@@ -28,8 +28,8 @@ class InvestmentsList extends StatelessWidget {
               children: <Widget>[
                 Center(
                   child: Text(
-                    'טרם בוצעו תשלומים',
-                    style: Theme.of(context).textTheme.bodyText1,
+                    'לחץ על ה+ הלבן כדי להוסיף הוצאות, אנו נחשב עבור כל דייר מה מאזנו.',
+                    textAlign: TextAlign.center,
                   ),
                 ),
                 SizedBox(

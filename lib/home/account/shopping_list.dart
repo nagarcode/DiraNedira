@@ -42,7 +42,7 @@ class ShoppingList extends StatelessWidget {
             ? Center(
                 child: Center(
                   child: Text(
-                    'כדי להוסיף פריטים לרשימת הקניות המשותפת לחץ על ה + הכחול',
+                    'רשימת קניות משותפת לכל הדיירים. לחץ על ה+ הכחול כדי להוסיף פריטים וכל חברי הדירה יוכלו לראות אותם.',
                     textAlign: TextAlign.center,
                   ),
                 ),

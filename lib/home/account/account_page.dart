@@ -34,7 +34,7 @@ class _AccountPageState extends State<AccountPage> {
 
   Future<void> _signOut(BuildContext context) async {
     try {
-      final auth = Provider.of<AuthBase>(context);
+      final auth = Provider.of<AuthBase>(context, listen: false);
       await auth.signOut();
     } catch (e) {
       print(e.toString());
@@ -81,13 +81,13 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
-    final database = Provider.of<Database>(context);
-    final user = Provider.of<User>(context,listen: false);
+    final database = Provider.of<Database>(context, listen: false);
+    final user = Provider.of<User>(context, listen: false);
     // we dont call auth.currentuser() because we can get the user SYNCHRONOUSLY here
     final mediaQuery = MediaQuery.of(context);
-    final apartment = Provider.of<Apartment>(context,listen: false);
+    final apartment = Provider.of<Apartment>(context, listen: false);
     final theme = Theme.of(context);
-    final userList = Provider.of<List<User>>(context,listen: false);
+    final userList = Provider.of<List<User>>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -118,7 +118,7 @@ class _AccountPageState extends State<AccountPage> {
                         _apartmentCard(context, apartment, database, userList),
                   ),
                   Expanded(
-                                      child: Container(
+                    child: Container(
                       child: StreamBuilder<List<ShoppingItem>>(
                         stream: shoppingItemsStream,
                         builder: (context, snapshot) {
