@@ -14,7 +14,7 @@ class SignInScreen extends StatelessWidget {
   final SignInBloc bloc;
   final bool isLoading;
   static Widget create(BuildContext context) {
-    final auth = Provider.of<AuthBase>(context,listen: false);
+    final auth = Provider.of<AuthBase>(context, listen: false);
     return ChangeNotifierProvider<ValueNotifier<bool>>(
       create: (_) => ValueNotifier<bool>(false),
       child: Consumer<ValueNotifier<bool>>(
