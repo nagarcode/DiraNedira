@@ -28,7 +28,7 @@ abstract class Database {
       ShoppingItem shoppingItem, Apartment apartment);
   Future<void> deleteShoppingListItems(
       Apartment apartment, List<ShoppingItem> toDelete);
-  Stream<List<User>> singleDocUserStream(String apartmentId);
+  Stream<List<DiraUser>> singleDocUserStream(String apartmentId);
 }
 
 String documentIdFromCurrentDate() => DateTime.now().toIso8601String();
@@ -48,21 +48,21 @@ class FirestoreDatabase implements Database {
 
   @override
   Stream<List<Investment>> singleDocInvestmentsStream(String apartmentId) {
-    final path = APIPath.investmentsForSingleDoc(apartmentId);
+    final path = APIPath.invetmentsSingleDoc(apartmentId);
     return _service.singleDocCollectionStream(
         path: path,
         builder: (data, documentId) => Investment.fromMap(data, documentId));
   }
 
   @override
-  Stream<List<User>> singleDocUserStream(String apartmentId) {
-    final path = APIPath.usersForSingleDoc(apartmentId);
+  Stream<List<DiraUser>> singleDocUserStream(String apartmentId) {
+    final path = APIPath.usersSingleDoc(apartmentId);
     return _service.singleDocCollectionStream(
-        path: path, builder: (data, documentId) => User.fromMap(data));
+        path: path, builder: (data, documentId) => DiraUser.fromMap(data));
   }
 
   Stream<List<ShoppingItem>> singleDocShoppingItemStream(String apartmentId) {
-    final path = APIPath.shoppingItemsForSingleDoc(apartmentId);
+    final path = APIPath.shoppingItemsSingleDoc(apartmentId);
     return _service.singleDocCollectionStream(
         path: path,
         builder: (data, documentId) => ShoppingItem.fromMap(data, documentId));
@@ -106,8 +106,8 @@ class FirestoreDatabase implements Database {
 
   @override
   Future<void> setUserApartment(String apartmentId) async {
-    await _service
-        .setData(path: APIPath.user(uid), data: {'apartmentId': apartmentId});
+    await _service.appendData(
+        path: APIPath.user(uid), data: {'apartmentId': apartmentId});
   }
 
   @override
@@ -128,8 +128,11 @@ class FirestoreDatabase implements Database {
   Future<void> addUserDataToApartment(
       {String apartmentId, Map<String, dynamic> data}) async {
     print('Adding user data to apartment. data: $data');
+    // final firebaseMessaging = FirebaseMessaging(); //TODO coupling, not good.
     final fieldId = data['uid'];
     final docPath = APIPath.usersSingleDoc(apartmentId);
+    // final fcmToken = await firebaseMessaging.getToken();
+    // addFcmToken(apartmentId, data['uid'], fcmToken);
     return await _service.addFieldToSingleDoc(
         docPath: docPath, fieldId: fieldId, field: data);
     // return await _service.setData(
@@ -182,6 +185,11 @@ class FirestoreDatabase implements Database {
     await _service.deleteData(
         path: APIPath.shoppingItemById(apartment.id, shoppingItem.id));
   }
+
+  // Future<void> addFcmToken(String apartmentId, String uid, String token) async {
+  //   await _service.appendData(
+  //       path: APIPath.fcmToken(apartmentId, uid), data: {'fcmToken': token});
+  // }
 }
 //-------------------- Deprecated code: -------------
 
@@ -263,26 +271,26 @@ class FirestoreDatabase implements Database {
 // Stream<List<ShoppingItem>> shoppingItemStream(String apartmentId);
 
 // @override
-  // Future<Map<String, dynamic>> getMonthlySumDoc(String apartmentId) async {
-  //   return await _service.getDocumentByPath(APIPath.monthlySumDoc(apartmentId));
-  // }
+// Future<Map<String, dynamic>> getMonthlySumDoc(String apartmentId) async {
+//   return await _service.getDocumentByPath(APIPath.monthlySumDoc(apartmentId));
+// }
 
-  // @override
-  // Future<List<Investment>> getInvestmentsByMonthYear(
-  //     String monthYear, String apartmentId) async {
-  //   return await _service.getCollection(
-  //       path: APIPath.investments(apartmentId, monthYear),
-  //       builder: (data, documentId) => Investment.fromMap(data, documentId));
-  // }
 // @override
-  // Stream<List<Investment>> investmentsStream(
-  //         String apartmentId, String yearMonth) =>
-  //     _service.collectionStream(
-  //         path: APIPath.investments(apartmentId, yearMonth),
-  //         builder: (data, documentId) => Investment.fromMap(data, documentId));
+// Future<List<Investment>> getInvestmentsByMonthYear(
+//     String monthYear, String apartmentId) async {
+//   return await _service.getCollection(
+//       path: APIPath.investments(apartmentId, monthYear),
+//       builder: (data, documentId) => Investment.fromMap(data, documentId));
+// }
+// @override
+// Stream<List<Investment>> investmentsStream(
+//         String apartmentId, String yearMonth) =>
+//     _service.collectionStream(
+//         path: APIPath.investments(apartmentId, yearMonth),
+//         builder: (data, documentId) => Investment.fromMap(data, documentId));
 
-  // @override
-  // Stream<List<User>> userStream(String apartmentId) =>
-  //     _service.collectionStream(
-  //         path: APIPath.apartmentUsers(apartmentId),
-  //         builder: (data, documentId) => User.fromMap(data));
+// @override
+// Stream<List<User>> userStream(String apartmentId) =>
+//     _service.collectionStream(
+//         path: APIPath.apartmentUsers(apartmentId),
+//         builder: (data, documentId) => User.fromMap(data));

@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 class Investment {
   String title;
@@ -7,6 +8,18 @@ class Investment {
   String id;
   String ownerUid;
   String ownerPhotoUrl;
+  int colorIndex;
+
+  static final Map<Color, String> colors = {
+    Colors.deepPurple[100]: 'חשבונות',
+    Colors.lime[200]: 'קניות',
+    Colors.lightBlue[100]: 'כללי',
+    Colors.deepOrange[100]: 'משלוח אוכל',
+    Colors.teal[100]: 'חיות מחמד',
+  };
+  Color color() {
+    return colors.keys.toList()[colorIndex];
+  }
 
   Investment({
     @required this.title,
@@ -15,6 +28,7 @@ class Investment {
     @required this.id,
     @required this.ownerUid,
     @required this.ownerPhotoUrl,
+    @required this.colorIndex,
   });
 
   factory Investment.fromMap(Map<String, dynamic> data, String documentId) {
@@ -24,13 +38,16 @@ class Investment {
     final DateTime date = data['date'].toDate();
     final String ownerUid = data['ownerUid'];
     final String ownerPhotoUrl = data['ownerPhotoUrl'];
+    final int colorIndex = data['colorIndex'] ?? 2;
     return Investment(
-        amount: amount,
-        title: title,
-        date: date,
-        id: documentId,
-        ownerUid: ownerUid,
-        ownerPhotoUrl: ownerPhotoUrl);
+      amount: amount,
+      title: title,
+      date: date,
+      id: documentId,
+      ownerUid: ownerUid,
+      ownerPhotoUrl: ownerPhotoUrl,
+      colorIndex: colorIndex,
+    );
   }
   static List<Investment> fromDocument(Map<String, dynamic> doc) {
     List<Investment> list = [];
@@ -47,6 +64,7 @@ class Investment {
       'date': date,
       'ownerUid': ownerUid,
       'ownerPhotoUrl': ownerPhotoUrl,
+      'colorIndex': colorIndex,
     };
   }
 }

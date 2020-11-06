@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dira_nedira/Services/auth.dart';
 import 'package:dira_nedira/Services/database.dart';
 import 'package:dira_nedira/common_widgets/avatar.dart';
@@ -7,9 +8,11 @@ import 'package:dira_nedira/common_widgets/platform_alert_dialog.dart';
 import 'package:dira_nedira/home/account/apartment.dart';
 import 'package:dira_nedira/home/account/shopping_item.dart';
 import 'package:dira_nedira/home/account/shopping_list.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 
 class AccountPage extends StatefulWidget {
   AccountPage(this.database, this.apartmentId);
@@ -72,7 +75,7 @@ class _AccountPageState extends State<AccountPage> {
 
   Future<void> _showApartmentPassword(
       BuildContext context, Apartment apartment) {
-    PlatformAlertDialog(
+    return PlatformAlertDialog(
       title: apartment.id,
       content: 'הסיסמא שלכם: ' + apartment.password,
       defaultActionText: 'סגור',
@@ -82,12 +85,12 @@ class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     final database = Provider.of<Database>(context, listen: false);
-    final user = Provider.of<User>(context, listen: false);
+    final user = Provider.of<DiraUser>(context, listen: false);
     // we dont call auth.currentuser() because we can get the user SYNCHRONOUSLY here
     final mediaQuery = MediaQuery.of(context);
     final apartment = Provider.of<Apartment>(context, listen: false);
     final theme = Theme.of(context);
-    final userList = Provider.of<List<User>>(context, listen: false);
+    final userList = Provider.of<List<DiraUser>>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -117,8 +120,10 @@ class _AccountPageState extends State<AccountPage> {
                     child:
                         _apartmentCard(context, apartment, database, userList),
                   ),
+                  Divider(),
                   Expanded(
                     child: Container(
+                      color: Colors.white,
                       child: StreamBuilder<List<ShoppingItem>>(
                         stream: shoppingItemsStream,
                         builder: (context, snapshot) {
@@ -183,12 +188,12 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   Widget _apartmentCard(BuildContext context, Apartment apartment,
-      Database database, List<User> userList) {
+      Database database, List<DiraUser> userList) {
     final theme = Theme.of(context);
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9.0)),
       elevation: 0,
-      margin: EdgeInsets.all(5),
+      margin: EdgeInsets.symmetric(horizontal: 5),
       child: Padding(
         padding: EdgeInsets.all(10),
         child: Column(
@@ -197,10 +202,11 @@ class _AccountPageState extends State<AccountPage> {
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: userList.map((data) {
-                  return _buildUserInfo(data, Colors.black, 25);
-                }).toList(),
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: _userRowChildren(userList),
+                // userList.map((data) {
+                //   return _buildUserInfo(data, Colors.black, 25);
+                // }).toList(),
               ),
             ),
             SizedBox(height: 1),
@@ -209,6 +215,52 @@ class _AccountPageState extends State<AccountPage> {
           ],
         ),
       ),
+    );
+  }
+
+  _userRowChildren(List<DiraUser> userList) {
+    final list = userList.map((data) {
+      return _buildUserInfo(data, Colors.black, 25);
+    }).toList();
+    list.insert(0, inviteUserWidget());
+    return list;
+  }
+
+  Widget inviteUserWidget() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.black54, width: 3.0)),
+          child: InkWell(
+            onTap: inviteUserToApartment,
+            child: CircleAvatar(
+              radius: 25,
+              backgroundColor: Colors.black12,
+              //backgroundImage: IconButton(icon: Icons.add,),
+              child: Icon(
+                Icons.add,
+                size: 30,
+                color: Colors.blue,
+              ),
+            ),
+          ),
+        ),
+        Center(
+          child: AutoSizeText(
+            '(הזמן לדירה)',
+            style: TextStyle(color: Colors.lightBlue, fontSize: 13),
+            maxLines: 2,
+            textAlign: TextAlign.center,
+          ),
+        ),
+        // SizedBox(height: 2),
+
+        // SizedBox(height: 2),
+      ],
     );
   }
 
@@ -221,10 +273,10 @@ class _AccountPageState extends State<AccountPage> {
             child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            Text(
-              "הדירה הנדירה שלך:",
-              style: theme.textTheme.subtitle2,
-            ),
+            // Text(
+            //   "הדירה הנדירה שלך:",
+            //   style: theme.textTheme.subtitle2,
+            // ),
             Center(
               child: Text(
                 apartment.id,
@@ -246,24 +298,53 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
-  Widget _buildUserInfo(User user, Color color, double radius) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget>[
-        Avatar(
-          photoUrl: user.photoUrl,
-          radius: radius,
-        ),
-        // SizedBox(height: 2),
-        Text(
-          '   ' +
+  Widget _buildUserInfo(DiraUser user, Color color, double radius) {
+    return Container(
+      width: 80,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Avatar(
+            photoUrl: user.photoUrl,
+            radius: radius,
+          ),
+          // SizedBox(height: 2),
+          Center(
+            child: AutoSizeText(
               (user.disaplayName == null
                   ? 'אנונימי'
-                  : user.disaplayName + '  '),
-          style: TextStyle(color: color),
-        ),
-        // SizedBox(height: 2),
-      ],
+                  : user.disaplayName.split(' ').first),
+              maxLines: 2,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: color),
+            ),
+          ),
+          // SizedBox(height: 2),
+        ],
+      ),
     );
+  }
+
+  inviteUserToApartment() async {
+    final toShare = await _createDynamicLink();
+    try {
+      Share.share(toShare);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<String> _createDynamicLink() async {
+    final apartment = Provider.of<Apartment>(context, listen: false);
+    final id = apartment.id;
+    final pass = apartment.password;
+    final params = DynamicLinkParameters(
+        uriPrefix: 'https://diranedira.page.link',
+        link: Uri.parse('https://diranedira/inv?apt=$id&pass=$pass'),
+        iosParameters: IosParameters(
+            bundleId: 'com.NagarCode.diraNedira', appStoreId: '1508772635'));
+    final shortLink = await params.buildShortLink();
+    final shortUrl = shortLink.shortUrl;
+    return 'קיבלת הזמנה לדירה שלי: \n' + shortUrl.toString();
   }
 }

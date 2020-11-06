@@ -42,7 +42,11 @@ class APIPath {
 
   static String shoppingItemsForSingleDoc(String apartmentId) =>
       'apartments/$apartmentId/shopping/';
-      static String usersForSingleDoc(String apartmentId) => 'apartments/$apartmentId/users/';
+  static String usersForSingleDoc(String apartmentId) =>
+      'apartments/$apartmentId/users/';
   static String usersSingleDoc(String apartmentId) =>
       'apartments/$apartmentId/users/userListDoc';
+
+  static String fcmToken(String apartmentId, String userName) =>
+      'apartments/$apartmentId/fcmTokens/$userName';
 }

@@ -79,29 +79,18 @@ class InvestmentsPage extends StatelessWidget {
           //TODO Add pie chart
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Center(
-              child: Text(
-                currentMonthYear,
-                style: theme.textTheme.headline6,
-              ),
-            ),
-            // Expanded(
-            //   flex: 2,
-            // child: Container(
-            // child:
-            Chart(
-              investments: investmentsToDisplay,
-            ),
-            // ),
-            // ),
+            Expanded(
+                flex: 1,
+                child: _dateTitle(
+                    currentMonthYear: currentMonthYear, theme: theme)),
+            Chart(investments: investmentsToDisplay, isHistory: isHistory),
             Divider(
               color: Colors.grey,
             ),
             Expanded(
-              flex: 3,
-              child: InvestmentsList(
-                  investments: investmentsToDisplay, isHistory: isHistory),
-            ),
+                flex: 15,
+                child: InvestmentsList(
+                    investments: investmentsToDisplay, isHistory: isHistory)),
           ],
         ),
       );
@@ -118,5 +107,26 @@ class InvestmentsPage extends StatelessWidget {
       if (invMonthYear == monthYear) investmentsToDisplay.add(inv);
     }
     return investmentsToDisplay;
+  }
+}
+
+class _dateTitle extends StatelessWidget {
+  const _dateTitle({
+    Key key,
+    @required this.currentMonthYear,
+    @required this.theme,
+  }) : super(key: key);
+
+  final String currentMonthYear;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        currentMonthYear,
+        style: theme.textTheme.headline6,
+      ),
+    );
   }
 }

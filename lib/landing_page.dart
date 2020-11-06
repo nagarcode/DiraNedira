@@ -16,12 +16,12 @@ class LandingPage extends StatelessWidget {
     initializeDateFormatting('he', null);
     Intl.defaultLocale = 'he';
     final auth = Provider.of<AuthBase>(context, listen: false);
-    return StreamBuilder<User>(
+    return StreamBuilder<DiraUser>(
       stream: auth.onAuthStateChanged,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active &&
             snapshot.connectionState != ConnectionState.done) {
-          User user = snapshot.data;
+          DiraUser user = snapshot.data;
           if (user == null) {
             return SignInScreen.create(context);
           }
@@ -47,7 +47,7 @@ class LandingPage extends StatelessWidget {
                             ConnectionState.done)
                       return SplashScreen();
                     else
-                      return StreamBuilder<List<User>>(
+                      return StreamBuilder<List<DiraUser>>(
                         stream: apartment == null
                             ? Stream.empty()
                             : database.singleDocUserStream(apartmentId),
@@ -82,9 +82,9 @@ class LandingPage extends StatelessWidget {
                                 child: Provider<List<Investment>>.value(
                                   // updateShouldNotify: (previous, next) => true,
                                   value: allInvestments,
-                                  child: Provider<List<User>>.value(
+                                  child: Provider<List<DiraUser>>.value(
                                     value: usersList,
-                                    child: Provider<User>.value(
+                                    child: Provider<DiraUser>.value(
                                       // doesnt need a builder because i just want to provide the user value
                                       value: user,
                                       child: Provider<Database>(

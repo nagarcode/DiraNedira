@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dira_nedira/common_widgets/avatar.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +38,11 @@ class UserAccountBar extends StatelessWidget {
             ),
             Container(
               height: constraints.maxHeight * 0.15,
-              child: FittedBox(child: Text(displayName)),
+              child: FittedBox(
+                  child: AutoSizeText(
+                displayName,
+                maxLines: 2,
+              )),
             ),
           ],
         );

@@ -4,6 +4,7 @@ import 'package:dira_nedira/common_widgets/avatar.dart';
 import 'package:dira_nedira/common_widgets/platform_alert_dialog.dart';
 import 'package:dira_nedira/home/account/apartment.dart';
 import 'package:dira_nedira/investments/investment.dart';
+import 'package:dira_nedira/investments/new_investment_form.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +18,7 @@ class InvestmentsList extends StatelessWidget {
   Widget build(BuildContext context) {
     final database = Provider.of<Database>(context, listen: false);
     final apartment = Provider.of<Apartment>(context, listen: false);
-    final currentUser = Provider.of<User>(context, listen: false);
+    final currentUser = Provider.of<DiraUser>(context, listen: false);
     final theme = Theme.of(context);
     final Brightness brightnessValue =
         MediaQuery.of(context).platformBrightness;
@@ -53,11 +54,18 @@ class InvestmentsList extends StatelessWidget {
                   ),
               itemBuilder: (ctx, index) {
                 return ListTile(
+                  // tileColor: Investment.colors.keys
+                  //     .toList()[investments[index].colorIndex],
+                  onTap: _isCurrentUserOwner(investments[index], currentUser)
+                      ? () => _editInvestment(investments[index], context)
+                      : null,
                   dense: true,
                   leading: CircleAvatar(
                     backgroundColor: isHistory
                         ? theme.disabledColor
-                        : theme.appBarTheme.color,
+                        // : theme.appBarTheme.color,
+                        : Investment.colors.keys
+                            .toList()[investments[index].colorIndex],
                     radius: 25,
                     child: Padding(
                       padding: EdgeInsets.all(6),
@@ -106,7 +114,7 @@ class InvestmentsList extends StatelessWidget {
 
   bool isDeletable(String ownerId, String currentUserId, BuildContext context) {
     if (ownerId == currentUserId) return true;
-    final userList = Provider.of<List<User>>(context, listen: false);
+    final userList = Provider.of<List<DiraUser>>(context, listen: false);
     bool found = false;
     for (int i = 0; i < userList.length; i++)
       if (userList[i].uid == ownerId) found = true;
@@ -128,5 +136,13 @@ class InvestmentsList extends StatelessWidget {
     if (didRequestLeave) {
       database.deleteInvestment(investments[index], apartmentId);
     }
+  }
+
+  _isCurrentUserOwner(Investment investment, DiraUser currentUser) {
+    return investment.ownerUid == currentUser.uid;
+  }
+
+  _editInvestment(Investment investment, BuildContext context) async {
+    await NewInvestmentForm.show(context, investment: investment);
   }
 }

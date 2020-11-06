@@ -14,12 +14,12 @@ class NewApartmentForm extends StatefulWidget {
   const NewApartmentForm(
       {@required this.database, this.apartment, @required this.user});
   final Database database;
-  final User user;
+  final DiraUser user;
   final Apartment apartment;
 
   static Future<void> show(BuildContext context, {Apartment apartment}) async {
-    final database = Provider.of<Database>(context,listen: false);
-    final user = Provider.of<User>(context,listen: false);
+    final database = Provider.of<Database>(context, listen: false);
+    final user = Provider.of<DiraUser>(context, listen: false);
     await showModalBottomSheet(
       useRootNavigator: true,
       isScrollControlled: true,
@@ -72,7 +72,8 @@ class _NewApartmentFormState extends State<NewApartmentForm> {
             id: _id,
             password: _password,
           );
-          await widget.database.createApartment(apartment, widget.user.dataMap());
+          await widget.database
+              .createApartment(apartment, widget.user.dataMap());
           // await widget.database
           //     .addUserDataToApartment(apartmentId: _id, data: data);
           Navigator.of(context).pop();
@@ -131,6 +132,7 @@ class _NewApartmentFormState extends State<NewApartmentForm> {
   List<Widget> _buildFormChildren() {
     return [
       TextFormField(
+        autofocus: true,
         decoration: InputDecoration(labelText: 'שם דירה'),
         validator: apartmentIdValidator,
         onSaved: (value) => _id = value,

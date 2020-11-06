@@ -1,17 +1,22 @@
 import 'package:dira_nedira/Services/auth.dart';
 import 'package:dira_nedira/landing_page.dart';
 import 'package:dira_nedira/sign_in/apple_sign_in_available.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
   final appleSignInAvailable = await AppleSignInAvailable.check();
+
   runApp(
     Provider<AppleSignInAvailable>.value(
         value: appleSignInAvailable, child: DiraNedira()),
@@ -21,6 +26,7 @@ void main() async {
 class DiraNedira extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    FirebaseAnalytics analytics = FirebaseAnalytics();
     return Provider<AuthBase>(
       create: (context) => Auth(),
       child: MaterialApp(
@@ -84,6 +90,9 @@ class DiraNedira extends StatelessWidget {
           ),
         ),
         home: LandingPage(),
+        navigatorObservers: [
+          FirebaseAnalyticsObserver(analytics: analytics),
+        ],
       ),
     );
   }

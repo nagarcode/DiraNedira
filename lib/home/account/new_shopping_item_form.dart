@@ -10,11 +10,11 @@ class NewShoppingItemForm extends StatefulWidget {
   const NewShoppingItemForm(
       {@required this.database, this.apartment, this.user});
   final Database database;
-  final User user;
+  final DiraUser user;
   final Apartment apartment;
 
   static Future<void> show(BuildContext context,
-      {Apartment apartment, Database database, User user}) async {
+      {Apartment apartment, Database database, DiraUser user}) async {
     await showModalBottomSheet(
       useRootNavigator: true,
       isScrollControlled: true,
@@ -81,6 +81,7 @@ class _NewShoppingItemFormState extends State<NewShoppingItemForm> {
   List<Widget> _buildFormChildren() {
     return [
       TextFormField(
+        autofocus: true,
         decoration: InputDecoration(labelText: 'מוצר לקניה'),
         validator: shoppingItemValidator,
         onSaved: (value) => _title = value,

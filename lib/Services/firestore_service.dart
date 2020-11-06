@@ -8,19 +8,27 @@ class FirestoreService {
 
   Future<void> setData(
       {@required String path, Map<String, dynamic> data}) async {
-    print("firebase request: " + data.toString()); //TODO: Delete
-    final reference = Firestore.instance.document(path);
-    await reference.setData(data);
+    debugPrint("firebase request: " + data.toString());
+    final reference = FirebaseFirestore.instance.doc(path);
+    await reference.set(data);
+  }
+
+  Future<void> appendData(
+      {@required String path, Map<String, dynamic> data}) async {
+    debugPrint("firebase request: " + data.toString());
+    final reference = FirebaseFirestore.instance.doc(path);
+    final setOptions = SetOptions(merge: true);
+    await reference.set(data, setOptions);
   }
 
   Future<List<T>> getCollection<T>(
       {String path,
       T builder(Map<String, dynamic> data, String documentId)}) async {
-    print("firebase request: getting collection:" + path); //TODO: Delete
-    final reference = Firestore.instance.collection(path);
-    final snap = await reference.getDocuments();
-    return snap.documents
-        .map((snapshot) => builder(snapshot.data, snapshot.documentID))
+    debugPrint("firebase request: getting collection:" + path);
+    final reference = FirebaseFirestore.instance.collection(path);
+    final snap = await reference.get();
+    return snap.docs
+        .map((snapshot) => builder(snapshot.data(), snapshot.id))
         .toList();
   }
 
@@ -28,12 +36,12 @@ class FirestoreService {
     @required String path,
     @required T builder(Map<String, dynamic> data, String documentId),
   }) {
-    print('firebase request: Getting collection stream: $path'); //TODO delete
-    final reference = Firestore.instance.collection(path);
+    debugPrint('firebase request: Getting collection stream: $path');
+    final reference = FirebaseFirestore.instance.collection(path);
     final snapshots = reference.snapshots();
-    return snapshots.map((snapshot) => snapshot.documents
+    return snapshots.map((snapshot) => snapshot.docs
         .map(
-          (snapshot) => builder(snapshot.data, snapshot.documentID),
+          (snapshot) => builder(snapshot.data(), snapshot.id),
         )
         .toList());
   }
@@ -42,18 +50,19 @@ class FirestoreService {
       {@required String path,
       @required String uid,
       String builder(Map<String, dynamic> data)}) {
-    print('firebase request: Getting ApartmentId stream:'); //TODO delete
-    final reference = Firestore.instance.collection(path).document(uid);
+    debugPrint('firebase request: Getting ApartmentId stream:');
+    final reference = FirebaseFirestore.instance.collection(path).doc(uid);
     final snapshots = reference.snapshots();
-    return snapshots.map((snapshot) => builder(snapshot.data));
+    return snapshots.map((snapshot) => builder(snapshot.data()));
   }
 
   Future<bool> doesApartmentIdExist(String id) async {
-    print(
-        'firebase request: Getting does apartment exists boolean'); //TODO delete
+    debugPrint('firebase request: Getting does apartment exists boolean');
     try {
-      final snapShot =
-          await Firestore.instance.collection('apartments').document(id).get();
+      final snapShot = await FirebaseFirestore.instance
+          .collection('apartments')
+          .doc(id)
+          .get();
       if (snapShot == null || !snapShot.exists) {
         return false;
       }
@@ -64,13 +73,13 @@ class FirestoreService {
   }
 
   Future<bool> loginToApartment({String apartmentId, String pass}) async {
-    print('firebase request: Logging in to apartment'); //TODO delete
-    final snapshot = await Firestore.instance
+    debugPrint('firebase request: Logging in to apartment');
+    final snapshot = await FirebaseFirestore.instance
         .collection('apartments')
-        .document(apartmentId)
+        .doc(apartmentId)
         .get();
     if (snapshot.exists) {
-      final map = snapshot.data;
+      final map = snapshot.data();
       final apartmentPassword = map['password'];
       return pass == apartmentPassword;
     } else
@@ -81,84 +90,89 @@ class FirestoreService {
       {@required String path,
       String apartmentId,
       Apartment builder(Map<String, dynamic> data)}) {
-    print('firebase request: Getting Apartment Stream'); //TODO delete
-    final reference = Firestore.instance.collection(path).document(apartmentId);
+    debugPrint('firebase request: Getting Apartment Stream');
+    final reference =
+        FirebaseFirestore.instance.collection(path).doc(apartmentId);
     final snapshots = reference.snapshots();
-    return snapshots.map((snapshot) => builder(snapshot.data));
+    return snapshots.map((snapshot) => builder(snapshot.data()));
   }
 
   Future<Map<String, dynamic>> getDocumentByPath(String path) async {
-    print('firebase request: Getting doc by path: ' + path); //TODO delete
-    final docReference = await Firestore.instance.document(path).get();
+    debugPrint('firebase request: Getting doc by path: ' + path);
+    final docReference = await FirebaseFirestore.instance.doc(path).get();
     if (docReference.exists)
-      return docReference.data;
+      return docReference.data();
     else
       return null;
   }
 
   Future<void> deleteData({@required String path}) async {
-    print('firebase request: Deleting: ' + path); //TODO delete
-    final reference = Firestore.instance.document(path);
+    debugPrint('firebase request: Deleting: ' + path);
+    final reference = FirebaseFirestore.instance.doc(path);
     await reference.delete();
   }
 
   Future<void> toggleCheckbox(
       String docPath, String itemId, Map<String, dynamic> newState) async {
-    print('firebase request: Changing checkbox status');
-    final docRef = Firestore.instance.document(docPath);
-    return docRef.setData({itemId: newState}, merge: true);
+    debugPrint('firebase request: Changing checkbox status');
+    final docRef = FirebaseFirestore.instance.doc(docPath);
+    final SetOptions setOptions = SetOptions(merge: true);
+    return docRef.set({itemId: newState}, setOptions);
   }
 
   Stream<List<T>> singleDocCollectionStream<T>(
       {@required String path,
       @required T builder(Map<String, dynamic> data, String documentId)}) {
-    print('firebase request: Single doc collection stream: $path');
-    final reference = Firestore.instance.collection(path);
+    debugPrint('firebase request: Single doc collection stream: $path');
+    final reference = FirebaseFirestore.instance.doc(path);
     final snapshots = reference.snapshots();
-    return snapshots
-        .map((snapshot) => snapshot.documents.map(
-              (snapshot) {
-                List<T> list = [];
-                T t;
-                final data = snapshot.data;
-                data.forEach((key, value) {
-                  value = Map<String, dynamic>.from(value);
-                  t = builder(value, key);
-                  list.add(t);
-                });
-                return list;
-              },
-            ))
-        .expand((element) => element);
+    return snapshots.map(
+      (snapshot) {
+        List<T> list = [];
+        T t;
+        final data = snapshot.data();
+        data.forEach((key, value) {
+          value = Map<String, dynamic>.from(value);
+          t = builder(value, key);
+          list.add(t);
+        });
+        return list;
+      },
+    );
   }
 
   Future<void> addFieldToSingleDoc(
       {@required String docPath,
       @required String fieldId,
       @required Map<String, dynamic> field}) async {
-    print('firebase request: Adding field $fieldId to doc $docPath');
-    final reference = Firestore.instance.document(docPath);
-    return await reference.setData({fieldId: field}, merge: true);
+    debugPrint('firebase request: Adding field $fieldId to doc $docPath');
+    final reference = FirebaseFirestore.instance.doc(docPath);
+    final SetOptions setOptions = SetOptions(merge: true);
+    return await reference.set({fieldId: field}, setOptions);
   }
 
   Future<void> deleteFieldFromSingleDoc({
     @required String docPath,
     @required String fieldId,
   }) async {
-    print('firebase request: Deleting field $fieldId Single doc $docPath');
+    debugPrint('firebase request: Deleting field $fieldId Single doc $docPath');
 
-    final reference = Firestore.instance.document(docPath);
-    return await reference.setData({fieldId: FieldValue.delete()}, merge: true);
+    final reference = FirebaseFirestore.instance.doc(docPath);
+    final SetOptions setOptions = SetOptions(merge: true);
+
+    return await reference.set({fieldId: FieldValue.delete()}, setOptions);
   }
 
   Future<void> deleteMultipleFieldsFromSingleDoc(
       String docPath, List<String> idsToDelete) async {
-    print('firebase request: Deleting multiple fields from Single doc');
+    debugPrint('firebase request: Deleting multiple fields from Single doc');
 
     final Map<String, FieldValue> deleteMap = {};
     for (String id in idsToDelete) deleteMap[id] = FieldValue.delete();
-    final reference = Firestore.instance.document(docPath);
-    return await reference.setData(deleteMap, merge: true);
+    final reference = FirebaseFirestore.instance.doc(docPath);
+    final SetOptions setOptions = SetOptions(merge: true);
+
+    return await reference.set(deleteMap, setOptions);
   }
 }
 

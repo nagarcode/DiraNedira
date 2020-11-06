@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dira_nedira/Services/auth.dart';
 import 'package:dira_nedira/Services/database.dart';
 import 'package:dira_nedira/common_widgets/avatar.dart';
@@ -11,7 +12,7 @@ class ShoppingList extends StatelessWidget {
   final List<ShoppingItem> shoppingList;
   final Apartment apartment;
   final Database database;
-  final User user;
+  final DiraUser user;
 
   ShoppingList(this.shoppingList, this.apartment, this.database, this.user);
   @override
@@ -22,19 +23,29 @@ class ShoppingList extends StatelessWidget {
       children: <Widget>[
         Row(
           children: <Widget>[
-            InkWell(
-              onTap: () => _confirmClearCheckedItems(context),
-              child: Text('נקה',
-                  style: theme.textTheme.bodyText1
-                      .copyWith(fontWeight: FontWeight.bold)),
-            ),
-            Center(
-              child: Text(
-                'רשימת קניות משותפת',
-                style: theme.textTheme.headline6,
+            Flexible(
+              flex: 2,
+              child: Center(
+                child: InkWell(
+                  onTap: () => _confirmClearCheckedItems(context),
+                  child: Text('נקה',
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.bodyText1
+                          .copyWith(fontWeight: FontWeight.bold)),
+                ),
               ),
             ),
-            addShoppingItemButton(context),
+            Flexible(
+              flex: 5,
+              child: Center(
+                child: AutoSizeText(
+                  'רשימת קניות משותפת',
+                  maxLines: 1,
+                  style: theme.textTheme.headline6,
+                ),
+              ),
+            ),
+            Flexible(flex: 2, child: addShoppingItemButton(context)),
           ],
           mainAxisAlignment: MainAxisAlignment.spaceAround,
         ),

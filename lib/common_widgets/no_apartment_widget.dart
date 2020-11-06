@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dira_nedira/common_widgets/custom_raised_button.dart';
 import 'package:dira_nedira/home/account/join_apartment_form.dart';
 import 'package:dira_nedira/home/account/new_apartment_form.dart';
@@ -25,8 +26,8 @@ class NoApartmentWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Center(
-                  child: Text(
-                    "טרם הצטרפת לדירה",
+                  child: AutoSizeText(
+                    "על מנת להתחיל הצטרף לדירה קיימת, או צור אחת חדשה",
                   ),
                 ),
                 CustomRaisedButton(

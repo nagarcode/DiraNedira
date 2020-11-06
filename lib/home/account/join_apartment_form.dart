@@ -13,12 +13,12 @@ class JoinApartmentForm extends StatefulWidget {
   const JoinApartmentForm(
       {@required this.database, this.apartment, @required this.user});
   final Database database;
-  final User user;
+  final DiraUser user;
   final Apartment apartment;
 
   static Future<void> show(BuildContext context, {Apartment apartment}) async {
     final database = Provider.of<Database>(context, listen: false);
-    final user = Provider.of<User>(context, listen: false);
+    final user = Provider.of<DiraUser>(context, listen: false);
     await showModalBottomSheet(
       useRootNavigator: true,
       isScrollControlled: true,
@@ -123,6 +123,7 @@ class _JoinApartmentFormState extends State<JoinApartmentForm> {
   List<Widget> _buildFormChildren() {
     return [
       TextFormField(
+        autofocus: true,
         decoration: InputDecoration(labelText: 'שם דירה'),
         validator: apartmentIdValidator,
         onSaved: (value) => _id = value,
