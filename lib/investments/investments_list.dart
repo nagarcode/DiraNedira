@@ -20,8 +20,8 @@ class InvestmentsList extends StatelessWidget {
     final apartment = Provider.of<Apartment>(context, listen: false);
     final currentUser = Provider.of<DiraUser>(context, listen: false);
     final theme = Theme.of(context);
-    final Brightness brightnessValue =
-        MediaQuery.of(context).platformBrightness;
+    // final Brightness brightnessValue =
+    //     MediaQuery.of(context).platformBrightness;
 
     if (apartment != null)
       return investments.isEmpty

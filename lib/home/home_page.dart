@@ -5,7 +5,6 @@ import 'package:dira_nedira/common_widgets/platform_alert_dialog.dart';
 import 'package:dira_nedira/home/account/account_page.dart';
 import 'package:dira_nedira/home/cupertino_home_scaffold.dart';
 import 'package:dira_nedira/home/tab_item.dart';
-import 'package:dira_nedira/investments/investment.dart';
 import 'package:dira_nedira/investments/investments_page.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';

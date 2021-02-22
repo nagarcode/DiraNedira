@@ -211,7 +211,7 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
             value.isNotEmpty ? null : 'סכום לא יכול להיות ריק',
         keyboardType:
             TextInputType.numberWithOptions(decimal: false, signed: false),
-        inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         onSaved: (value) {
           double amountDouble = 0;
           int amount = int.tryParse(value) ?? 0;

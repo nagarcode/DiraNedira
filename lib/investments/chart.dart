@@ -115,8 +115,8 @@ class Chart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final Brightness brightnessValue =
-        MediaQuery.of(context).platformBrightness;
+    // final Brightness brightnessValue =
+    //     MediaQuery.of(context).platformBrightness;
     final userList = Provider.of<List<DiraUser>>(context, listen: false);
     for (int i = 0; i < userList.length; i++)
       initUserinvestmentSumMap(userList[i].uid);

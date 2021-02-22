@@ -88,7 +88,7 @@ class MonthsPage extends StatelessWidget {
   ListView monthsList(
       BuildContext context, Map<String, dynamic> monthsToInvestments) {
     final theme = Theme.of(context);
-    final currentMonthYear = DateFormat.yMMM().format(DateTime.now());
+    // final currentMonthYear = DateFormat.yMMM().format(DateTime.now());
     // if (monthsToInvestments == null || monthsToInvestments.length == 1)
     //   return null;
     final keys = monthsToInvestments.keys.toList();

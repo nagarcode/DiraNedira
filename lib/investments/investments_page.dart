@@ -76,12 +76,11 @@ class InvestmentsPage extends StatelessWidget {
     if (apartment != null && investmentsToDisplay != null) {
       return SafeArea(
         child: Column(
-          //TODO Add pie chart
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Expanded(
                 flex: 1,
-                child: _dateTitle(
+                child: _DateTitle(
                     currentMonthYear: currentMonthYear, theme: theme)),
             Chart(investments: investmentsToDisplay, isHistory: isHistory),
             Divider(
@@ -110,8 +109,8 @@ class InvestmentsPage extends StatelessWidget {
   }
 }
 
-class _dateTitle extends StatelessWidget {
-  const _dateTitle({
+class _DateTitle extends StatelessWidget {
+  const _DateTitle({
     Key key,
     @required this.currentMonthYear,
     @required this.theme,

@@ -43,6 +43,7 @@ class _NewApartmentFormState extends State<NewApartmentForm> {
 
   String _id;
   String _password;
+  // ignore: unused_field
   String _confirmPass;
 
   var isLoading = false;
@@ -60,7 +61,7 @@ class _NewApartmentFormState extends State<NewApartmentForm> {
       try {
         final apartmentId = _id;
         final isTaken = await isApartmentIdTaken(apartmentId);
-        final data = widget.user.dataMap();
+        // final data = widget.user.dataMap();
         if (isTaken) {
           PlatformAlertDialog(
             title: 'שם דירה תפוס',

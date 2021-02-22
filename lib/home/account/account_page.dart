@@ -89,7 +89,7 @@ class _AccountPageState extends State<AccountPage> {
     // we dont call auth.currentuser() because we can get the user SYNCHRONOUSLY here
     final mediaQuery = MediaQuery.of(context);
     final apartment = Provider.of<Apartment>(context, listen: false);
-    final theme = Theme.of(context);
+    // final theme = Theme.of(context);
     final userList = Provider.of<List<DiraUser>>(context, listen: false);
 
     return Scaffold(
@@ -104,12 +104,6 @@ class _AccountPageState extends State<AccountPage> {
             onPressed: () => _confirmSignOut(context),
           )
         ],
-        // bottom:
-        // PreferredSize(
-        // preferredSize: Size.fromHeight(100),
-        // child:
-        // _buildUserInfo(user, Colors.white, 30),
-        // ),
       ),
       body: (apartment != null)
           ? SafeArea(
@@ -148,32 +142,6 @@ class _AccountPageState extends State<AccountPage> {
             ),
     );
   }
-
-  // Widget _hasApartmentColumn(
-  //     BuildContext context, Apartment apartment, Database database, User user) {
-  //   final userList = Provider.of<List<User>>(context);
-  //   return Column(
-  //     mainAxisAlignment: MainAxisAlignment.start,
-  //     children: <Widget>[
-  //       Container(
-  //         child: _apartmentCard(context, apartment, database, userList),
-  //       ),
-  //       Container(
-  //         child: StreamBuilder<List<ShoppingItem>>(
-  //           stream: shoppingItemsStream,
-  //           builder: (context, snapshot) {
-  //             final shoppingList = snapshot.hasData ? snapshot.data : null;
-  //             if (snapshot.connectionState != ConnectionState.active &&
-  //                 snapshot.connectionState != ConnectionState.done)
-  //               return CupertinoActivityIndicator();
-  //             else
-  //               return ShoppingList(shoppingList, apartment, database, user);
-  //           },
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
 
   CustomRaisedButton leaveApartmentButton(
       BuildContext context, Apartment apartment, Database database) {
@@ -257,9 +225,6 @@ class _AccountPageState extends State<AccountPage> {
             textAlign: TextAlign.center,
           ),
         ),
-        // SizedBox(height: 2),
-
-        // SizedBox(height: 2),
       ],
     );
   }
