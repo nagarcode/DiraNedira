@@ -190,23 +190,34 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
   }
 
   List<Widget> _buildFormChildren() {
+    final colorList = Investment.colors.keys.toList();
     return [
       _colorPicker(),
       _colorText(),
       TextFormField(
+        cursorColor: colorList[_selectedColorIndex],
         initialValue: widget.investment?.title,
         maxLength: 25,
         autofocus: true,
-        decoration: InputDecoration(labelText: 'שם הוצאה'),
+        decoration: InputDecoration(
+            focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: colorList[_selectedColorIndex])),
+            labelText: 'שם הוצאה',
+            labelStyle: TextStyle(color: Colors.grey)),
         validator: (value) =>
             value.isNotEmpty ? null : 'שם הוצאה לא יכול להיות ריק',
         onSaved: (value) => _title = value,
       ),
       TextFormField(
+        cursorColor: colorList[_selectedColorIndex],
         enabled: !isEditing,
         initialValue: isEditing ? widget.investment?.amount.toString() : null,
         maxLength: 5,
-        decoration: InputDecoration(labelText: 'סכום'),
+        decoration: InputDecoration(
+            labelStyle: TextStyle(color: Colors.grey),
+            labelText: 'סכום',
+            focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: colorList[_selectedColorIndex]))),
         validator: (value) =>
             value.isNotEmpty ? null : 'סכום לא יכול להיות ריק',
         keyboardType:

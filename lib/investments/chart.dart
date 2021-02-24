@@ -139,32 +139,42 @@ class Chart extends StatelessWidget {
             // Expanded(
             //   flex: 1,
             //   child:
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 3),
-              decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              width: 150,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  AutoSizeText(
-                    'הוצאות דירה החודש:',
-                    style: TextStyle(color: Colors.lightBlue),
-                  ),
-                  AutoSizeText(
-                    '₪' + monthlySpendings.toString(),
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-                  ),
-                ],
-              ),
-            ),
+            // Row(
+            //   children: [
+            //     Expanded(child: Container()),
+            //     Expanded(child: monthlyExpensesContainer()),
+            //     Expanded(child: Container()),
+            //   ],
+            // ),
             // ),
             if (isHistory) _chartIcon(investments, context),
           ],
         ),
+      ),
+    );
+  }
+
+  Container monthlyExpensesContainer() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 3),
+      decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          color: Colors.grey[100],
+          borderRadius: BorderRadius.all(Radius.circular(10))),
+      width: 150,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          AutoSizeText(
+            'הוצאות דירה החודש:',
+            style: TextStyle(color: Colors.lightBlue),
+          ),
+          AutoSizeText(
+            '₪' + monthlySpendings.toString(),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+          ),
+        ],
       ),
     );
   }

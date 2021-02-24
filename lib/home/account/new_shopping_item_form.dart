@@ -81,6 +81,7 @@ class _NewShoppingItemFormState extends State<NewShoppingItemForm> {
   List<Widget> _buildFormChildren() {
     return [
       TextFormField(
+        maxLength: 30,
         autofocus: true,
         decoration: InputDecoration(labelText: 'מוצר לקניה'),
         validator: shoppingItemValidator,
@@ -99,7 +100,7 @@ class _NewShoppingItemFormState extends State<NewShoppingItemForm> {
 
   String shoppingItemValidator(String title) {
     if (title.isEmpty) return 'שם מוצר לא יכול להיות ריק';
-    if (title.length > 20) return 'לכל היותר 20 תווים';
+    if (title.length > 30) return 'לכל היותר 20 תווים';
     if (title.length < 2) return 'לכל הפחות 2 תווים';
     if (title == "null") return 'אל תקריס אותי..';
     return null;

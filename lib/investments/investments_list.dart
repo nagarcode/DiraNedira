@@ -12,7 +12,8 @@ import 'package:provider/provider.dart';
 class InvestmentsList extends StatelessWidget {
   final List<Investment> investments;
   final bool isHistory;
-  InvestmentsList({this.investments, this.isHistory});
+  final int selectedColorIndex;
+  InvestmentsList({this.investments, this.isHistory, this.selectedColorIndex});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +21,9 @@ class InvestmentsList extends StatelessWidget {
     final apartment = Provider.of<Apartment>(context, listen: false);
     final currentUser = Provider.of<DiraUser>(context, listen: false);
     final theme = Theme.of(context);
+    final itemsToDisplay =
+        selectedColorIndex != 2 ? _filterInestments() : investments;
+
     // final Brightness brightnessValue =
     //     MediaQuery.of(context).platformBrightness;
 
@@ -53,11 +57,14 @@ class InvestmentsList extends StatelessWidget {
                   // : Colors.white70,
                   ),
               itemBuilder: (ctx, index) {
+                debugPrint(
+                    "index: " + investments[index].colorIndex.toString());
+                print("title: " + investments[index].title);
                 return ListTile(
                   // tileColor: Investment.colors.keys
                   //     .toList()[investments[index].colorIndex],
-                  onTap: _isCurrentUserOwner(investments[index], currentUser)
-                      ? () => _editInvestment(investments[index], context)
+                  onTap: _isCurrentUserOwner(itemsToDisplay[index], currentUser)
+                      ? () => _editInvestment(itemsToDisplay[index], context)
                       : null,
                   dense: true,
                   leading: CircleAvatar(
@@ -65,29 +72,29 @@ class InvestmentsList extends StatelessWidget {
                         ? theme.disabledColor
                         // : theme.appBarTheme.color,
                         : Investment.colors.keys
-                            .toList()[investments[index].colorIndex],
+                            .toList()[itemsToDisplay[index].colorIndex],
                     radius: 25,
                     child: Padding(
                       padding: EdgeInsets.all(6),
                       child: FittedBox(
                           child: Text(
-                        '₪${investments[index].amount}',
+                        '₪${itemsToDisplay[index].amount}',
                         style: TextStyle(
                             color: isHistory ? Colors.white : Colors.black),
                       )),
                     ),
                   ),
                   title: Text(
-                    investments[index].title,
+                    itemsToDisplay[index].title,
                     style: Theme.of(context).textTheme.headline6,
                   ),
-                  subtitle:
-                      Text(DateFormat.yMMMd().format(investments[index].date)),
+                  subtitle: Text(
+                      DateFormat.yMMMd().format(itemsToDisplay[index].date)),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       Avatar(
-                        photoUrl: investments[index].ownerPhotoUrl,
+                        photoUrl: itemsToDisplay[index].ownerPhotoUrl,
                         radius: 10,
                       ),
                       IconButton(
@@ -96,21 +103,39 @@ class InvestmentsList extends StatelessWidget {
                           Icons.delete,
                         ),
                         color: Theme.of(context).errorColor,
-                        onPressed: isDeletable(investments[index].ownerUid,
+                        onPressed: isDeletable(itemsToDisplay[index].ownerUid,
                                 currentUser.uid, context)
                             ? () => _confirmDeleteInvestment(context,
-                                investments, index, apartment.id, database)
+                                itemsToDisplay, index, apartment.id, database)
                             : null,
                       ),
                     ],
                   ),
                 );
               },
-              itemCount: investments.length,
+              itemCount: itemsToDisplay.length,
             );
 
     return Center(child: CircularProgressIndicator());
   }
+
+  List<Investment> _filterInestments() {
+    return investments.where((inv) {
+      if ((inv.colorIndex == selectedColorIndex))
+        return true;
+      else
+        return false;
+    }).toList();
+  }
+
+  // int _countListItemsToDisplay() {
+  //   return investments.fold(0, (previousValue, inv) {
+  //     if (inv.colorIndex == selectedColorIndex || selectedColorIndex == 2)
+  //       return previousValue + 1;
+  //     else
+  //       return previousValue;
+  //   });
+  // }
 
   bool isDeletable(String ownerId, String currentUserId, BuildContext context) {
     if (ownerId == currentUserId) return true;
