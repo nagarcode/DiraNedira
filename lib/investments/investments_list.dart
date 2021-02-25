@@ -57,9 +57,6 @@ class InvestmentsList extends StatelessWidget {
                   // : Colors.white70,
                   ),
               itemBuilder: (ctx, index) {
-                debugPrint(
-                    "index: " + investments[index].colorIndex.toString());
-                print("title: " + investments[index].title);
                 return ListTile(
                   // tileColor: Investment.colors.keys
                   //     .toList()[investments[index].colorIndex],
