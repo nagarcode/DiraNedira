@@ -8,6 +8,7 @@ import 'package:dira_nedira/investments/new_investment_form.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:in_app_review/in_app_review.dart';
 
 class InvestmentsPage extends StatefulWidget {
   final bool isHistory;
@@ -34,6 +35,7 @@ class InvestmentsPage extends StatefulWidget {
 class _InvestmentsPageState extends State<InvestmentsPage> {
   final colors = Investment.colors.keys.toList();
   int _selectedColorIndex = 2;
+
   Container monthlyExpensesContainer(List<Investment> investments) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 3),
@@ -56,6 +58,42 @@ class _InvestmentsPageState extends State<InvestmentsPage> {
           ),
         ],
       ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final apartment = Provider.of<Apartment>(context, listen: false);
+    final theme = Theme.of(context);
+    final PreferredSizeWidget appBar = AppBar(
+      backgroundColor:
+          widget.isHistory ? theme.disabledColor : theme.appBarTheme.color,
+      title: Text('הוצאות'),
+      actions: <Widget>[
+        widget.isHistory
+            ? FlatButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(
+                  'סיום',
+                  style: Theme.of(context).textTheme.subtitle1.copyWith(
+                      color: Colors.white, fontWeight: FontWeight.normal),
+                ),
+              )
+            : IconButton(
+                icon: Icon(Icons.add, color: Colors.white),
+                onPressed: () {
+                  if (apartment != null)
+                    return NewInvestmentForm.show(context);
+                  else
+                    return null;
+                },
+              ),
+      ],
+    );
+    return Scaffold(
+      backgroundColor: widget.isHistory ? Colors.grey[300] : Colors.white,
+      appBar: appBar,
+      body: _buildContents(context, appBar.preferredSize, widget.monthYear),
     );
   }
 
@@ -131,43 +169,8 @@ class _InvestmentsPageState extends State<InvestmentsPage> {
       } else
         sum += inv.amount;
     }
-    return sum;
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    final apartment = Provider.of<Apartment>(context, listen: false);
-    final theme = Theme.of(context);
-    final PreferredSizeWidget appBar = AppBar(
-      backgroundColor:
-          widget.isHistory ? theme.disabledColor : theme.appBarTheme.color,
-      title: Text('הוצאות'),
-      actions: <Widget>[
-        widget.isHistory
-            ? FlatButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text(
-                  'סיום',
-                  style: Theme.of(context).textTheme.subtitle1.copyWith(
-                      color: Colors.white, fontWeight: FontWeight.normal),
-                ),
-              )
-            : IconButton(
-                icon: Icon(Icons.add, color: Colors.white),
-                onPressed: () {
-                  if (apartment != null)
-                    return NewInvestmentForm.show(context);
-                  else
-                    return null;
-                },
-              ),
-      ],
-    );
-    return Scaffold(
-      backgroundColor: widget.isHistory ? Colors.grey[300] : Colors.white,
-      appBar: appBar,
-      body: _buildContents(context, appBar.preferredSize, widget.monthYear),
-    );
+    return sum;
   }
 
   Widget _buildContents(
@@ -182,7 +185,6 @@ class _InvestmentsPageState extends State<InvestmentsPage> {
       investmentsToDisplay.sort((a, b) => b.date.compareTo(a.date));
     // final currentMonthYear = DateFormat.yMMM().format(DateTime.now());
     if (apartment != null && investmentsToDisplay != null) {
-      //TODO: move this check to the build method, and if its false reuturn the no apartment widget with no
       return SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -225,23 +227,23 @@ class _InvestmentsPageState extends State<InvestmentsPage> {
   }
 }
 
-class _DateTitle extends StatelessWidget {
-  const _DateTitle({
-    Key key,
-    @required this.currentMonthYear,
-    @required this.theme,
-  }) : super(key: key);
+// class _DateTitle extends StatelessWidget {
+//   const _DateTitle({
+//     Key key,
+//     @required this.currentMonthYear,
+//     @required this.theme,
+//   }) : super(key: key);
 
-  final String currentMonthYear;
-  final ThemeData theme;
+//   final String currentMonthYear;
+//   final ThemeData theme;
 
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        currentMonthYear,
-        style: theme.textTheme.headline6,
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Center(
+//       child: Text(
+//         currentMonthYear,
+//         style: theme.textTheme.headline6,
+//       ),
+//     );
+//   }
+// }

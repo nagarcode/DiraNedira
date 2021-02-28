@@ -12,10 +12,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:intl/intl.dart';
 import 'package:octo_image/octo_image.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NewInvestmentForm extends StatefulWidget {
   const NewInvestmentForm({
@@ -109,7 +111,7 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
     return Column(
       children: [
         InkWell(
-          onTap: _pickImage,
+          onTap: _showPicker,
           child: Container(
             height: 60,
             width: 60,
@@ -133,6 +135,36 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
     );
   }
 
+  void _showPicker() {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('צלם תמונה'),
+                    onTap: () {
+                      _pickImage(ImageSource.camera);
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('בחר מגלריית התמונות'),
+                      onTap: () {
+                        _pickImage(ImageSource.gallery);
+                        Navigator.of(context).pop();
+                      }),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
   void _permissionRequestDialog() {
     HalturaDialog(
       title: 'גישה לגלריה',
@@ -141,10 +173,14 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
     ).show(context);
   }
 
-  _pickImage() async {
+  _pickImage(ImageSource source) async {
     final picker = widget.imagePicker;
+    PermissionStatus permission;
     try {
-      final permission = await Permission.photos.request();
+      if (source == ImageSource.gallery)
+        permission = await Permission.photos.request();
+      else
+        permission = await Permission.camera.request();
       if (!permission.isGranted) {
         _permissionRequestDialog();
       }
@@ -154,8 +190,7 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
     }
 
     try {
-      final file = await picker.pickImage(source: ImageSource.gallery);
-
+      final file = await picker.pickImage(source: source);
       if (file != null) {
         final storage = widget.storage;
         final downloadURL = await storage.uploadReviewImage(
@@ -169,7 +204,6 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
       }
     } catch (e) {
       debugPrint(e.toString());
-      _permissionRequestDialog();
     }
   }
 
@@ -205,7 +239,15 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
           title: 'כשל',
           exception: e,
         ).show(context);
-      } finally {}
+      } finally {
+        if (await shouldRequestFeedback()) {
+          final InAppReview inAppReview = InAppReview.instance;
+          if (await inAppReview.isAvailable()) {
+            inAppReview.requestReview();
+            updateRequestedFeedback();
+          }
+        }
+      }
     }
   }
 
@@ -390,5 +432,21 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
               ),
             ),
           );
+  }
+
+  Future<bool> shouldRequestFeedback() async {
+    final currentMonthYear = DateFormat.yMMM().format(DateTime.now());
+    final prefs = await SharedPreferences.getInstance();
+    final alreadyRequested = prefs.getBool(currentMonthYear);
+    if (alreadyRequested == null || alreadyRequested == false)
+      return true;
+    else
+      return false;
+  }
+
+  Future<void> updateRequestedFeedback() async {
+    final currentMonthYear = DateFormat.yMMM().format(DateTime.now());
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(currentMonthYear, true);
   }
 }

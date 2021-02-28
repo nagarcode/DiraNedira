@@ -13,7 +13,7 @@ class ImageScreen extends StatelessWidget {
     final theme = Theme.of(context);
     return GestureDetector(
       child: Scaffold(
-        backgroundColor: theme.primaryColor,
+        // backgroundColor: theme.primaryColor,
         body: Center(
           child: Hero(
             tag: investment.id,
