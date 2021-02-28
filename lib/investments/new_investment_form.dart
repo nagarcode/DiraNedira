@@ -114,10 +114,12 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
             height: 60,
             width: 60,
             child: _imageURL == null
-                ? Icon(Icons.add, color: theme.primaryColor)
+                ? Icon(Icons.camera_alt_outlined,
+                    color: theme.primaryColor.withOpacity(0.6))
                 : _smallImage(),
             decoration: BoxDecoration(
-              border: Border.all(width: 2.5, color: Colors.grey),
+              border:
+                  Border.all(width: 2.5, color: Colors.grey.withOpacity(0.6)),
               // color: Colors.grey,
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
