@@ -1,12 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dira_nedira/Services/auth.dart';
 import 'package:dira_nedira/Services/database.dart';
 import 'package:dira_nedira/common_widgets/avatar.dart';
 import 'package:dira_nedira/common_widgets/platform_alert_dialog.dart';
 import 'package:dira_nedira/home/account/apartment.dart';
+import 'package:dira_nedira/investments/image_screen.dart';
 import 'package:dira_nedira/investments/investment.dart';
 import 'package:dira_nedira/investments/new_investment_form.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:octo_image/octo_image.dart';
 import 'package:provider/provider.dart';
 
 class InvestmentsList extends StatelessWidget {
@@ -49,17 +52,8 @@ class InvestmentsList extends StatelessWidget {
               ],
             )
           : ListView.separated(
-              separatorBuilder: (context, index) => Divider(
-                  color:
-                      // brightnessValue == Brightness.light
-                      //     ?
-                      Colors.grey
-                  // : Colors.white70,
-                  ),
+              separatorBuilder: (context, index) => Divider(color: Colors.grey),
               itemBuilder: (ctx, index) {
-                debugPrint(
-                    "index: " + investments[index].colorIndex.toString());
-                print("title: " + investments[index].title);
                 return ListTile(
                   // tileColor: Investment.colors.keys
                   //     .toList()[investments[index].colorIndex],
@@ -93,6 +87,8 @@ class InvestmentsList extends StatelessWidget {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
+                      if (itemsToDisplay[index].imageURL != null)
+                        _smallImage(context, itemsToDisplay[index]),
                       Avatar(
                         photoUrl: itemsToDisplay[index].ownerPhotoUrl,
                         radius: 10,
@@ -169,5 +165,34 @@ class InvestmentsList extends StatelessWidget {
 
   _editInvestment(Investment investment, BuildContext context) async {
     await NewInvestmentForm.show(context, investment: investment);
+  }
+
+  _smallImage(BuildContext context, Investment investment) {
+    final theme = Theme.of(context);
+
+    final image = CachedNetworkImageProvider(investment.imageURL);
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (_) {
+          return ImageScreen(investment: investment);
+        }));
+      },
+      child: Hero(
+        tag: investment.id,
+        child: Container(
+          padding: EdgeInsets.only(left: 10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(60))),
+          height: 40,
+          width: 40,
+          child: OctoImage(
+            image: image,
+            placeholderBuilder: OctoPlaceholder.frame(),
+            errorBuilder: OctoError.icon(color: Colors.red),
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    );
   }
 }

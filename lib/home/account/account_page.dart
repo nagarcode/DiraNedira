@@ -82,6 +82,22 @@ class _AccountPageState extends State<AccountPage> {
     ).show(context);
   }
 
+  _leaveApartmentFlatButton(
+      Apartment apartment, BuildContext context, Database database) {
+    if (apartment == null)
+      return Container();
+    else
+      return IconButton(
+        icon: Icon(Icons.cancel_outlined, color: Colors.red),
+        onPressed: () =>
+            _confirmLeaveApartment(context, apartment.id, database),
+      );
+  }
+
+  bool _isCurrentUser(DiraUser userToCheck, DiraUser currentUser) {
+    return userToCheck.uid == currentUser.uid;
+  }
+
   @override
   Widget build(BuildContext context) {
     final database = Provider.of<Database>(context, listen: false);
@@ -95,6 +111,7 @@ class _AccountPageState extends State<AccountPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('דירה'),
+        // leading: _leaveApartmentFlatButton(apartment, context, database),
         actions: <Widget>[
           FlatButton(
             child: const Text(
@@ -166,19 +183,19 @@ class _AccountPageState extends State<AccountPage> {
         padding: EdgeInsets.all(10),
         child: Column(
           children: <Widget>[
-            apartmentInfoCard(theme, apartment, context),
+            apartmentInfoCard(theme, apartment, context, database),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: _userRowChildren(userList),
+                children: _userRowChildren(userList, apartment, database),
                 // userList.map((data) {
                 //   return _buildUserInfo(data, Colors.black, 25);
                 // }).toList(),
               ),
             ),
-            SizedBox(height: 1),
-            leaveApartmentButton(context, apartment, database),
+            // SizedBox(height: 1),
+            // leaveApartmentButton(context, apartment, database),
             // SizedBox(height: 1),
           ],
         ),
@@ -186,9 +203,10 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
-  _userRowChildren(List<DiraUser> userList) {
+  _userRowChildren(
+      List<DiraUser> userList, Apartment apartment, Database database) {
     final list = userList.map((data) {
-      return _buildUserInfo(data, Colors.black, 25);
+      return _buildUserInfo(data, Colors.grey, 25);
     }).toList();
     list.insert(0, inviteUserWidget());
     return list;
@@ -229,8 +247,8 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
-  Widget apartmentInfoCard(
-      ThemeData theme, Apartment apartment, BuildContext context) {
+  Widget apartmentInfoCard(ThemeData theme, Apartment apartment,
+      BuildContext context, Database database) {
     return Container(
       width: double.infinity,
       child: Center(
@@ -242,20 +260,31 @@ class _AccountPageState extends State<AccountPage> {
             //   "הדירה הנדירה שלך:",
             //   style: theme.textTheme.subtitle2,
             // ),
-            Center(
-              child: Text(
-                apartment.id,
-                style: theme.textTheme.headline6,
-              ),
-            ),
-            InkWell(
-              child: Container(
-                  margin: EdgeInsets.all(3),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
                   child: Text(
-                    'הצג סיסמא',
-                    style: theme.textTheme.bodyText1,
-                  )),
-              onTap: () => _showApartmentPassword(context, apartment),
+                    apartment.id,
+                    style: theme.textTheme.headline6,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                InkWell(
+                  child: Container(
+                      margin: EdgeInsets.all(3),
+                      child: Text(
+                        'הצג סיסמא',
+                        style: theme.textTheme.bodyText1,
+                      )),
+                  onTap: () => _showApartmentPassword(context, apartment),
+                ),
+                // _leaveApartmentFlatButton(apartment, context, database)
+              ],
             )
           ],
         )),
@@ -264,28 +293,46 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   Widget _buildUserInfo(DiraUser user, Color color, double radius) {
+    final database = Provider.of<Database>(context, listen: false);
+    final currentUser = Provider.of<DiraUser>(context, listen: false);
+    final apartment = Provider.of<Apartment>(context, listen: false);
     return Container(
       width: 80,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          Avatar(
-            photoUrl: user.photoUrl,
-            radius: radius,
-          ),
-          // SizedBox(height: 2),
-          Center(
-            child: AutoSizeText(
-              (user.disaplayName == null
-                  ? 'אנונימי'
-                  : user.disaplayName.split(' ').first),
-              maxLines: 2,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: color),
+      height: 80,
+      child: Stack(children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Container(
+              child: Avatar(
+                photoUrl: user.photoUrl,
+                radius: radius,
+              ),
             ),
-          ),
-          // SizedBox(height: 2),
-        ],
+            // SizedBox(height: 2),
+            _userNameText(user, color),
+            // SizedBox(height: 2),
+          ],
+        ),
+        _isCurrentUser(user, currentUser)
+            ? Align(
+                child: _leaveApartmentFlatButton(apartment, context, database),
+                alignment: Alignment.bottomRight,
+              )
+            : Container()
+      ]),
+    );
+  }
+
+  _userNameText(DiraUser user, Color color) {
+    return Center(
+      child: AutoSizeText(
+        (user.disaplayName == null
+            ? 'אנונימי'
+            : user.disaplayName.split(' ').first),
+        maxLines: 2,
+        textAlign: TextAlign.center,
+        style: TextStyle(color: color),
       ),
     );
   }

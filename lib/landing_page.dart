@@ -1,5 +1,7 @@
 import 'package:dira_nedira/Services/auth.dart';
 import 'package:dira_nedira/Services/database.dart';
+import 'package:dira_nedira/Services/firebase_storage_service.dart';
+import 'package:dira_nedira/Services/image_picker_service.dart';
 import 'package:dira_nedira/home/account/apartment.dart';
 import 'package:dira_nedira/home/home_page.dart';
 import 'package:dira_nedira/investments/investment.dart';
@@ -77,24 +79,45 @@ class LandingPage extends StatelessWidget {
                                   investmentsSnapshot.connectionState !=
                                       ConnectionState.done)
                                 return SplashScreen();
-                              return Provider<Apartment>.value(
-                                value: apartment,
-                                child: Provider<List<Investment>>.value(
-                                  // updateShouldNotify: (previous, next) => true,
-                                  value: allInvestments,
-                                  child: Provider<List<DiraUser>>.value(
-                                    value: usersList,
-                                    child: Provider<DiraUser>.value(
-                                      // doesnt need a builder because i just want to provide the user value
-                                      value: user,
-                                      child: Provider<Database>(
-                                        create: (_) => database,
-                                        child: HomePage(database, apartmentId),
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                              return MultiProvider(
+                                providers: [
+                                  Provider<Apartment>.value(value: apartment),
+                                  Provider<List<Investment>>.value(
+                                      value: allInvestments),
+                                  Provider<List<DiraUser>>.value(
+                                      value: usersList),
+                                  Provider<List<DiraUser>>.value(
+                                      value: usersList),
+                                  Provider<DiraUser>.value(
+                                      value:
+                                          user), // doesnt need a builder because i just want to provide the user value
+                                  Provider<Database>(create: (_) => database),
+                                  Provider<FirebaseStorageService>(
+                                      create: (_) => FirebaseStorageService(
+                                          uid: user.uid)),
+                                  Provider<ImagePickerService>(
+                                    create: (_) => ImagePickerService(),
+                                  )
+                                ],
+                                child: HomePage(database, apartmentId),
                               );
+                              // Provider<Apartment>.value(
+                              //   value: apartment,
+                              //   child: Provider<List<Investment>>.value(
+                              //     value: allInvestments,
+                              //     child: Provider<List<DiraUser>>.value(
+                              //       value: usersList,
+                              //       child: Provider<DiraUser>.value(
+                              //         // doesnt need a builder because i just want to provide the user value
+                              //         value: user,
+                              //         child: Provider<Database>(
+                              //           create: (_) => database,
+                              //           child: HomePage(database, apartmentId),
+                              //         ),
+                              //       ),
+                              //     ),
+                              //   ),
+                              // );
                             },
                           );
                         },

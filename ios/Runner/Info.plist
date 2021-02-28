@@ -53,6 +53,12 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>הוספת תמונות להוצאות</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>הוספת סרטונים</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>הוספת תמונות להוצאות</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

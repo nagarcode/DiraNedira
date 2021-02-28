@@ -9,6 +9,7 @@ class Investment {
   String ownerUid;
   String ownerPhotoUrl;
   int colorIndex;
+  String imageURL;
 
   static final Map<Color, String> colors = {
     Colors.deepPurple[100]: 'חשבונות',
@@ -29,6 +30,7 @@ class Investment {
     @required this.ownerUid,
     @required this.ownerPhotoUrl,
     @required this.colorIndex,
+    @required this.imageURL,
   });
 
   factory Investment.fromMap(Map<String, dynamic> data, String documentId) {
@@ -39,6 +41,7 @@ class Investment {
     final String ownerUid = data['ownerUid'];
     final String ownerPhotoUrl = data['ownerPhotoUrl'];
     final int colorIndex = data['colorIndex'] ?? 2;
+    final String imageURL = data['imageURL'] ?? null;
     return Investment(
       amount: amount,
       title: title,
@@ -47,6 +50,7 @@ class Investment {
       ownerUid: ownerUid,
       ownerPhotoUrl: ownerPhotoUrl,
       colorIndex: colorIndex,
+      imageURL: imageURL,
     );
   }
   static List<Investment> fromDocument(Map<String, dynamic> doc) {
@@ -65,6 +69,7 @@ class Investment {
       'ownerUid': ownerUid,
       'ownerPhotoUrl': ownerPhotoUrl,
       'colorIndex': colorIndex,
+      'imageURL': imageURL,
     };
   }
 }

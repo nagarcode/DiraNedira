@@ -205,7 +205,7 @@ class Chart extends StatelessWidget {
           child: Text(
             user.disaplayName != null ? user.disaplayName : 'אנונימי',
             style: theme.textTheme.headline6
-                .copyWith(fontSize: 12, color: Colors.black),
+                .copyWith(fontSize: 12, color: Colors.grey[600]),
           ),
         ),
         Avatar(
@@ -213,10 +213,11 @@ class Chart extends StatelessWidget {
           radius: screenSize.height * 0.04,
         ),
         // SizedBox(height: 6),
-        AutoSizeText(
-          'הוציא: ' + '₪' + userInvestmentSum[user.uid].toString(),
-          style: theme.textTheme.headline6.copyWith(fontSize: 13),
-        ),
+        AutoSizeText('הוציא: ' + '₪' + userInvestmentSum[user.uid].toString(),
+            style: theme.textTheme.headline6.copyWith(
+              fontSize: 13,
+              color: Colors.grey[600],
+            )),
         // SizedBox(height: 6),
         if (userList.length > 1) Center(child: shouldGetOrAdd(user.uid)),
         SizedBox(height: 6),

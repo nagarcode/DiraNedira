@@ -1,27 +1,39 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dira_nedira/Services/auth.dart';
 import 'package:dira_nedira/Services/database.dart';
+import 'package:dira_nedira/Services/firebase_storage_service.dart';
+import 'package:dira_nedira/Services/image_picker_service.dart';
 import 'package:dira_nedira/common_widgets/adaptive_flat_button.dart';
+import 'package:dira_nedira/common_widgets/halturaDialog.dart';
 import 'package:dira_nedira/common_widgets/platform_exception_alert_dialog.dart';
 import 'package:dira_nedira/home/account/apartment.dart';
 import 'package:dira_nedira/investments/investment.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:octo_image/octo_image.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class NewInvestmentForm extends StatefulWidget {
-  const NewInvestmentForm(
-      {@required this.database,
-      this.investment,
-      @required this.user,
-      @required this.apartmentId,
-      @required this.theme});
+  const NewInvestmentForm({
+    @required this.database,
+    this.investment,
+    @required this.user,
+    @required this.apartmentId,
+    @required this.theme,
+    @required this.imagePicker,
+    @required this.storage,
+  });
   final Database database;
   final DiraUser user;
   final Investment investment;
   final String apartmentId;
   final ThemeData theme;
+  final ImagePickerService imagePicker;
+  final FirebaseStorageService storage;
 
   static Future<void> show(BuildContext context,
       {Investment investment}) async {
@@ -29,12 +41,20 @@ class NewInvestmentForm extends StatefulWidget {
     final user = Provider.of<DiraUser>(context, listen: false);
     final apartment = Provider.of<Apartment>(context, listen: false);
     final theme = Theme.of(context);
+    final imagePicker = Provider.of<ImagePickerService>(context, listen: false);
+    final storage = Provider.of<FirebaseStorageService>(context, listen: false);
+
     await showModalBottomSheet(
       useRootNavigator: true,
       isScrollControlled: true,
       context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
       builder: (bCtx) {
         return NewInvestmentForm(
+            imagePicker: imagePicker,
+            storage: storage,
             database: database,
             investment: investment,
             apartmentId: apartment.id,
@@ -55,10 +75,14 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
   int _amount;
   DateTime _selectedDate = DateTime.now();
   int _selectedColorIndex = 2;
+  String _imageURL;
+  String _investmentID;
+  bool _isLoadingImage = false;
   final colors = Investment.colors.keys.toList();
   @override
   void initState() {
     super.initState();
+    _investmentID = widget.investment?.id ?? documentIdFromCurrentDate();
     isEditing = widget.investment != null;
     if (isEditing) _initEditingDate();
   }
@@ -67,7 +91,86 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
     setState(() {
       _selectedDate = widget.investment?.date;
       _selectedColorIndex = widget.investment?.colorIndex;
+      _imageURL = widget.investment?.imageURL;
     });
+  }
+
+  _smallImage() {
+    return OctoImage(
+      image: CachedNetworkImageProvider(_imageURL),
+      placeholderBuilder: OctoPlaceholder.circularProgressIndicator(),
+      errorBuilder: OctoError.icon(color: Colors.red),
+      fit: BoxFit.cover,
+    );
+  }
+
+  Widget _imageUploadWidget() {
+    final theme = Theme.of(context);
+    return Column(
+      children: [
+        InkWell(
+          onTap: _pickImage,
+          child: Container(
+            height: 60,
+            width: 60,
+            child: _imageURL == null
+                ? Icon(Icons.camera_alt_outlined,
+                    color: theme.primaryColor.withOpacity(0.6))
+                : _smallImage(),
+            decoration: BoxDecoration(
+              border:
+                  Border.all(width: 2.5, color: Colors.grey.withOpacity(0.6)),
+              // color: Colors.grey,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+          ),
+        ),
+        // Text(
+        //   'צירוף תמונה',
+        //   style: theme.textTheme.bodyText2.copyWith(color: Colors.grey),
+        // )
+      ],
+    );
+  }
+
+  void _permissionRequestDialog() {
+    HalturaDialog(
+      title: 'גישה לגלריה',
+      content: 'נדרשת גישה לגלריה על מנת להעלות תמונה',
+      defaultActionText: 'סגור',
+    ).show(context);
+  }
+
+  _pickImage() async {
+    final picker = widget.imagePicker;
+    try {
+      final permission = await Permission.photos.request();
+      if (!permission.isGranted) {
+        _permissionRequestDialog();
+      }
+    } catch (e) {
+      print('Permission ERROR!');
+      print(e.toString());
+    }
+
+    try {
+      final file = await picker.pickImage(source: ImageSource.gallery);
+
+      if (file != null) {
+        final storage = widget.storage;
+        final downloadURL = await storage.uploadReviewImage(
+            file: file,
+            investmentID: _investmentID,
+            apartmentID: widget.apartmentId);
+        setState(() {
+          _isLoadingImage = false;
+          _imageURL = downloadURL;
+        });
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      _permissionRequestDialog();
+    }
   }
 
   var isLoading = false;
@@ -84,16 +187,16 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
     if (_validateAndSaveForm()) {
       try {
         final uid = widget.user.uid;
-        final id = widget.investment?.id ?? documentIdFromCurrentDate();
         final photoUrl = widget.user.photoUrl;
         final investment = Investment(
           amount: _amount,
           title: _title,
           date: _selectedDate,
-          id: id,
+          id: _investmentID,
           ownerPhotoUrl: photoUrl,
           ownerUid: uid,
           colorIndex: _selectedColorIndex,
+          imageURL: _imageURL,
         );
         await widget.database.createInvestment(investment, widget.apartmentId);
         Navigator.of(context).pop();
@@ -232,6 +335,7 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
           return _amount = amount;
         },
       ),
+      _imageUploadWidget(),
       Container(
         height: 70,
         child: Row(
@@ -270,6 +374,9 @@ class _NewInvestmentFormState extends State<NewInvestmentForm> {
           )
         : SingleChildScrollView(
             child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
               // color: Investment.colors.keys.toList()[_selectedColorIndex],
               elevation: 5,
               child: Container(
