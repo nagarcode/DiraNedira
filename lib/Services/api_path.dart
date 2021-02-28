@@ -49,4 +49,7 @@ class APIPath {
 
   static String fcmToken(String apartmentId, String userName) =>
       'apartments/$apartmentId/fcmTokens/$userName';
+
+  static transactionImage(String apartmentID, String investmentID) =>
+      'Apartments/$apartmentID/Investments/$investmentID';
 }

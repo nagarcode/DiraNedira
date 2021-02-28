@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dira_nedira/Services/auth.dart';
 import 'package:dira_nedira/Services/database.dart';
 import 'package:dira_nedira/common_widgets/platform_alert_dialog.dart';
@@ -20,6 +23,9 @@ class JoinApartmentForm extends StatefulWidget {
     final database = Provider.of<Database>(context, listen: false);
     final user = Provider.of<DiraUser>(context, listen: false);
     await showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
       useRootNavigator: true,
       isScrollControlled: true,
       context: context,
@@ -122,15 +128,37 @@ class _JoinApartmentFormState extends State<JoinApartmentForm> {
 
   List<Widget> _buildFormChildren() {
     return [
+      Container(
+        margin: EdgeInsets.only(bottom: 20.0),
+        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 94.0),
+        // ..translate(-10.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.white,
+        ),
+        child: AutoSizeText(
+          'הצטרף לדירה קיימת',
+          maxLines: 1,
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontSize: 30,
+            fontFamily: 'Anton',
+            fontWeight: FontWeight.normal,
+          ),
+        ),
+      ),
+      Divider(thickness: 1.0),
       TextFormField(
         autofocus: true,
-        decoration: InputDecoration(labelText: 'שם דירה'),
+        decoration:
+            InputDecoration(labelText: 'שם דירה', prefixIcon: Icon(Icons.home)),
         validator: apartmentIdValidator,
         onSaved: (value) => _id = value,
       ),
       TextFormField(
         obscureText: true,
-        decoration: InputDecoration(labelText: 'סיסמא'),
+        decoration:
+            InputDecoration(labelText: 'סיסמא', prefixIcon: Icon(Icons.lock)),
         validator: apartmentPasswordValidator,
         onSaved: (value) => _password = value,
       ),
@@ -153,6 +181,9 @@ class _JoinApartmentFormState extends State<JoinApartmentForm> {
           )
         : SingleChildScrollView(
             child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
               elevation: 5,
               child: Container(
                 padding: EdgeInsets.only(

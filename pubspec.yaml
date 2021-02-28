@@ -11,7 +11,7 @@ description: Bag.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.5.0+25
+version: 1.5.1+26
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -42,6 +42,11 @@ dependencies:
   firebase_messaging: ^7.0.0
   firebase_analytics: ^6.0.2
   fl_chart: ^0.12.0
+  image_picker: ^0.6.7+22
+  firebase_storage: ^4.0.1
+  octo_image: ^0.3.0
+  cached_network_image: ^2.3.3
+  permission_handler: ^5.1.0+2
 
 dev_dependencies:
   flutter_test:

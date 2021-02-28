@@ -182,6 +182,7 @@ class _InvestmentsPageState extends State<InvestmentsPage> {
       investmentsToDisplay.sort((a, b) => b.date.compareTo(a.date));
     // final currentMonthYear = DateFormat.yMMM().format(DateTime.now());
     if (apartment != null && investmentsToDisplay != null) {
+      //TODO: move this check to the build method, and if its false reuturn the no apartment widget with no
       return SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
